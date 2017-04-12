@@ -37,7 +37,7 @@
         "3": "3",
         "4": "4",
         "5": "5",
-        "Info": "Info",
+        "Info": "Info : <br\/>\r\n            - Rajouter les blocs de commandes de votre choix en les choisissant au dessus<br\/>\r\n\t\t    - Il est déconseillé de ne pas afficher une commande particulière d'un bloc (sur le bloc divers vous pouvez).",
         "Name": "Nom",
         "Type": "Type",
         "Parameter(s)": "Parametre(s)"
@@ -45,5 +45,9 @@
     "plugins\/panasonicTV2\/desktop\/js\/panasonicTV2.js": {
         "Nom": "Nom",
         "Tester": "Tester"
+    },
+    "plugins\/panasonicTV2\/core\/class\/panasonicTV2.class.php": {
+        "The IP address must not be empty. Check you network gateway to find it.": "L'adresse IP ne peut etre vide. Vous pouvez la trouver dans les paramètres de votre TV ou de votre routeur (box).",
+        "You entered a wrong IP address": "Vous avez saisit une mauvaise adresse IP"
     }
 }
