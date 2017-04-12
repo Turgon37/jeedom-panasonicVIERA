@@ -1,0 +1,49 @@
+{
+    "plugins\/panasonicTV2\/plugin_info\/info.xml": {
+        "Description": "Description",
+        "Installation": "Aucune"
+    },
+    "plugins\/panasonicTV2\/desktop\/php\/panasonicTV2.php": {
+        "basic": "Basique",
+        "numeric": "Numeriques",
+        "record": "Enregistrement",
+        "multimedia": "Multimedia",
+        "colors": "Couleurs",
+        "others": "Autres",
+        "Add a TV": "Ajouter une TV",
+        "Search": "Rechercher",
+        "My TVs": "Mes Télévisions",
+        "Add": "Ajouter",
+        "Save": "Sauvegarder",
+        "Remove": "Supprimer",
+        "Advanced configuration": "Configuration avancée",
+        "Equipment": "Equipement",
+        "Commands": "Commandes",
+        "General": "General",
+        "TV's name": "Nom de la TV",
+        "Parent's object": "Objet parent",
+        "None": "Aucun",
+        "Category": "Category de la TV",
+        "Enable": "Actif",
+        "Visible": "Visible",
+        "IP Address": "Adresse IP",
+        "Display": "Affichage des groupes de commandes",
+        "Commands color": "Couleur des commandes",
+        "White buttons": "Bouton blancs",
+        "Black buttons": "Bouton noirs",
+        "Volume step": "Pas de volume",
+        "1": "1",
+        "2": "2",
+        "3": "3",
+        "4": "4",
+        "5": "5",
+        "Info": "Info",
+        "Name": "Nom",
+        "Type": "Type",
+        "Parameter(s)": "Parametre(s)"
+    },
+    "plugins\/panasonicTV2\/desktop\/js\/panasonicTV2.js": {
+        "Nom": "Nom",
+        "Tester": "Tester"
+    }
+}

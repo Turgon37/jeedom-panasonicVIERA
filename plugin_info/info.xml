@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<info>
+    <id>panasonicTV2</id>
+    <name>TV Panasonic</name>
+    <description>Description</description>
+    <icon>fa techno-tv</icon>
+    <licence>AGPL</licence>
+    <author>Pierre GINDRAUD</author>
+    <installation>Installation</installation>
+    <require>1.136</require>
+    <category>multimedia</category>
+</info>
