@@ -24,6 +24,8 @@ require_once __DIR__ . '/../constants.inc.php';
 
 class panasonicTV2 extends eqLogic {
 
+    const KEY_ADDRESS = 'address';
+
     /*     * *************************Attributs****************************** */
     /**
      * @var this is the official commands index
@@ -172,7 +174,7 @@ class panasonicTV2 extends eqLogic {
     }
 
     public function preUpdate() {
-        $addr = $this->getConfiguration('address');
+        $addr = $this->getConfiguration(self::KEY_ADDRESS);
         if ($addr == '') {
             log::add(PANASONIC_TV2_LOG_KEY, 'debug', '=> preUpdate: ip address empty');
             throw new Exception(__('The IP address must not be empty. Check you network gateway to find it.', __FILE__));
@@ -224,7 +226,8 @@ class panasonicTV2Cmd extends cmd {
 
     public function execute($_options = array()) {
         $panasonicTV = $this->getEqLogic();
-        $tvip = $panasonicTV->getConfiguration('addr');
+        $tvip = $panasonicTV->getConfiguration(panasonicTV2::KEY_ADDRESS);
+        $panasonic_path = realpath(__DIR__ . '/../../3rdparty');
 
         switch($this->type) {
             case 'action':

@@ -94,7 +94,7 @@ $eqLogics = eqLogic::byType('panasonicTV2');
 						<div class="form-group">
                             <label class="col-sm-3 control-label">{{IP Address}}</label>
                             <div class="col-lg-2 col-sm-5">
-                                <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="address" placeholder="{{IP Address}}"/>
+                                <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="<?= panasonicTV2::KEY_ADDRESS ?>" placeholder="{{IP Address}}"/>
                             </div>
                         </div>
 						<div class="form-group">
