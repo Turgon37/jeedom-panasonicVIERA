@@ -234,15 +234,31 @@ class panasonicTV2Cmd extends cmd {
                 log::add(PANASONIC_TV2_LOG_KEY, 'debug', 'Action command ');
                 $action = $this->getConfiguration('action');
                 $command = $this->getConfiguration('command');
-                $cmdline = $tvip . ' command ' . $action . ' ' . $command;
+                $cmdline = "$panasonic_path/panasonic_viera_adapter.py $tvip $action $command";
+                log::add(PANASONIC_TV2_LOG_KEY, 'debug', 'execute : '. $cmdline);
+                $output = shell_exec(escapeshellcmd($cmdline));
+                # transcript logs messages from python script to jeedom
+                $logs = json_decode($output, JSON_OBJECT_AS_ARRAY|JSON_NUMERIC_CHECK);
+                if (isset($logs['log'])) {
+                    foreach ($logs['log'] as $record) {
+                        log::add(PANASONIC_TV2_LOG_KEY, $record['level'], $record['message']);
+                    }
+                }
+
+                # handle return code and error message
+                if (isset($logs['status']) && intval($logs['status']) != 0) {
+                    $message = __("The command", __FILE__) . " " . $this->getName() . " " . __('has failed.', __FILE__);
+                    if (isset($logs['error'])) {
+                        $message = $message . "<br />" . __($logs['error'], __FILE__);
+                    }
+                    throw new Exception($message);
+                }
+
+
                 break;
             default:
-                log::add(PANASONIC_TV2_LOG_KEY, 'error', 'Unknown command type : ' . $this->type);
+                throw new Exception(__('Unknown command type : ', __FILE__) . $this->type);
         }
-
-        $panasonic_path = realpath(dirname(__FILE__) . '/../../3rdparty');
-        $key = $panasonicTV->getConfiguration('key');
-        $volnum = $panasonicTV->getConfiguration('volnum');
     }
 
     /*     * **********************Getteur Setteur*************************** */

@@ -48,6 +48,9 @@
     },
     "plugins\/panasonicTV2\/core\/class\/panasonicTV2.class.php": {
         "The IP address must not be empty. Check you network gateway to find it.": "L'adresse IP ne peut etre vide. Vous pouvez la trouver dans les paramètres de votre TV ou de votre routeur (box).",
-        "You entered a wrong IP address": "Vous avez saisit une mauvaise adresse IP"
+        "You entered a wrong IP address": "Vous avez saisit une mauvaise adresse IP",
+        "The command": "La commande",
+        "has failed.": "a echouée.",
+        "This command has failed, maybe the TV does not support it.": "Cette commande echouée, peut être que la TV ne la supporte pas."
     }
 }
