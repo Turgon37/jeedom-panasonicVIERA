@@ -18,6 +18,7 @@
 # along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
 #
 
+import argparse
 import json
 import logging
 import panasonic_viera
@@ -38,15 +39,21 @@ class ArrayHandler(logging.Handler):
         self.dest.append(dict(level=record.levelname, message=record.getMessage()))
 
 
+parser = argparse.ArgumentParser(description="Adapter for panasonic-viera for jeedom")
+parser.add_argument("host", help="The hostname of the TV")
+parser.add_argument("type", help="The type of query")
+parser.add_argument("command", help="The command's code")
+args = parser.parse_args()
+
 logs = []
 hdlr = ArrayHandler(logs)
 panasonic_viera.getLogger().setLevel(logging.DEBUG)
 panasonic_viera.getLogger().addHandler(hdlr)
 
 result = dict({'status': 0})
-rc = panasonic_viera.RemoteControl("192.168.57.119")
+rc = panasonic_viera.RemoteControl(args.host)
 try:
-    rc.send_key('NRC_ECO-ONOFF')
+    rc.send_key(args.command)
 except panasonic_viera.RemoteControlException as e:
     result['status'] = 1
     result['error'] = str(e)
