@@ -40,10 +40,19 @@ class ArrayHandler(logging.Handler):
 
 
 parser = argparse.ArgumentParser(description="Adapter for panasonic-viera for jeedom")
-parser.add_argument("host", help="The hostname of the TV")
-parser.add_argument("type", help="The type of query")
-parser.add_argument("command", help="The command's code")
+subparsers = parser.add_subparsers()
+parser_sendkey = subparsers.add_parser('sendkey', help='Simple sendkey action')
+parser_sendkey.set_defaults(action='sendkey', host=None)
+parser_sendkey.add_argument("host", help="The hostname of the TV")
+parser_sendkey.add_argument("command", help="The command's code")
+
+parser_find = subparsers.add_parser('find', help='Find available TVs on the LAN')
+parser_find.set_defaults(action='find')
+
 args = parser.parse_args()
+if not hasattr(args, 'action'):
+  parser.print_help()
+  sys.exit(1)
 
 logs = []
 hdlr = ArrayHandler(logs)
@@ -51,9 +60,12 @@ panasonic_viera.getLogger().setLevel(logging.DEBUG)
 panasonic_viera.getLogger().addHandler(hdlr)
 
 result = dict({'status': 0})
-rc = panasonic_viera.RemoteControl(args.host)
+rc = panasonic_viera.RemoteControl(args.host if hasattr(args, 'host') else None)
 try:
-    rc.send_key(args.command)
+    if args.action == 'sendkey':
+        rc.send_key(args.command)
+    elif args.action == 'find':
+        result['output'] = rc.find()
 except panasonic_viera.RemoteControlException as e:
     result['status'] = 1
     result['error'] = str(e)
