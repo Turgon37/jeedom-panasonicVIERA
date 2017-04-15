@@ -51,6 +51,7 @@
         "You entered a wrong IP address": "Vous avez saisit une mauvaise adresse IP",
         "The command": "La commande",
         "has failed.": "a echouée.",
-        "This command has failed, maybe the TV does not support it.": "Cette commande echouée, peut être que la TV ne la supporte pas."
+        "This command has failed, maybe the TV does not support it.": "Cette commande a echouée, peut être que la TV ne la supporte pas.",
+        "The TV is unreacheable.": "La télévision n'est pas disponible."
     }
 }
