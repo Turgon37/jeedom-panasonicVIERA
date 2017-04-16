@@ -1,10 +1,14 @@
 {
     "plugins\/panasonicTV2\/plugin_info\/info.xml": {
-        "Description": "Description",
+        "Description": "Plugin de controle de Televiseur Panasonic Viera",
+        "Installation": "Aucune"
+    },
+    "plugins\/panasonicTV2\/plugin_info\/info.json": {
+        "Description": "Plugin de controle de Televiseur Panasonic Viera",
         "Installation": "Aucune"
     },
     "plugins\/panasonicTV2\/desktop\/php\/panasonicTV2.php": {
-        "basic": "Basique",
+        "basic": "Basiques",
         "numeric": "Numeriques",
         "record": "Enregistrement",
         "multimedia": "Multimedia",
@@ -40,7 +44,7 @@
         "Info": "Info : <br\/>\r\n            - Rajouter les blocs de commandes de votre choix en les choisissant au dessus<br\/>\r\n\t\t    - Il est déconseillé de ne pas afficher une commande particulière d'un bloc (sur le bloc divers vous pouvez).",
         "Name": "Nom",
         "Type": "Type",
-        "Parameter(s)": "Parametre(s)"
+        "Parameter(s)": "Paramètre(s)"
     },
     "plugins\/panasonicTV2\/desktop\/js\/panasonicTV2.js": {
         "Nom": "Nom",
@@ -53,5 +57,12 @@
         "has failed.": "a echouée.",
         "This command has failed, maybe the TV does not support it.": "Cette commande a echouée, peut être que la TV ne la supporte pas.",
         "The TV is unreacheable.": "La télévision n'est pas disponible."
+    },
+    "plugins\/panasonicTV2\/plugin_info\/configuration.php": {
+        "Make a donation": "Faire un don",
+        "This plugin is free available to allow everyone to use it easily. If you want, you can make a donation to the developer by using the following link": "Ce plugin est gratuit afin d'être accessible à tout le monde facilement. Si vous le souhaitez vous pouvez faire une donation au développeur via le lien suivant",
+        "Make a donation using Paypal": "Faire un don via Paypal",
+        "Timeout for TV's commands (let blank to use default)": "Durée maximale d'execution des commandes (laisser vide par defaut)",
+        "Timeout for TV's discovery command (let blank to use default)": "Durée maximale de la recherche des TVs (laisser vide par defaut)"
     }
 }
