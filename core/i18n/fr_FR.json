@@ -56,7 +56,8 @@
         "The command": "La commande",
         "has failed.": "a echouée.",
         "This command has failed, maybe the TV does not support it.": "Cette commande a echouée, peut être que la TV ne la supporte pas.",
-        "The TV is unreacheable.": "La télévision n'est pas disponible."
+        "The TV is unreacheable.": "La télévision n'est pas disponible.",
+        "has not returned a valid JSON output.": "has not returned a valid JSON output."
     },
     "plugins\/panasonicTV2\/plugin_info\/configuration.php": {
         "Make a donation": "Faire un don",
