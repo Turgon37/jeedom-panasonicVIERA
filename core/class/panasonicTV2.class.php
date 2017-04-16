@@ -72,6 +72,20 @@ class panasonicTV2 extends eqLogic {
         ];
     }
 
+    /**
+     * Return the timeout value for standard TV commands
+     */
+    public static function getCommandTimeout() {
+        return config::byKey('command_timeout', 'panasonicTV2', 2);
+    }
+
+    /**
+     * Return the timeout value for discovery commands
+     */
+    public static function getDiscoveryTimeout() {
+        return config::byKey('discovery_timeout', 'panasonicTV2', 3);
+    }
+
     /*     * *********************Méthodes d'instance************************* */
 
     /**

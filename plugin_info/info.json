@@ -5,5 +5,7 @@
 	"licence" : "AGPL",
 	"author" : "Pierre GINDRAUD",
 	"require" : "1.136",
-	"category" : "multimedia"
+	"version" : "1.0",
+	"category" : "multimedia",
+	"hasDependency": true
 }
