@@ -40,14 +40,26 @@ class ArrayHandler(logging.Handler):
 
 
 parser = argparse.ArgumentParser(description="Adapter for panasonic-viera for jeedom")
+
 subparsers = parser.add_subparsers()
+parser_find = subparsers.add_parser('find', help='Find available TVs on the LAN')
+parser_find.set_defaults(action='find')
+
 parser_sendkey = subparsers.add_parser('sendkey', help='Simple sendkey action')
-parser_sendkey.set_defaults(action='sendkey', host=None)
+parser_sendkey.set_defaults(action='sendkey')
 parser_sendkey.add_argument("host", help="The hostname of the TV")
 parser_sendkey.add_argument("command", help="The command's code")
 
-parser_find = subparsers.add_parser('find', help='Find available TVs on the LAN')
-parser_find.set_defaults(action='find')
+parser_render = subparsers.add_parser('render', help='Execute a render command')
+parser_render.set_defaults(action='render')
+parser_render.add_argument("host", help="The hostname of the TV")
+parser_render.add_argument("command", help="The name of the information to render")
+
+parser_set = subparsers.add_parser('set', help='Set a value')
+parser_set.set_defaults(action='set')
+parser_set.add_argument("host", help="The hostname of the TV")
+parser_set.add_argument("command", help="The name of the information to set")
+parser_set.add_argument("value", help="The new value to set")
 
 args = parser.parse_args()
 if not hasattr(args, 'action'):
@@ -63,9 +75,21 @@ result = dict({'status': 0})
 rc = panasonic_viera.RemoteControl(args.host if hasattr(args, 'host') else None)
 try:
     if args.action == 'sendkey':
-        rc.send_key(args.command)
+        rc.sendKey(args.command)
+    elif args.action == 'render':
+        if args.command == 'getVolume':
+            result['output'] = rc.getVolume()
+        if args.command == 'getMute':
+            result['output'] = rc.getMute()
+    elif args.action == 'set':
+        if args.command == 'setVolume':
+            rc.setVolume(args.value)
+        if args.command == 'setMute':
+            rc.setMute(args.value)
     elif args.action == 'find':
         result['output'] = rc.find()
+    else:
+        raise panasonic_viera.RemoteControlException("The action " + args.action + " is not implemented.")
 except panasonic_viera.RemoteControlException as e:
     result['status'] = 1
     result['error'] = str(e)

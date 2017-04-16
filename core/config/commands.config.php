@@ -20,7 +20,7 @@ return [
     [
         'name' => 'Apps',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_APPS-ONOFF',
         ],
         'type' => 'action',
@@ -32,7 +32,7 @@ return [
     [
         'name' => 'Aspect',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_ASPECT-ONOFF',
         ],
         'type' => 'action',
@@ -43,7 +43,7 @@ return [
     [
         'name' => 'Blue',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_BLUE-ONOFF',
         ],
         'type' => 'action',
@@ -54,7 +54,7 @@ return [
     [
         'name' => 'Cancel',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_CANCEL-ONOFF',
         ],
         'type' => 'action',
@@ -66,7 +66,7 @@ return [
     [
         'name' => 'Channel+',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_CH_UP-ONOFF',
         ],
         'type' => 'action',
@@ -78,7 +78,7 @@ return [
     [
         'name' => 'Channel-',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_CH_DOWN-ONOFF',
         ],
         'type' => 'action',
@@ -92,7 +92,7 @@ return [
     [
         'name' => 'Display Mode',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_DISP_MODE-ONOFF',
         ],
         'type' => 'action',
@@ -104,7 +104,7 @@ return [
     [
         'name' => 'Down',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_DOWN-ONOFF',
         ],
         'type' => 'action',
@@ -116,7 +116,7 @@ return [
     [
         'name' => 'OK',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_ENTER-ONOFF',
         ],
         'type' => 'action',
@@ -127,7 +127,7 @@ return [
     [
         'name' => 'EPG',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_EPG-ONOFF',
         ],
         'type' => 'action',
@@ -140,7 +140,7 @@ return [
     [
         'name' => 'Favorites',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_FAVORITE-ONOFF',
         ],
         'type' => 'action',
@@ -152,7 +152,7 @@ return [
     [
         'name' => 'Fast forward',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_FF-ONOFF',
         ],
         'type' => 'action',
@@ -165,7 +165,7 @@ return [
     [
         'name' => 'Green',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_GREEN-ONOFF',
         ],
         'type' => 'action',
@@ -176,7 +176,7 @@ return [
     [
         'name' => 'Guide',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_GUIDE-ONOFF',
         ],
         'type' => 'action',
@@ -189,7 +189,7 @@ return [
     [
         'name' => 'Home',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_HOME-ONOFF',
         ],
         'type' => 'action',
@@ -201,7 +201,7 @@ return [
     [
         'name' => 'Index',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_INDEX-ONOFF',
         ],
         'type' => 'action',
@@ -213,7 +213,7 @@ return [
     [
         'name' => 'Info',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_INFO-ONOFF',
         ],
         'type' => 'action',
@@ -225,7 +225,7 @@ return [
     [
         'name' => 'Input',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_CHG_INPUT-ONOFF',
         ],
         'type' => 'action',
@@ -237,7 +237,7 @@ return [
     [
         'name' => 'Internet',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_INTERNET-ONOFF',
         ],
         'type' => 'action',
@@ -248,7 +248,7 @@ return [
     [
         'name' => 'Last view',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_R_TUNE-ONOFF',
         ],
         'type' => 'action',
@@ -260,7 +260,7 @@ return [
     [
         'name' => 'Left',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_LEFT-ONOFF',
         ],
         'type' => 'action',
@@ -272,7 +272,7 @@ return [
     [
         'name' => 'Link',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_VIERA_LINK-ONOFF',
         ],
         'type' => 'action',
@@ -284,7 +284,7 @@ return [
     [
         'name' => 'Menu',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_MENU-ONOFF',
         ],
         'type' => 'action',
@@ -297,7 +297,7 @@ return [
     [
         'name' => 'Mute',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_MUTE-ONOFF',
         ],
         'type' => 'action',
@@ -310,7 +310,7 @@ return [
     [
         'name' => '0',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_D0-ONOFF',
         ],
         'type' => 'action',
@@ -321,7 +321,7 @@ return [
     [
         'name' => '1',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_D1-ONOFF',
         ],
         'type' => 'action',
@@ -332,7 +332,7 @@ return [
     [
         'name' => '2',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_D2-ONOFF',
         ],
         'type' => 'action',
@@ -343,7 +343,7 @@ return [
     [
         'name' => '3',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_D3-ONOFF',
         ],
         'type' => 'action',
@@ -354,7 +354,7 @@ return [
     [
         'name' => '4',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_D4-ONOFF',
         ],
         'type' => 'action',
@@ -365,7 +365,7 @@ return [
     [
         'name' => '5',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_D5-ONOFF',
         ],
         'type' => 'action',
@@ -376,7 +376,7 @@ return [
     [
         'name' => '6',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_D6-ONOFF',
         ],
         'type' => 'action',
@@ -387,7 +387,7 @@ return [
     [
         'name' => '7',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_D7-ONOFF',
         ],
         'type' => 'action',
@@ -398,7 +398,7 @@ return [
     [
         'name' => '8',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_D8-ONOFF',
         ],
         'type' => 'action',
@@ -409,7 +409,7 @@ return [
     [
         'name' => '9',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_D9-ONOFF',
         ],
         'type' => 'action',
@@ -423,7 +423,7 @@ return [
     [
         'name' => 'Off timer',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_OFFTIMER-ONOFF',
         ],
         'type' => 'action',
@@ -434,7 +434,7 @@ return [
     [
         'name' => 'Option',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_SUBMENU-ONOFF',
         ],
         'type' => 'action',
@@ -445,7 +445,7 @@ return [
     [
         'name' => 'Pause',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_PAUSE-ONOFF',
         ],
         'type' => 'action',
@@ -458,7 +458,7 @@ return [
     [
         'name' => 'Play',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_PLAY-ONOFF',
         ],
         'type' => 'action',
@@ -471,7 +471,7 @@ return [
     [
         'name' => 'Power off',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_POWER-ONOFF'
         ],
         'type' => 'action',
@@ -484,7 +484,7 @@ return [
     [
         'name' => 'Record',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_REC-ONOFF',
         ],
         'type' => 'action',
@@ -496,7 +496,7 @@ return [
     [
         'name' => 'Red',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_RED-ONOFF',
         ],
         'type' => 'action',
@@ -507,7 +507,7 @@ return [
     [
         'name' => 'Back',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_RETURN-ONOFF',
         ],
         'type' => 'action',
@@ -519,7 +519,7 @@ return [
     [
         'name' => 'Rewind',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_REW-ONOFF',
         ],
         'type' => 'action',
@@ -531,7 +531,7 @@ return [
     [
         'name' => 'Right',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_RIGHT-ONOFF',
         ],
         'type' => 'action',
@@ -545,7 +545,7 @@ return [
     [
         'name' => 'SD Card',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_SD_CARD-ONOFF',
         ],
         'type' => 'action',
@@ -556,7 +556,7 @@ return [
     [
         'name' => 'Next',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_SKIP_NEXT-ONOFF',
         ],
         'type' => 'action',
@@ -568,7 +568,7 @@ return [
     [
         'name' => 'Previous',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_SKIP_PREV-ONOFF',
         ],
         'type' => 'action',
@@ -581,7 +581,7 @@ return [
     [
         'name' => 'Stop',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_STOP-ONOFF',
         ],
         'type' => 'action',
@@ -593,7 +593,7 @@ return [
     [
         'name' => 'Subtitles',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_STTL-ONOFF',
         ],
         'type' => 'action',
@@ -605,7 +605,7 @@ return [
     [
         'name' => 'Surround',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_SURROUND-ONOFF',
         ],
         'type' => 'action',
@@ -617,7 +617,7 @@ return [
     [
         'name' => 'Teletext',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_TEXT-ONOFF',
         ],
         'type' => 'action',
@@ -629,7 +629,7 @@ return [
     [
         'name' => 'TV',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_TV-ONOFF',
         ],
         'type' => 'action',
@@ -642,7 +642,7 @@ return [
     [
         'name' => '3D',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_3D-ONOFF',
         ],
         'type' => 'action',
@@ -653,7 +653,7 @@ return [
     [
         'name' => 'Up',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_UP-ONOFF',
         ],
         'type' => 'action',
@@ -665,7 +665,7 @@ return [
     [
         'name' => 'Vol+',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_VOLUP-ONOFF',
         ],
         'type' => 'action',
@@ -677,7 +677,7 @@ return [
     [
         'name' => 'Vol-',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_VOLDOWN-ONOFF',
         ],
         'type' => 'action',
@@ -690,7 +690,7 @@ return [
     [
         'name' => 'Yellow',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_YELLOW-ONOFF',
         ],
         'type' => 'action',
@@ -701,16 +701,58 @@ return [
     [
         'name' => 'Recording list',
         'configuration' => [
-            'action' => 'X_SendKey',
+            'action' => 'sendkey',
             'command' => 'NRC_RECLIST-ONOFF',
         ],
         'type' => 'action',
         'subType' => 'other',
         'description' => 'Recording list button',
-        'version' => '0.1',
-        'required' => '',
         'group' => 'others',
         'icon' => 'fa fa-film',
+    ],
+    [
+        'name' => 'Set Volume',
+        'configuration' => [
+            'action' => 'set',
+            'command' => 'SetVolume',
+        ],
+        'type' => 'action',
+        'subType' => 'other',
+        'description' => 'Set the current TV volume',
+        'group' => 'basic',
+    ],
+    [
+        'name' => 'Get Volume',
+        'configuration' => [
+            'action' => 'render',
+            'command' => 'GetVolume',
+        ],
+        'type' => 'info',
+        'subType' => 'numeric',
+        'description' => 'Get the current TV volume',
+        'group' => 'basic',
+    ],
+    [
+        'name' => 'Set Mute',
+        'configuration' => [
+            'action' => 'set',
+            'command' => 'SetMute',
+        ],
+        'type' => 'action',
+        'subType' => 'other',
+        'description' => 'Set the current mute status',
+        'group' => 'basic',
+    ],
+    [
+        'name' => 'Get Mute',
+        'configuration' => [
+            'action' => 'render',
+            'command' => 'GetMute',
+        ],
+        'type' => 'info',
+        'subType' => 'binary',
+        'description' => 'Get the current TV volume',
+        'group' => 'basic',
     ]
 ];
 ?>

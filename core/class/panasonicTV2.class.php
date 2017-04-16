@@ -60,6 +60,7 @@ class panasonicTV2 extends eqLogic {
 
     /**
      * Retourne les groupes de l'objet
+     * @var array
      */
     public static function getCommandGroups() {
         return [
@@ -74,6 +75,7 @@ class panasonicTV2 extends eqLogic {
 
     /**
      * Return the timeout value for standard TV commands
+     * @return [int] the timeout in seconds
      */
     public static function getCommandTimeout() {
         return config::byKey('command_timeout', 'panasonicTV2', 2);
@@ -81,9 +83,55 @@ class panasonicTV2 extends eqLogic {
 
     /**
      * Return the timeout value for discovery commands
+     * @return [int] the discovery timeout in seconds
      */
     public static function getDiscoveryTimeout() {
         return config::byKey('discovery_timeout', 'panasonicTV2', 3);
+    }
+
+    /**
+     * Execute a 3rd party command not written in PHP
+     *
+     * @param [string] the name of the command file in 3rdparty/ directory
+     * @param [array] the list of command arguments
+     * @param [string] OPTIONNAL a verbose name to include in errors statments.
+     * @return mixed : the output of the command
+     */
+    public static function execute3rdParty($command, $args = [], $name = null) {
+        $base_path = realpath(__DIR__ . '/../../3rdparty');
+        $cmdline = sprintf("%s/%s %s", $base_path, $command, implode(' ', $args));
+        if ($name === null) {
+            $name = $command;
+        }
+        $output = null;
+
+        log::add(PANASONIC_TV2_LOG_KEY, 'debug', 'execute3rdParty : '. $cmdline);
+        $shell_output = shell_exec(escapeshellcmd($cmdline));
+        $decoded = json_decode($shell_output, JSON_OBJECT_AS_ARRAY|JSON_NUMERIC_CHECK);
+        if ($decoded !== null) {
+            # transcript logs messages from python script to jeedom
+            if (isset($decoded['log'])) {
+                foreach ($decoded['log'] as $record) {
+                    log::add(PANASONIC_TV2_LOG_KEY, $record['level'], $record['message']);
+                }
+            }
+            # handle return code and error message
+            if (isset($decoded['status']) && intval($decoded['status']) != 0) {
+                $message = __("The command", __FILE__) . " $name " . __('has failed.', __FILE__);
+                if (isset($decoded['error'])) {
+                    $message = $message . "<br />" . __($decoded['error'], __FILE__);
+                }
+                throw new Exception($message);
+            }
+
+            # handle standard output
+            if (isset($decoded['output'])) {
+                $output = $decoded['output'];
+            }
+        } else {
+            throw new Exception(__("The command", __FILE__) . " $command " . __('has not returned a valid JSON output.', __FILE__));
+        }
+        return $output;
     }
 
     /*     * *********************Méthodes d'instance************************* */
@@ -230,46 +278,23 @@ class panasonicTV2Cmd extends cmd {
 
 
     /*     * *********************Methode d'instance************************* */
-
-    /*
-     * Non obligatoire permet de demander de ne pas supprimer les commandes même si elles ne sont pas dans la nouvelle configuration de l'équipement envoyé en JS
-      public function dontRemoveCmd() {
-      return true;
-      }
-     */
-
     public function execute($_options = array()) {
         $panasonicTV = $this->getEqLogic();
         $tvip = $panasonicTV->getConfiguration(panasonicTV2::KEY_ADDRESS);
-        $panasonic_path = realpath(__DIR__ . '/../../3rdparty');
 
         switch($this->type) {
             case 'action':
-                log::add(PANASONIC_TV2_LOG_KEY, 'debug', 'Action command ');
+                log::add(PANASONIC_TV2_LOG_KEY, 'debug', 'Action command');
                 $action = $this->getConfiguration('action');
                 $command = $this->getConfiguration('command');
-                $cmdline = "$panasonic_path/panasonic_viera_adapter.py sendkey $tvip $command";
-                log::add(PANASONIC_TV2_LOG_KEY, 'debug', 'execute : '. $cmdline);
-                $output = shell_exec(escapeshellcmd($cmdline));
-                # transcript logs messages from python script to jeedom
-                $logs = json_decode($output, JSON_OBJECT_AS_ARRAY|JSON_NUMERIC_CHECK);
-                if (isset($logs['log'])) {
-                    foreach ($logs['log'] as $record) {
-                        log::add(PANASONIC_TV2_LOG_KEY, $record['level'], $record['message']);
-                    }
-                }
-
-                # handle return code and error message
-                if (isset($logs['status']) && intval($logs['status']) != 0) {
-                    $message = __("The command", __FILE__) . " " . $this->getName() . " " . __('has failed.', __FILE__);
-                    if (isset($logs['error'])) {
-                        $message = $message . "<br />" . __($logs['error'], __FILE__);
-                    }
-                    throw new Exception($message);
-                }
-
+                panasonicTV2::execute3rdParty("panasonic_viera_adapter.py", [$action, $tvip, $command], $this->getName());
 
                 break;
+            case 'info':
+                log::add(PANASONIC_TV2_LOG_KEY, 'debug', 'Info command');
+                $action = $this->getConfiguration('action');
+                $command = $this->getConfiguration('command');
+                return panasonicTV2::execute3rdParty("panasonic_viera_adapter.py", [$action, $tvip, $command], $this->getName());
             default:
                 throw new Exception(__('Unknown command type : ', __FILE__) . $this->type);
         }
