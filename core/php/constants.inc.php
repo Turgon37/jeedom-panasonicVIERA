@@ -16,6 +16,6 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
-define(PANASONIC_TV2_LOG_KEY, 'panasonicTV2');
+define('PANASONIC_TV2_LOG_KEY', 'panasonicTV2');
 
 ?>

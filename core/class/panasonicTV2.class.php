@@ -19,7 +19,7 @@
 /* * ***************************Includes********************************* */
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
-require_once __DIR__ . '/../constants.inc.php';
+require_once __DIR__ . '/../php/constants.inc.php';
 
 
 class panasonicTV2 extends eqLogic {
@@ -234,7 +234,7 @@ class panasonicTV2Cmd extends cmd {
                 log::add(PANASONIC_TV2_LOG_KEY, 'debug', 'Action command ');
                 $action = $this->getConfiguration('action');
                 $command = $this->getConfiguration('command');
-                $cmdline = "$panasonic_path/panasonic_viera_adapter.py $tvip $action $command";
+                $cmdline = "$panasonic_path/panasonic_viera_adapter.py sendkey $tvip $command";
                 log::add(PANASONIC_TV2_LOG_KEY, 'debug', 'execute : '. $cmdline);
                 $output = shell_exec(escapeshellcmd($cmdline));
                 # transcript logs messages from python script to jeedom

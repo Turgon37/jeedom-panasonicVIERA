@@ -1,0 +1,9 @@
+{
+	"id" : "panasonicTV2",
+	"name" : "TV Panasonic",
+	"description" : "Description",
+	"licence" : "AGPL",
+	"author" : "Pierre GINDRAUD",
+	"require" : "1.136",
+	"category" : "multimedia"
+}
