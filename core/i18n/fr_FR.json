@@ -1,13 +1,13 @@
 {
-    "plugins\/panasonicTV2\/plugin_info\/info.xml": {
+    "plugins\/panasonicVIERA\/plugin_info\/info.xml": {
         "Description": "Plugin de controle de Televiseur Panasonic Viera",
         "Installation": "Aucune"
     },
-    "plugins\/panasonicTV2\/plugin_info\/info.json": {
+    "plugins\/panasonicVIERA\/plugin_info\/info.json": {
         "Description": "Plugin de controle de Televiseur Panasonic Viera",
         "Installation": "Aucune"
     },
-    "plugins\/panasonicTV2\/desktop\/php\/panasonicTV2.php": {
+    "plugins\/panasonicVIERA\/desktop\/php\/panasonicVIERA.php": {
         "basic": "Basiques",
         "numeric": "Numeriques",
         "record": "Enregistrement",
@@ -41,25 +41,33 @@
         "3": "3",
         "4": "4",
         "5": "5",
-        "Info": "Info : <br\/>\r\n            - Rajouter les blocs de commandes de votre choix en les choisissant au dessus<br\/>\r\n\t\t    - Il est déconseillé de ne pas afficher une commande particulière d'un bloc (sur le bloc divers vous pouvez).",
+        "Info": "Info : <br\/>\r\n            - Les commandes ci-dessous sont ajoutées en fonction des groupes activés de l'équipement<br\/>\r\n\t\t    - Il est déconseillé de ne pas afficher une commande particulière d'un bloc (sur le bloc divers vous pouvez).",
         "Name": "Nom",
         "Type": "Type",
-        "Parameter(s)": "Paramètre(s)"
+        "Parameter(s)": "Paramètre(s)",
+        "Gestion": "Gestion",
+        "Arrêter Scan": "Arrêter Scan",
+        "Configuration": "Configuration",
+        "Lancer Scan": "Lancer Scan",
+        "Découvrir les TVs sur le réseau": "Découvrir les TVs sur le réseau",
+        "Actions": "Actions"
     },
-    "plugins\/panasonicTV2\/desktop\/js\/panasonicTV2.js": {
+    "plugins\/panasonicVIERA\/desktop\/js\/panasonicVIERA.js": {
         "Nom": "Nom",
-        "Tester": "Tester"
+        "Tester": "Tester",
+        "Afficher": "Afficher"
     },
-    "plugins\/panasonicTV2\/core\/class\/panasonicTV2.class.php": {
+    "plugins\/panasonicVIERA\/core\/class\/panasonicVIERA.class.php": {
         "The IP address must not be empty. Check you network gateway to find it.": "L'adresse IP ne peut etre vide. Vous pouvez la trouver dans les paramètres de votre TV ou de votre routeur (box).",
         "You entered a wrong IP address": "Vous avez saisit une mauvaise adresse IP",
         "The command": "La commande",
         "has failed.": "a echouée.",
         "This command has failed, maybe the TV does not support it.": "Cette commande a echouée, peut être que la TV ne la supporte pas.",
         "The TV is unreacheable.": "La télévision n'est pas disponible.",
-        "has not returned a valid JSON output.": "has not returned a valid JSON output."
+        "has not returned a valid JSON output.": "has not returned a valid JSON output.",
+        "Discovery is already in progress": "Discovery is already in progress"
     },
-    "plugins\/panasonicTV2\/plugin_info\/configuration.php": {
+    "plugins\/panasonicVIERA\/plugin_info\/configuration.php": {
         "Make a donation": "Faire un don",
         "This plugin is free available to allow everyone to use it easily. If you want, you can make a donation to the developer by using the following link": "Ce plugin est gratuit afin d'être accessible à tout le monde facilement. Si vous le souhaitez vous pouvez faire une donation au développeur via le lien suivant",
         "Make a donation using Paypal": "Faire un don via Paypal",

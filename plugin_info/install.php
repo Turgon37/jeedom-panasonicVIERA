@@ -18,16 +18,16 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 
-function panasonicTV2_install() {
+function panasonicVIERA_install() {
 
 }
 
-function panasonicTV2_update() {
+function panasonicVIERA_update() {
 
 }
 
 
-function panasonicTV2_remove() {
+function panasonicVIERA_remove() {
 
 }
 

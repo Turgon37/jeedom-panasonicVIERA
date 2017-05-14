@@ -27,14 +27,14 @@ if (!isConnect()) {
         <div class="form-group">
             <label class="col-lg-3 control-label">{{Timeout for TV's commands (let blank to use default)}}</label>
             <div class="col-lg-1">
-                <input class="configKey form-control" data-l1key="command_timeout" placeholder="<?= panasonicTV2::getCommandTimeout() ?>"
+                <input class="configKey form-control" data-l1key="command_timeout" placeholder="<?= panasonicVIERA::getCommandTimeout() ?>"
                         type="number" min="0"/>
             </div>
         </div>
         <div class="form-group">
             <label class="col-lg-3 control-label">{{Timeout for TV's discovery command (let blank to use default)}}</label>
             <div class="col-lg-1">
-                <input class="configKey form-control" data-l1key="discovery_timeout" placeholder="<?= panasonicTV2::getDiscoveryTimeout() ?>"
+                <input class="configKey form-control" data-l1key="discovery_timeout" placeholder="<?= panasonicVIERA::getDiscoveryTimeout() ?>"
                         type="number" min="0"/>
             </div>
         </div>

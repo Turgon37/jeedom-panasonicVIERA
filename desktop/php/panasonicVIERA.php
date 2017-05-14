@@ -2,8 +2,8 @@
 if (!isConnect('admin')) {
 	throw new Exception('{{401 - Accès non autorisé}}');
 }
-sendVarToJS('eqType', 'panasonicTV2');
-$eqLogics = eqLogic::byType('panasonicTV2');
+sendVarToJS('eqType', 'panasonicVIERA');
+$eqLogics = eqLogic::byType('panasonicVIERA');
 ?>
 
 <div class="row row-overflow">
@@ -20,6 +20,22 @@ $eqLogics = eqLogic::byType('panasonicTV2');
     </div>
 
     <div class="col-lg-10 col-md-9 col-sm-8 eqLogicThumbnailDisplay" style="border-left: solid 1px #EEE; padding-left: 25px;">
+		<legend><i class="fa fa-cog"></i>  {{Gestion}}</legend>
+	    <div class="eqLogicThumbnailContainer">
+			<div class="cursor discoverTVs include card" data-mode="1" data-state="1" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
+				<center class="includeicon">
+					<i class="fa fa-bullseye" style="font-size : 6em;color:#94ca02;"></i>
+				</center>
+				<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#94ca02"><center>{{Découvrir les TVs sur le réseau}}</center></span>
+			</div>
+	    	<div class="cursor eqLogicAction" data-action="gotoPluginConf" style="background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
+	     		<center>
+	       			<i class="fa fa-wrench" style="font-size : 6em;color:#767676;"></i>
+	     		</center>
+	     		<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Configuration}}</center></span>
+	   		</div>
+	 	</div>
+
         <legend>{{My TVs}}
         </legend>
 
@@ -34,7 +50,7 @@ $eqLogics = eqLogic::byType('panasonicTV2');
 <?php   $opacity = ($eqLogic->getIsEnable()) ? '' : jeedom::getConfiguration('eqLogic:style:noactive'); ?>
             <div class="eqLogicDisplayCard cursor" data-eqLogic_id="<?= $eqLogic->getId() ?>" style="background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
                 <center>
-                    <img src="plugins/panasonicTV2/doc/images/panasonicTV2_icon.png" height="105" width="95" />
+                    <img src="plugins/panasonicVIERA/doc/images/panasonicVIERA_icon.png" height="105" width="95" />
 	        	</center>
 	        	<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center><?= $eqLogic->getHumanName(true, true) ?></center></span>
             </div>
@@ -94,13 +110,13 @@ $eqLogics = eqLogic::byType('panasonicTV2');
 						<div class="form-group">
                             <label class="col-sm-3 control-label">{{IP Address}}</label>
                             <div class="col-lg-2 col-sm-5">
-                                <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="<?= panasonicTV2::KEY_ADDRESS ?>" placeholder="{{IP Address}}"/>
+                                <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_ADDRESS ?>" placeholder="{{IP Address}}"/>
                             </div>
                         </div>
 						<div class="form-group">
                             <label class="col-sm-3 control-label" >{{Display}}</label>
                             <div class="col-sm-9">
-<?php foreach (panasonicTV2::getCommandGroups() as $name => $key) : ?>
+<?php foreach (panasonicVIERA::getCommandGroups() as $name => $key) : ?>
 								<input type="checkbox" class="eqLogicAttr bootstrapSwitch basic" data-label-text="<?= __($name, __FILE__) ?>" data-l1key="configuration" data-l2key="<?= $key ?>" checked/>
 <?php endforeach; ?>
                             </div>
@@ -137,10 +153,10 @@ $eqLogics = eqLogic::byType('panasonicTV2');
                 <table id="table_cmd" class="table table-bordered table-condensed">
                     <thead>
                         <tr>
-                            <th style="width: 200px;">{{Name}}</th>
-                            <th style="width: 100px;">{{Type}}</th>
+                            <th>{{Name}}</th>
+                            <th>{{Type}}</th>
                             <th>{{Parameter(s)}}</th>
-                            <th style="width: 100px;"></th>
+                            <th>{{Actions}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -151,5 +167,5 @@ $eqLogics = eqLogic::byType('panasonicTV2');
 	</div>
 </div>
 
-<?php include_file('desktop', 'panasonicTV2', 'js', 'panasonicTV2');?>
+<?php include_file('desktop', 'panasonicVIERA', 'js', 'panasonicVIERA');?>
 <?php include_file('core', 'plugin.template', 'js');?>

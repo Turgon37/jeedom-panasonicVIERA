@@ -1,10 +1,10 @@
 {
-	"id" : "panasonicTV2",
+	"id" : "panasonicVIERA",
 	"name" : "TV Panasonic",
 	"description" : "Description",
 	"licence" : "AGPL",
 	"author" : "Pierre GINDRAUD",
-	"require" : "1.136",
+	"require" : "2.4",
 	"version" : "1.0",
 	"category" : "multimedia",
 	"hasDependency": true
