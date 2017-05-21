@@ -16,7 +16,7 @@
  */
 
 $('.discoverTVs').on('click', function () {
-	discoverTVs();
+    discoverTVs();
 });
 
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
@@ -73,6 +73,19 @@ function discoverTVs() {
             if (data.state != 'ok') {
                 $('#div_alert').showAlert({message: data.result, level: 'danger'});
                 return;
+            }
+
+            if (data.result.total === 0) {
+                $('#div_scanAlert').showAlert({
+                    message: '{{No TV discovered.<br />Please be sure that the TV is on and check your firewall input rules. If needed, enable the iptables option in plugin configuration.}}',
+                    level: 'info'
+                });
+            } else {
+                $('#div_scanAlert').showAlert({
+                    message: [data.result.total, '{{TV(s) discovered including}}', data.result.created, '{{TV(s) created and}}', data.result.updated, '{{TV(s) updated.}}', ].join(' '),
+                    level: 'success'
+                });
+                setTimeout(window.location.reload.bind(window.location), 2000);
             }
         }
     });

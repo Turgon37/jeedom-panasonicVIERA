@@ -23,7 +23,7 @@
         "Advanced configuration": "Configuration avancée",
         "Equipment": "Equipement",
         "Commands": "Commandes",
-        "General": "General",
+        "General": "Général",
         "TV's name": "Nom de la TV",
         "Parent's object": "Objet parent",
         "None": "Aucun",
@@ -49,7 +49,7 @@
         "Arrêter Scan": "Arrêter Scan",
         "Configuration": "Configuration",
         "Lancer Scan": "Lancer Scan",
-        "Découvrir les TVs sur le réseau": "Découvrir les TVs sur le réseau",
+        "Découvrir les TVs sur le réseau": "Scanner les TVs",
         "Actions": "Actions",
         "TV UUID (fetched by discovery)": "TV UUID (récupéré via scan)",
         "TV UUID": "UUID de la TV",
@@ -59,7 +59,11 @@
     "plugins\/panasonicVIERA\/desktop\/js\/panasonicVIERA.js": {
         "Nom": "Nom",
         "Tester": "Tester",
-        "Afficher": "Afficher"
+        "Afficher": "Afficher",
+        "No TV discovered.<br \/>Please be sure that the TV is on and check your firewall input rules. If needed, enable the iptables option in plugin configuration.": "Aucune TV détéctée.<br \/>Vérifier que la TV est bien allumée et vérifier les règles d'entrées du pare feu. Si nécessaire, activer l'option Iptables dans la configuration du plugin.",
+        "TV(s) discovered including": "TV(s) découvertes dont",
+        "TV(s) created and": "TV(s) crées et",
+        "TV(s) updated.": "TV(s) mise à jour."
     },
     "plugins\/panasonicVIERA\/core\/class\/panasonicVIERA.class.php": {
         "The IP address must not be empty. Check you network gateway to find it.": "L'adresse IP ne peut etre vide. Vous pouvez la trouver dans les paramètres de votre TV ou de votre routeur (box).",
@@ -68,14 +72,17 @@
         "has failed.": "a echouée.",
         "This command has failed, maybe the TV does not support it.": "Cette commande a echouée, peut être que la TV ne la supporte pas.",
         "The TV is unreacheable.": "La télévision n'est pas disponible.",
-        "has not returned a valid JSON output.": "has not returned a valid JSON output.",
-        "Discovery is already in progress": "Discovery is already in progress"
+        "has not returned a valid JSON output.": "n'a pas retournée de données JSON valides.",
+        "Discovery is already in progress": "La découverte est déjà en cours"
     },
     "plugins\/panasonicVIERA\/plugin_info\/configuration.php": {
         "Make a donation": "Faire un don",
         "This plugin is free available to allow everyone to use it easily. If you want, you can make a donation to the developer by using the following link": "Ce plugin est gratuit afin d'être accessible à tout le monde facilement. Si vous le souhaitez vous pouvez faire une donation au développeur via le lien suivant",
         "Make a donation using Paypal": "Faire un don via Paypal",
         "Timeout for TV's commands (let blank to use default)": "Durée maximale d'execution des commandes (laisser vide par defaut)",
-        "Timeout for TV's discovery command (let blank to use default)": "Durée maximale de la recherche des TVs (laisser vide par defaut)"
+        "Timeout for TV's discovery command (let blank to use default)": "Durée maximale de la recherche des TVs (laisser vide par defaut)",
+        "Use Iptables rules during TV's discovery": "Utiliser une règle Iptable spécifique durant la découverte des TVs",
+        "Iptables settings": "Configuration Iptables",
+        "Iptables settings informations": "Ces options seront appliquées à la création et à la suppression de la règle iptables"
     }
 }

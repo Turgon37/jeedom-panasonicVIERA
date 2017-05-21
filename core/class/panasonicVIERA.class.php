@@ -145,7 +145,8 @@ class panasonicVIERA extends eqLogic {
 
         $result = [
             'updated' => 0,
-            'created' => 0
+            'created' => 0,
+            'total' => 0
         ];
         log::add('panasonicVIERA', 'debug', 'run discovery command');
         $discovered = self::execute3rdParty("panasonic_viera_adapter.py", ['find'], 'discover');
@@ -207,6 +208,7 @@ class panasonicVIERA extends eqLogic {
                 } else {
                     $result['updated'] += 1;
                 }
+                $result['total'] = $result['updated'] + $result['created'];
 
                 // set eq' settings
                 $eq->setIpAddress($address);
