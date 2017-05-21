@@ -50,7 +50,11 @@
         "Configuration": "Configuration",
         "Lancer Scan": "Lancer Scan",
         "Découvrir les TVs sur le réseau": "Découvrir les TVs sur le réseau",
-        "Actions": "Actions"
+        "Actions": "Actions",
+        "TV UUID (fetched by discovery)": "TV UUID (récupéré via scan)",
+        "TV UUID": "UUID de la TV",
+        "MAC address (Optionally for Wake On Lan, fetched by discovery)": "Adresse MAC (Optionnelle uniquement pour le Wake On Lan, récupérée par scan)",
+        "TV's MAC address": "Adresse MAC de TV"
     },
     "plugins\/panasonicVIERA\/desktop\/js\/panasonicVIERA.js": {
         "Nom": "Nom",

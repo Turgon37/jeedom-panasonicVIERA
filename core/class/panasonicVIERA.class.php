@@ -23,6 +23,7 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class panasonicVIERA extends eqLogic {
 
     const KEY_ADDRESS = 'address';
+    const KEY_UUID = 'uuid';
 
     /*     * *************************Attributs****************************** */
     /**
@@ -156,17 +157,34 @@ class panasonicVIERA extends eqLogic {
                 }
 
                 $address = $tv['address'];
+                $mac = null;
+                if (isset($tv['mac'])) {
+                    $mac = $tv['mac'];
+                }
                 $uuid = self::extractUUIDFromDiscoverResponse($tv['discovery']);
                 $eq = null;
 
+                // try to find an existing cmd by the mac address
+                if (!is_null($mac) && !empty($mac)) {
+                    $eq = self::byLogicalId($mac, 'panasonicVIERA');
+                    log::add('panasonicVIERA', 'debug', sprintf("search existing equipment by mac address '%s'", $mac));
+                    if (is_object($eq)) {
+                        log::add('panasonicVIERA', 'debug', sprintf("found existing equipment %d by mac address '%s'", $eq->getId(), $mac));
+                    }
+                }
+
                 // try to find an existing cmd by the uuid
-                if (!is_null($uuid) and !empty($uuid)) {
-                    $eq = self::byLogicalId($uuid, 'panasonicVIERA');
+                if (!is_object($eq) && !is_null($uuid) && !empty($uuid)) {
                     log::add('panasonicVIERA', 'debug', sprintf("search existing equipment by uuid '%s'", $uuid));
+                    $search = self::byTypeAndSearhConfiguration('panasonicVIERA', sprintf('"%s":"%s"', self::KEY_UUID, $uuid));
+                    if (count($search)) {
+                        $eq = $search[0];
+                    }
                     if (is_object($eq)) {
                         log::add('panasonicVIERA', 'debug', sprintf("found existing equipment %d by uuid '%s'", $eq->getId(), $uuid));
                     }
                 }
+
                 // if the search by uuid did not work use the ip address instead
                 if (!is_object($eq)) {
                     log::add('panasonicVIERA', 'debug', sprintf("search existing equipment by address '%s'", $address));
@@ -192,9 +210,13 @@ class panasonicVIERA extends eqLogic {
 
                 // set eq' settings
                 $eq->setIpAddress($address);
-                if (!is_null($uuid) and !empty($uuid)) {
-                    $eq->setLogicalId($uuid);
+                if (!is_null($mac) and !empty($mac)) {
+                    $eq->setLogicalId($mac);
                 }
+                if (!is_null($uuid) and !empty($uuid)) {
+                    $eq->setConfiguration(self::KEY_UUID, $uuid);
+                }
+
                 $eq->save();
             }
         }
