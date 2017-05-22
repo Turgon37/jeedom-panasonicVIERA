@@ -73,6 +73,48 @@ class panasonicVIERA extends eqLogic {
     }
 
     /**
+     * Return the metadata array of Iptables settings
+     *
+     * @return [array]
+     */
+    public static function getIptablesSettings() {
+        return [
+            'table' => [
+                'default' => 'filter',
+                'type' => 'string',
+                'required' => true
+            ],
+            'chain' => [
+                'default' => 'INPUT',
+                'type' => 'string',
+                'required' => true
+            ],
+            'protocol' => [
+                'default' => 'udp',
+                'type' => 'string',
+                'required' => true
+            ],
+            'dport' => [
+                'default' => '60000',
+                'type' => 'integer',
+                'required' => true
+            ],
+            'jump' => [
+                'default' => 'ACCEPT',
+                'type' => 'string',
+                'required' => true
+            ],
+            'comment' => [
+                'default' => 'JEEDOM_PANASONICVIERA',
+                'type' => 'string',
+                'required' => false,
+                'visible' => false,
+                'cmdline' => '--match comment --comment'
+            ]
+        ];
+    }
+
+    /**
      * Return the timeout value for standard TV commands
      * @return [int] the timeout in seconds
      */
@@ -86,6 +128,129 @@ class panasonicVIERA extends eqLogic {
      */
     public static function getDiscoveryTimeout() {
         return config::byKey('discovery_timeout', 'panasonicVIERA', 3);
+    }
+
+    /**
+     * Return the timeout value for discovery commands
+     * @return [int] the discovery timeout in seconds
+     */
+    public static function getDiscoveryIptables() {
+        $b = config::byKey('discovery_iptables', 'panasonicVIERA', false);
+        return boolval($b);
+    }
+
+    /**
+     * Return the iptables settings to use to create specific discovery rule
+     * @return [string] the iptables specifications
+     */
+    public static function getDiscoveryIptablesSettings($key = 'chain') {
+        $metadata = self::getIptablesSettings();
+        if (!is_string($key) || !array_key_exists($key, $metadata)) {
+            throw new Exception("The key '$key' is not available as iptables setting");
+        }
+        $default = isset($metadata[$key]['default']) ? $metadata[$key]['default'] : null;
+        $type = $metadata[$key]['type'];
+        $value = config::byKey('discovery_iptables_settings_' . $key, 'panasonicVIERA', $default);
+
+        switch ($type) {
+            case 'string':
+                if (   !is_null($value) &&
+                    ( !is_string($value) || !preg_match('/^[a-zA-Z_]+$/', $value))    ) {
+                    log::add('panasonicVIERA', 'error', sprintf("%s %s %s",
+                        __('The value of the Iptables setting', __FILE__),
+                        " '$key' => '$value' ",
+                        __('is incorrect.', __FILE__)
+                    ));
+                    return null;
+                }
+                break;
+            case 'integer':
+                $value = intval($value);
+                if (   !is_null($value) &&
+                    (!is_integer($value) || !preg_match('/^[1-9][0-9]+$/', $value))     ) {
+                    log::add('panasonicVIERA', 'error', sprintf("%s %s %s",
+                        __('The value of the Iptables setting', __FILE__),
+                        " '$key' => '$value' ",
+                        __('is incorrect.', __FILE__)
+                    ));
+                    return null;
+                }
+                break;
+            default:
+                throw new Exception("The key '$key' have a bad type");
+        }
+        return $value;
+    }
+
+    /**
+     * Execute Iptables command
+     *
+     * @param [string] iptables action in 'insert', 'delete'
+     *
+     *
+     */
+    public static function executeIptables($action = 'insert') {
+        $args = [];
+
+        # init all iptables settings
+        foreach (self::getIptablesSettings() as $name => $metadata) {
+            $value = self::getDiscoveryIptablesSettings($name);
+            if (isset($metadata['required']) &&
+                $metadata['required'] &&
+                (empty($value) || is_null($value))  ) {
+                throw new Exception(__("Unable to apply Iptables rule because the required parameter", __FILE__) . " '$name' " . __('is empty.', __FILE__));
+            }
+            if (isset($metadata['cmdline'])) {
+                $cmdl = $metadata['cmdline'];
+            } else {
+                $cmdl = $name;
+            }
+
+            // add iptables action after table setting
+            if ($name == 'chain') {
+                switch ($action) {
+                    case 'insert':
+                    case 'delete':
+                        $args[$action] = $value;
+                        break;
+                    default:
+                        throw new Exception("The given iptables action is not available '$action'.");
+                }
+            } else {
+                $args[$cmdl] = $value;
+            }
+        }
+
+        # prepare the command line
+        $cmdlines = [];
+        foreach ($args as $key => $value) {
+            if (!is_null($value)) {
+                if ($key[0] != '-') {
+                    $key = "--$key";
+                }
+                array_push($cmdlines, sprintf("%s %s", $key, $value));
+            }
+        }
+        $cmdline = sprintf("sudo iptables %s", implode(' ', $cmdlines));
+
+        # execute the command line
+        log::add('panasonicVIERA', 'debug', 'executeIptables : '. $cmdline);
+        $outputs = [];
+        $last_line = exec(escapeshellcmd($cmdline), $outputs, $ret);
+        if (!empty($last_line)) {
+            log::add('panasonicVIERA', 'error', 'Iptables execution : '. $last_line);
+        }
+        if ($ret != 0) {
+            if (count($outputs)) {
+                foreach ($outputs as $row) {
+                    if (empty($row)) {
+                        continue;
+                    }
+                    log::add('panasonicVIERA', 'error', 'Iptables execution : '. $row);
+                }
+            }
+            throw new Exception(__("The creation of the temporary firewall rule has failed. Check your log.", __FILE__));
+        }
     }
 
     /**
@@ -158,8 +323,16 @@ class panasonicVIERA extends eqLogic {
             'created' => 0,
             'total' => 0
         ];
+        if (self::getDiscoveryIptables()) {
+            log::add('panasonicVIERA', 'debug', 'open firewall for discovery');
+            self::executeIptables('insert');
+        }
         log::add('panasonicVIERA', 'debug', 'run discovery command');
         $discovered = self::execute3rdParty("panasonic_viera_adapter.py", ['find'], 'discover');
+        if (self::getDiscoveryIptables()) {
+            log::add('panasonicVIERA', 'debug', 'close firewall after discovery');
+            self::executeIptables('delete');
+        }
         if (count($discovered)) {
             log::add('panasonicVIERA', 'debug', 'found ' . count($discovered) . ' TV(s) on the network');
             foreach ($discovered as $tv) {

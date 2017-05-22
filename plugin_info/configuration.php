@@ -17,13 +17,31 @@
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
 include_file('core', 'authentification', 'php');
-if (!isConnect()) {
+if (!isConnect('admin')) {
     include_file('desktop', '404', 'php');
     die();
 }
 ?>
+<script>
+$(document).ready(function () {
+    function updateIptablesFieldsVisibility() {
+        if ($('#bt_iptables').prop('checked')) {
+            $('#iptablesFields').show();
+        } else {
+            $('#iptablesFields').hide();
+        }
+    };
+
+    $('#bt_iptables').change(function () {
+        updateIptablesFieldsVisibility();
+    });
+
+    updateIptablesFieldsVisibility();
+});
+</script>
 <form class="form-horizontal">
     <fieldset>
+        <legend><i class="fa fa-list-alt"></i>  {{General}}</legend>
         <div class="form-group">
             <label class="col-lg-3 control-label">{{Timeout for TV's commands (let blank to use default)}}</label>
             <div class="col-lg-1">
@@ -37,6 +55,36 @@ if (!isConnect()) {
                 <input class="configKey form-control" data-l1key="discovery_timeout" placeholder="<?= panasonicVIERA::getDiscoveryTimeout() ?>"
                         type="number" min="0"/>
             </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-3 control-label">{{Use Iptables rules during TV's discovery}}</label>
+            <div class="col-lg-1">
+                <input type="checkbox" id="bt_iptables" class="configKey" data-l1key="discovery_iptables"/>
+            </div>
+        </div>
+
+        <div id="iptablesFields">
+            <legend><i class="fa fa-cog"></i>  {{Iptables settings}}</legend>
+            <div class="alert alert-warning">
+                {{Iptables informations}}
+            </div>
+<?php foreach (panasonicVIERA::getIptablesSettings() as $name => $setting) {
+            if (isset($setting['visible']) && !$setting['visible']) {
+                continue;
+            }
+?>
+            <div class="form-group">
+                <label class="col-md-3 control-label" data-toggle="tooltip" data-placement="top" title="<?= __("Iptables settings $name informations", __FILE__) ?>"><?= __("Iptables $name", __FILE__) ?></label>
+
+                <div class="col-md-5">
+
+                    <input class="configKey form-control"
+                        type="<?= $setting['type'] == 'string' ? 'text' : 'number' ?>"
+                        data-l1key="discovery_iptables_settings_<?= $name ?>"
+                        <?= $setting['type'] == 'string' ? 'placeholder' : 'value' ?>="<?= panasonicVIERA::getDiscoveryIptablesSettings($name) ?>">
+                </div>
+            </div>
+<?php } ?>
         </div>
     </fieldset>
 </form>
