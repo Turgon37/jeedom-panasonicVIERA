@@ -27,7 +27,7 @@
         "TV's name": "Nom de la TV",
         "Parent's object": "Objet parent",
         "None": "Aucun",
-        "Category": "Category de la TV",
+        "Category": "Categorie de la TV",
         "Enable": "Actif",
         "Visible": "Visible",
         "IP Address": "Adresse IP",
@@ -35,13 +35,13 @@
         "Commands color": "Couleur des commandes",
         "White buttons": "Bouton blancs",
         "Black buttons": "Bouton noirs",
-        "Volume step": "Pas de volume",
+        "Volume step": "Pas de modification du volume",
         "1": "1",
         "2": "2",
         "3": "3",
         "4": "4",
         "5": "5",
-        "Info": "Info : <br\/>\r\n            - Les commandes ci-dessous sont ajoutées en fonction des groupes activés de l'équipement<br\/>\r\n\t\t    - Il est déconseillé de ne pas afficher une commande particulière d'un bloc (sur le bloc divers vous pouvez).",
+        "Info": "Info : <br\/> - Les commandes ci-dessous sont ajoutées en fonction des groupes activés de l'équipement",
         "Name": "Nom",
         "Type": "Type",
         "Parameter(s)": "Paramètre(s)",
@@ -73,7 +73,10 @@
         "This command has failed, maybe the TV does not support it.": "Cette commande a echouée, peut être que la TV ne la supporte pas.",
         "The TV is unreacheable.": "La télévision n'est pas disponible.",
         "has not returned a valid JSON output.": "n'a pas retournée de données JSON valides.",
-        "Discovery is already in progress": "La découverte est déjà en cours"
+        "Discovery is already in progress": "La découverte est déjà en cours. Si une erreur est survenue veuillez patientez quelques secondes.",
+        "The value of the Iptables setting": "La valeur du paramètre Iptables",
+        "is incorrect.": "est incorrecte.",
+        "The creation of the temporary firewall rule has failed. Check your log.": "La création de la règle de parefeu temporaire a echouée. Verifier les logs."
     },
     "plugins\/panasonicVIERA\/plugin_info\/configuration.php": {
         "Make a donation": "Faire un don",
@@ -82,7 +85,18 @@
         "Timeout for TV's commands (let blank to use default)": "Durée maximale d'execution des commandes (laisser vide par defaut)",
         "Timeout for TV's discovery command (let blank to use default)": "Durée maximale de la recherche des TVs (laisser vide par defaut)",
         "Use Iptables rules during TV's discovery": "Utiliser une règle Iptable spécifique durant la découverte des TVs",
-        "Iptables settings": "Configuration Iptables",
-        "Iptables settings informations": "Ces options seront appliquées à la création et à la suppression de la règle iptables"
+        "General": "Général",
+        "Iptables settings": "Configurations Iptables",
+        "Iptables informations": "Les paramètres ci-dessous définissent la règle qui sera appliqué lors de la découverte des TV sur le réseau.<br \/>Cette règle est conçut pour s'appliquer sur les paquest en entrée uniquement.<br \/>Veuillez à ne modifier les paramètres ci-dessous que si vous savez ce que vous faite.",
+        "Iptables settings table informations": "Il s'agit du nom de la table à utiliser. Normalement toujours filter",
+        "Iptables table": "Nom de la table Iptables",
+        "Iptables settings chain informations": "Il s'agit du nom de la chaîne dans laquelle la règle va être ajoutée puis supprimée.",
+        "Iptables chain": "Nom de la chaine Iptables",
+        "Iptables settings protocol informations": "Le protocol s'applique aux paquets utilisés pour la découverte des TVs",
+        "Iptables protocol": "Protocole réseau",
+        "Iptables settings dport informations": "Ce port correspond au port d'écoute de Jeedom sur lequel les réponses de TVs vont arriver",
+        "Iptables dport": "Port de destination Iptables",
+        "Iptables settings jump informations": "L'action définit le comportement d'un paquet pour lequel la règle s'applique",
+        "Iptables jump": "Nom de l'action Iptables (jump)"
     }
 }
