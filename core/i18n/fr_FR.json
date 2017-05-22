@@ -76,7 +76,9 @@
         "Discovery is already in progress": "La découverte est déjà en cours. Si une erreur est survenue veuillez patientez quelques secondes.",
         "The value of the Iptables setting": "La valeur du paramètre Iptables",
         "is incorrect.": "est incorrecte.",
-        "The creation of the temporary firewall rule has failed. Check your log.": "La création de la règle de parefeu temporaire a echouée. Verifier les logs."
+        "The creation of the temporary firewall rule has failed. Check your log.": "La création de la règle de parefeu temporaire a echouée. Verifier les logs.",
+        "Unable to apply Iptables rule because the required parameter": "Impossible d'appliquer la règle Iptables car le paramètre",
+        "is empty.": "est vide alors qu'il est requis."
     },
     "plugins\/panasonicVIERA\/plugin_info\/configuration.php": {
         "Make a donation": "Faire un don",
