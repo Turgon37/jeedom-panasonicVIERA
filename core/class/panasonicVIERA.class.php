@@ -22,7 +22,9 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 class panasonicVIERA extends eqLogic {
 
+    // name of ip address configuration key
     const KEY_ADDRESS = 'address';
+    // name of uuid configuration key
     const KEY_UUID = 'uuid';
 
     /*     * *************************Attributs****************************** */
@@ -35,6 +37,10 @@ class panasonicVIERA extends eqLogic {
     /*     * ***********************Methode static*************************** */
     /**
      * Function that compare two command object
+     *
+     * @param $cmd_a
+     * @param $cmd_b
+     * @return [int]
      *
      */
     public static function sortListCmd($cmd_a, $cmd_b) {
@@ -59,6 +65,7 @@ class panasonicVIERA extends eqLogic {
 
     /**
      * Retourne les groupes de l'objet
+     *
      * @var array
      */
     public static function getCommandGroups() {
@@ -301,7 +308,6 @@ class panasonicVIERA extends eqLogic {
         return $output;
     }
 
-
     /**
      * Entry point of TV network discovery function
      *
@@ -314,6 +320,7 @@ class panasonicVIERA extends eqLogic {
     public static function discoverNetwork() {
         // check lock key to prevent multiple run of the dscovery at the same time
         if (cache::byKey('panasonicVIERA__discover_lock')->getValue(false) == true) {
+            log::add('panasonicVIERA', 'info', __('Discovery is already in progress', __FILE__));
             throw new Exception(__('Discovery is already in progress', __FILE__));
         }
         cache::set('panasonicVIERA__discover_lock', true, 30);
