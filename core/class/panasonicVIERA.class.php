@@ -174,7 +174,7 @@ class panasonicVIERA extends eqLogic {
             case 'integer':
                 $value = intval($value);
                 if (   !is_null($value) &&
-                    (!is_integer($value) || !preg_match('/^[1-9][0-9]+$/', $value))     ) {
+                    (!is_integer($value) || !preg_match('/^[1-9][0-9]*$/', $value))     ) {
                     log::add('panasonicVIERA', 'error', sprintf("%s %s %s",
                         __('The value of the Iptables setting', __FILE__),
                         " '$key' => '$value' ",
