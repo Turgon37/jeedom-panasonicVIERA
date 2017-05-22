@@ -78,10 +78,8 @@ $(document).ready(function () {
 
                 <div class="col-md-5">
 
-                    <input class="configKey form-control"
-                        type="<?= $setting['type'] == 'string' ? 'text' : 'number' ?>"
-                        data-l1key="discovery_iptables_settings_<?= $name ?>"
-                        <?= $setting['type'] == 'string' ? 'placeholder' : 'value' ?>="<?= panasonicVIERA::getDiscoveryIptablesSettings($name) ?>">
+                    <input class="configKey form-control" type="text" data-l1key="discovery_iptables_settings_<?= $name ?>"
+                        placeholder="<?= panasonicVIERA::getDiscoveryIptablesSettings($name) ?>">
                 </div>
             </div>
 <?php } ?>
