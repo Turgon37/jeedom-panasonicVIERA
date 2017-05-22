@@ -136,6 +136,16 @@ class panasonicVIERA extends eqLogic {
         return $output;
     }
 
+
+    /**
+     * Entry point of TV network discovery function
+     *
+     * @return [array] an array which contains statistics about results
+     *    Theses keys are available
+     *       - updated the number of updated TVs
+     *       - created the number of created TVs
+     *       - total the total number of discovered TVs
+     */
     public static function discoverNetwork() {
         // check lock key to prevent multiple run of the dscovery at the same time
         if (cache::byKey('panasonicVIERA__discover_lock')->getValue(false) == true) {
@@ -201,16 +211,17 @@ class panasonicVIERA extends eqLogic {
                 // if no equipment exist with address and UUID, create one
                 if (!is_object($eq)) {
                     log::add('panasonicVIERA', 'debug', "create new TV equipment with address '" . $address);
-                    $result['created'] += 1;
                     $eq = new panasonicVIERA();
                     $eq->setEqType_name('panasonicVIERA');
                     $eq->setName($address);
+                    $result['created'] += 1;
                 } else {
+                    log::add('panasonicVIERA', 'debug', "update existing TV equipment");
                     $result['updated'] += 1;
                 }
                 $result['total'] = $result['updated'] + $result['created'];
 
-                // set eq' settings
+                // set eq settings
                 $eq->setIpAddress($address);
                 if (!is_null($mac) and !empty($mac)) {
                     $eq->setLogicalId($mac);
