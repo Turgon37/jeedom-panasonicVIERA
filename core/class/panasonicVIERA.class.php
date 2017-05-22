@@ -196,7 +196,7 @@ class panasonicVIERA extends eqLogic {
      *
      *
      */
-    public static function executeIptables($action = 'insert') {
+    private static function executeIptables($action = 'insert') {
         $args = [];
 
         # init all iptables settings
@@ -451,7 +451,7 @@ class panasonicVIERA extends eqLogic {
      *
      * @param cmd $cmd La commande a ajouter
      */
-    public function addCommand($cmd) {
+    protected function addCommand($cmd) {
         if (cmd::byEqLogicIdCmdName($this->getId(), $cmd['name'])) {
             log::add('panasonicVIERA', 'debug', '=> addCommand('. $cmd['name'].') command already exist');
             return;
@@ -479,7 +479,7 @@ class panasonicVIERA extends eqLogic {
      *
      * @param String $name Le nom de la commande
      */
-    public function removeCommand($cmd) {
+    protected function removeCommand($cmd) {
         if (($panasonicVIERACmd = cmd::byEqLogicIdCmdName($this->getId(), $cmd['name']))) {
             log::add('panasonicVIERA', 'debug', '=> removeCommand('. $cmd['name'].') remove command');
             $panasonicVIERACmd->remove();
@@ -491,7 +491,7 @@ class panasonicVIERA extends eqLogic {
      *
      * @param String $groupName Le nom du groupe de commandes
      */
-    public function addCommands($group_name) {
+    protected function addCommands($group_name) {
         log::add('panasonicVIERA', 'debug', '=> addCommands('.$group_name.')');
 
         foreach (self::getCommandsIndex() as $cmd) {
@@ -505,7 +505,7 @@ class panasonicVIERA extends eqLogic {
      *
      * @param String $groupName Le nom du groupe de commandes
      */
-    public function removeCommands($group_name) {
+    protected function removeCommands($group_name) {
         log::add('panasonicVIERA', 'debug', '=> removeCommands('.$group_name.')');
         foreach (self::getCommandsIndex() as $cmd) {
             if ($cmd['group'] == $group_name) {
