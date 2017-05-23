@@ -51,6 +51,37 @@ class panasonicVIERA extends eqLogic {
     }
 
     /**
+     * Return the dependancy info about this plugin
+     *
+     * @return [array] an array with theses keys
+     *    log : the name of the log file
+     *    progress_file : the path to the file which indicates the progres status
+     *    state : the status of dependancies
+     */
+    public static function dependancy_info() {
+        $return = array();
+        $return['log'] = 'panasonicVIERA_dependancy';
+        $return['progress_file'] = '/tmp/dependancy_panasonicVIERA_in_progress';
+        if (exec('which wakeonlan | wc -l') != 0) {
+                $return['state'] = 'ok';
+        } else {
+                $return['state'] = 'nok';
+        }
+        return $return;
+    }
+
+    /**
+     * Run the installation of dependancies
+     *
+     */
+    public static function dependancy_install() {
+        log::remove('panasonicVIERA_dependancy');
+        $cmd = 'sudo /bin/bash ' . dirname(__FILE__) . '/../../resources/install.sh';
+        $cmd .= ' >> ' . log::getPathToLog('panasonicVIERA_dependancy') . ' 2>&1 &';
+        exec($cmd);
+    }
+
+    /**
      * Return the list of official commands
      *
      * @return array

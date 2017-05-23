@@ -10,4 +10,5 @@
     <require>2.4</require>
     <version>1.0</version>
     <category>multimedia</category>
+    <hasDependency>1</hasDependency>
 </info>
