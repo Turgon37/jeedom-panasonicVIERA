@@ -1,5 +1,5 @@
 :icons:
 == PanasonicVIERA
 
-=== Description
-Ce plugin permet de contrôler des Téléviseurs Panasonic Viera.
+== Beschreibung
+Dieses Plugin ermöglicht es, den Panasonic Viera Fernseher zu steuern.
