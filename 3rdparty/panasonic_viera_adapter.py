@@ -44,8 +44,13 @@ class ArrayHandler(logging.Handler):
 
 
 parser = argparse.ArgumentParser(description="Adapter for panasonic-viera for jeedom")
-
 subparsers = parser.add_subparsers()
+
+parser_version = subparsers.add_parser('version', help='Show the version and Exit')
+parser_version.set_defaults(action='version', instance='local')
+parser_version.add_argument("--local", action='store_const', dest='instance', const='local', help="Specify the local or online version")
+parser_version.add_argument("--online", action='store_const', dest='instance', const='online', help="Specify the local or online version")
+
 parser_find = subparsers.add_parser('find', help='Find available TVs on the LAN')
 parser_find.set_defaults(action='find')
 
@@ -65,17 +70,18 @@ parser_set.add_argument("host", help="The hostname of the TV")
 parser_set.add_argument("command", help="The name of the information to set")
 parser_set.add_argument("value", help="The new value to set")
 
-args = parser.parse_args()
-if not hasattr(args, 'action'):
-  parser.print_help()
-  sys.exit(1)
-
 logs = []
 hdlr = ArrayHandler(logs)
 panasonic_viera.getLogger().setLevel(logging.DEBUG)
 panasonic_viera.getLogger().addHandler(hdlr)
 
 result = dict({'status': 0})
+
+args = parser.parse_args()
+if not hasattr(args, 'action'):
+    parser.print_help()
+    sys.exit(1)
+
 rc = panasonic_viera.RemoteControl(args.host if hasattr(args, 'host') else None)
 try:
     if args.action == 'sendkey':
@@ -92,6 +98,11 @@ try:
             rc.setMute(args.value)
     elif args.action == 'find':
         result['output'] = rc.find()
+    elif args.action == 'version':
+        if (args.instance == 'local'):
+            result['output'] = panasonic_viera.__version__
+        else:
+            result['output'] = panasonic_viera.getOnlineVersion()
     else:
         raise panasonic_viera.RemoteControlException("The action " + args.action + " is not implemented.")
 except panasonic_viera.RemoteControlException as e:

@@ -74,10 +74,14 @@ class panasonicVIERA extends eqLogic {
         $return = array();
         $return['log'] = 'panasonicVIERA_dependancy';
         $return['progress_file'] = '/tmp/dependancy_panasonicVIERA_in_progress';
-        if (exec('which wakeonlan | wc -l') != 0) {
-                $return['state'] = 'ok';
-        } else {
-                $return['state'] = 'nok';
+        $return['state'] = 'ok';
+        $lib_version = self::getLibraryVersion('local');
+        $online_lib_version = self::getLibraryVersion('online');
+        if (is_null($lib_version)) {
+            $return['state'] = 'nok';
+        }
+        if (!is_null($lib_version) && !is_null($online_lib_version) && version_compare($online_lib_version, $lib_version, '>')) {
+            $return['state'] = 'nok';
         }
         return $return;
     }
@@ -91,6 +95,27 @@ class panasonicVIERA extends eqLogic {
         $cmd = 'sudo /bin/bash ' . dirname(__FILE__) . '/../../resources/install.sh';
         $cmd .= ' >> ' . log::getPathToLog('panasonicVIERA_dependancy') . ' 2>&1 &';
         exec($cmd);
+    }
+
+    /**
+     * Return the version of the local panasonic viera library
+     *
+     * @param [string] the instance of version to check
+     * @return string|null
+     */
+    public static function getLibraryVersion($instance = 'local') {
+        // check lock key to prevent multiple run of the dscovery at the same time
+        $version = cache::byKey('panasonicVIERA__library_version_' . $instance)->getValue(null);
+        # try to fetch the asked version from cmdline
+        if ($version === null) {
+            log::add('panasonicVIERA', 'debug', 'fetch library version from 3rdparty');
+            $lib_version = panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py", ['version', "--$instance"]);
+            if ($lib_version !== null) {
+                cache::set('panasonicVIERA__library_version', $lib_version, 60*60*24);
+                $version = $lib_version;
+            }
+        }
+        return $version;
     }
 
     /**
