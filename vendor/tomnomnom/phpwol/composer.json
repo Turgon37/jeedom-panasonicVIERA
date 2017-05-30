@@ -1,0 +1,25 @@
+{
+    "name": "tomnomnom/phpwol",
+    "description": "Wake On LAN for PHP",
+    "homepage": "https://github.com/tomnomnom/phpwol/",
+    "license": "MIT",
+    "require-dev": {
+
+    },
+    "authors": [
+        {
+            "name": "Tom Hudson",
+            "email": "mail@tomnomnom.com",
+            "homepage": "http://tomhudson.co.uk/"
+        }
+    ],
+    "require": {
+
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-0": {"Phpwol": "./"}
+    }
+}
