@@ -355,9 +355,10 @@ class panasonicVIERA extends eqLogic {
      * @param [string] the name of the command file in 3rdparty/ directory
      * @param [array] the list of command arguments
      * @param [string] OPTIONNAL a verbose name to include in errors statments.
+     * @param [boolean] OPTIONNAL if true 3rd party command errors will be threw as exception.
      * @return mixed : the output of the command (stdout of the command)
      */
-    public static function execute3rdParty($command, $args = [], $name = null) {
+    public static function execute3rdParty($command, $args = [], $name = null, $throw_errors = true) {
         $base_path = realpath(__DIR__ . '/../../3rdparty');
         $cmdline = sprintf("%s/%s %s", $base_path, $command, implode(' ', $args));
         // by default the log 'name' will be the command name
@@ -391,7 +392,9 @@ class panasonicVIERA extends eqLogic {
             if (isset($decoded['error'])) {
                 $message = $message . "<br />" . __($decoded['error'], __FILE__);
             }
-            throw new Exception($message);
+            if ($throw_errors) {
+                throw new Exception($message);
+            }
         }
 
         # handle standard output
