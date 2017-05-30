@@ -151,6 +151,15 @@ class panasonicVIERA extends eqLogic {
      * Return the metadata array of Iptables settings
      *
      * @return [array]
+     *  Each item of the first array is a Iptables parameter
+     *  For each, theses configs keys are available
+     *     - default : the default value when empty
+     *     - type : the type of content in 'string', 'integer'
+     *     - required : a boolean that indicates if parameter is mandatory or not
+     *     - visible : if false, this parameter will not be available on the configuration screen
+     *     - cmdline : the specific first part of cmdline to apply, the second part will be the value
+     *                exemple for the 'comment' setting below the final cmdline will be
+     *                  --match comment --comment JEEDOM_PANASONICVIERA
      */
     public static function getIptablesSettings() {
         return [
@@ -198,19 +207,23 @@ class panasonicVIERA extends eqLogic {
     }
 
     /**
+     * Return the broadcast ip address to use in magic packets
+     * @return [string] the ip address
+     */
+    public static function getBroadcastIp() {
+        $ip = config::byKey('broadcast_ip', 'panasonicVIERA', '255.255.255.255');
+        if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+            return null;
+        }
+        return $ip;
+    }
+
+    /**
      * Return the timeout value for discovery commands
      * @return [int] the discovery timeout in seconds
      */
     public static function getDiscoveryTimeout() {
         return config::byKey('discovery_timeout', 'panasonicVIERA', 3);
-    }
-
-    /**
-     *
-     *
-     */
-    public static function getBroadcastIp() {
-        return config::byKey('broadcast_ip', 'panasonicVIERA', '255.255.255.255');
     }
 
     /**
