@@ -50,6 +50,12 @@ $(document).ready(function () {
             </div>
         </div>
         <div class="form-group">
+            <label class="col-lg-3 control-label">{{Broadcast IP address for WakeOnLan packets (let blank to use default)}}</label>
+            <div class="col-lg-2">
+                <input class="configKey form-control" data-l1key="broadcast_ip" placeholder="<?= panasonicVIERA::getBroadcastIp() ?>" type="text"/>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-lg-3 control-label">{{Timeout for TV's discovery command (let blank to use default)}}</label>
             <div class="col-lg-1">
                 <input class="configKey form-control" data-l1key="discovery_timeout" placeholder="<?= panasonicVIERA::getDiscoveryTimeout() ?>"

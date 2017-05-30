@@ -26,6 +26,18 @@ class panasonicVIERA extends eqLogic {
     const KEY_ADDRESS = 'address';
     // name of uuid configuration key
     const KEY_UUID = 'uuid';
+    // The command template for WakeOnLan command
+    const COMMAND_WAKEONLAN = [
+        'name' => 'WakeOnLan',
+        'configuration' => [
+            'action' => 'wakeonlan',
+            'command' => null,
+        ],
+        'type' => 'action',
+        'subType' => 'other',
+        'description' => 'Wakeup the TV',
+        'group' => 'basic'
+    ];
 
     /*     * *************************Attributs****************************** */
     /**
@@ -166,6 +178,14 @@ class panasonicVIERA extends eqLogic {
      */
     public static function getDiscoveryTimeout() {
         return config::byKey('discovery_timeout', 'panasonicVIERA', 3);
+    }
+
+    /**
+     *
+     *
+     */
+    public static function getBroadcastIp() {
+        return config::byKey('broadcast_ip', 'panasonicVIERA', '255.255.255.255');
     }
 
     /**
@@ -310,8 +330,13 @@ class panasonicVIERA extends eqLogic {
         $output = null;
 
         log::add('panasonicVIERA', 'debug', 'execute3rdParty : '. $cmdline);
-        $shell_output = shell_exec(escapeshellcmd($cmdline));
+        $shell_output = trim(shell_exec(escapeshellcmd($cmdline)));
+
         $decoded = json_decode($shell_output, JSON_OBJECT_AS_ARRAY|JSON_NUMERIC_CHECK);
+        if ($shell_output == 'null') {
+            log::add('panasonicVIERA', 'debug', "execute3rdParty : command $command has returned null");
+            return null;
+        }
         if (is_null($decoded)) {
             throw new Exception(__("The command", __FILE__) . " $command " . __('has not returned a valid JSON output.', __FILE__));
         }
@@ -570,6 +595,17 @@ class panasonicVIERA extends eqLogic {
                 $this->removeCommands($name);
             }
         }
+
+        $mac = $this->getLogicalId();
+        if (filter_var($mac, FILTER_VALIDATE_MAC)) {
+            log::add('panasonicVIERA', 'debug', '=> preSave: add wakeonlan command for valid mac address');
+            $cmd = self::COMMAND_WAKEONLAN;
+            $cmd['configuration']['command'] = $mac;
+            $this->addCommand($cmd);
+        } else {
+            log::add('panasonicVIERA', 'debug', '=> preSave: remove wakeonlan command because of invalid mac address');
+            $this->removeCommand($cmd);
+        }
     }
 
     public function postSave() {
@@ -650,10 +686,45 @@ class panasonicVIERACmd extends cmd {
 
         switch($this->type) {
             case 'action':
-                log::add('panasonicVIERA', 'debug', 'Action command');
                 $action = $this->getConfiguration('action');
                 $command = $this->getConfiguration('command');
-                panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py", [$action, $tvip, $command], $this->getName());
+                if (empty($action) || is_null($action)) {
+                    throw new Exception('Tried to execute a command with an empty action');
+                }
+                if (empty($command) || is_null($command)) {
+                    throw new Exception('Tried to execute a command with an empty command');
+                }
+                log::add('panasonicVIERA', 'debug', sprintf('Action command : %s', $action));
+                switch ($action) {
+                    case 'wakeonlan':
+                        $factory = new \Phpwol\Factory();
+                        $packet = $factory->magicPacket();
+                        log::add('panasonicVIERA', 'debug', sprintf('Send WOL packet to %s via %s', $command, panasonicVIERA::getBroadcastIp()));
+                        $result = $packet->send($command, panasonicVIERA::getBroadcastIp());
+                        if (!$result) {
+                            switch ($packet->getLastError()) {
+                                case 1:
+                                    $error = __('invalid IP address', __FILE__);
+                                    break;
+                                case 2:
+                                    $error = __('invalid MAC address', __FILE__);
+                                    break;
+                                case 4:
+                                    $error = __('invalid SUBNET', __FILE__);
+                                    break;
+                                default:
+                                    $error = $packet->getLastError();
+                                    break;
+                            }
+                            throw new Exception(__('Failed to send WOL packet because : ', __FILE__) . $error);
+                        } else {
+                            log::add('panasonicVIERA', 'debug', sprintf('Succesfully sent WOL packet to %s', $command));
+                        }
+                        break;
+                    default:
+                        panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py", [$action, $tvip, $command], $this->getName());
+                        break;
+                }
 
                 break;
             case 'info':
@@ -662,7 +733,7 @@ class panasonicVIERACmd extends cmd {
                 $command = $this->getConfiguration('command');
                 return panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py", [$action, $tvip, $command], $this->getName());
             default:
-                throw new Exception(__('Unknown command type : ', __FILE__) . $this->type);
+                throw new Exception(sprintf('Tried to execute an unknown command type : %s', $this->type));
         }
     }
 

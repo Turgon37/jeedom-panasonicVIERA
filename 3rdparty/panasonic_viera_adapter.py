@@ -21,10 +21,14 @@
 import argparse
 import json
 import logging
-import panasonic_viera
 import io
 import sys
 
+try:
+    import panasonic_viera
+except ImportError:
+    print(json.dumps(None))
+    sys.exit(0)
 
 class ArrayHandler(logging.Handler):
     """Simple array handler that put all log messages to a list
