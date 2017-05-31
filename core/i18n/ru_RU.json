@@ -99,6 +99,7 @@
         "Iptables settings dport informations": "Ce port correspond au port d'écoute de Jeedom sur lequel les réponses de TVs vont arriver",
         "Iptables dport": "Port de destination Iptables",
         "Iptables settings jump informations": "L'action définit le comportement d'un paquet pour lequel la règle s'applique",
-        "Iptables jump": "Nom de l'action Iptables (jump)"
+        "Iptables jump": "Nom de l'action Iptables (jump)",
+        "Broadcast IP address for WakeOnLan packets (let blank to use default)": "Adresse IP de broadcast pour les paquets WakeOnLan (laisser vide par defaut)"
     }
 }
