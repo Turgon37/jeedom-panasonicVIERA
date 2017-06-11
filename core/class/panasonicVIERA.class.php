@@ -79,10 +79,10 @@ class panasonicVIERA extends eqLogic {
         $online_lib_version = self::getLibraryVersion('online');
         if (is_null($lib_version)) {
             $return['state'] = 'nok';
-        }
-        if (!is_null($lib_version) && !is_null($online_lib_version) && version_compare($online_lib_version, $lib_version, '>')) {
+        } else if (!is_null($online_lib_version) && version_compare($online_lib_version, $lib_version, '>')) {
             $return['state'] = 'nok';
         }
+        log::add('panasonicVIERA', 'debug', "dependency check, local : $lib_version, remote : $online_lib_version");
         return $return;
     }
 
