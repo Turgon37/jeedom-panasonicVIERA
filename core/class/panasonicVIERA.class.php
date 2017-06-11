@@ -287,7 +287,7 @@ class panasonicVIERA extends eqLogic {
      * Execute Iptables command
      *
      * @param [string] iptables action in 'insert', 'delete'
-     *
+     * @throw Exception in case of failure
      *
      */
     private static function executeIptables($action = 'insert') {
@@ -362,6 +362,7 @@ class panasonicVIERA extends eqLogic {
      * @param [string] OPTIONNAL a verbose name to include in errors statments.
      * @param [boolean] OPTIONNAL if true 3rd party command errors will be threw as exception.
      * @return mixed : the output of the command (stdout of the command)
+     * @throw Exception in case of failure
      */
     public static function execute3rdParty($command, $args = [], $name = null, $throw_errors = true) {
         $base_path = realpath(__DIR__ . '/../../3rdparty');
