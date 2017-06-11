@@ -764,7 +764,10 @@ class panasonicVIERACmd extends cmd {
                         }
                         break;
                     default:
-                        panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py", [$action, $tvip, $command], $this->getName());
+                        $result = panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py", [$action, $tvip, $command], $this->getName());
+                        if (is_null($result)) {
+                            throw new Exception(__('The command has return a null value, please check dependencies and log', __FILE__));
+                        }
                         break;
                 }
 
