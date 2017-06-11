@@ -40,7 +40,7 @@ function addCmdToTable(_cmd) {
     tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
     tr += '</td>';
     tr += '<td>';
-    tr += '<span><input type="checkbox" data-size="mini" data-label-text="{{Afficher}}" class="cmdAttr bootstrapSwitch" data-l1key="isVisible" /></span> ';
+    tr += '<span><label class="checkbox-inline"><input class="cmdAttr checkbox-inline" data-l1key="isVisible" checked="" type="checkbox">{{Afficher}}</label></span>';
     tr += '</td>';
     tr += '<td>';
     if (is_numeric(_cmd.id)) {

@@ -21,14 +21,14 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
     </div>
 
     <div class="col-lg-10 col-md-9 col-sm-8 eqLogicThumbnailDisplay" style="border-left: solid 1px #EEE; padding-left: 25px;">
-    <legend><i class="fa fa-cog"></i>  {{Gestion}}</legend>
+        <legend><i class="fa fa-cog"></i>  {{Gestion}}</legend>
         <div class="eqLogicThumbnailContainer">
-    <div class="cursor discoverTVs include card" data-mode="1" data-state="1" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
-    <center class="includeicon">
-    <i class="fa fa-bullseye" style="font-size : 6em;color:#94ca02;"></i>
-    </center>
-    <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#94ca02"><center>{{Découvrir les TVs sur le réseau}}</center></span>
-    </div>
+            <div class="cursor discoverTVs include card" data-mode="1" data-state="1" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
+                <center class="includeicon">
+                    <i class="fa fa-bullseye" style="font-size : 6em;color:#94ca02;"></i>
+                </center>
+                <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#94ca02"><center>{{Découvrir les TVs sur le réseau}}</center></span>
+            </div>
         	<div class="cursor eqLogicAction" data-action="gotoPluginConf" style="background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;">
          		<center>
            			<i class="fa fa-wrench" style="font-size : 6em;color:#767676;"></i>
@@ -91,21 +91,25 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                         	</div>
                    		</div>
                         <div class="form-group">
-                                <label class="col-sm-3 control-label">{{Category}}</label>
-                                <div class="col-sm-8 col-lg-8">
+                            <label class="col-sm-3 control-label">{{Category}}</label>
+                            <div class="col-sm-8 col-lg-8">
     <?php foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) : ?>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" class="eqLogicAttr" data-l1key="category" data-l2key="<?= $key ?>" /><?= $value['name'] ?>
-                                    </label>
+                                <label class="checkbox-inline">
+                                    <input type="checkbox" class="eqLogicAttr" data-l1key="category" data-l2key="<?= $key ?>" /><?= $value['name'] ?>
+                                </label>
     <?php endforeach; ?>
-                                </div>
                             </div>
-                   		<div class="form-group">
-                    		<label class="col-sm-3 control-label" >{{Enable}}</label>
-                    		<div class="col-sm-9">
-                       			<input type="checkbox" class="eqLogicAttr bootstrapSwitch" data-label-text="{{Enable}}" data-l1key="isEnable" checked/>
-                       			<input type="checkbox" class="eqLogicAttr bootstrapSwitch" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>
-                   			</div>
+                        </div>
+                   	    <div class="form-group">
+                            <label class="col-sm-3 control-label" >{{Enable}}</label>
+                            <div class="col-sm-9">
+                                <label class="checkbox-inline">
+                                    <input class="eqLogicAttr" data-l1key="isEnable" checked="" type="checkbox">{{Enable}}
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input class="eqLogicAttr" data-l1key="isVisible" checked="" type="checkbox">{{Visible}}
+                                </label>
+                            </div>
                			</div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">{{IP Address}}</label>
@@ -123,7 +127,9 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                             <label class="col-sm-3 control-label" >{{Display}}</label>
                             <div class="col-sm-9">
     <?php foreach (panasonicVIERA::getCommandGroups() as $name => $key) : ?>
-                                <input type="checkbox" class="eqLogicAttr bootstrapSwitch basic" data-label-text="<?= __($name, __FILE__) ?>" data-l1key="configuration" data-l2key="<?= $key ?>" checked/>
+                                <label class="checkbox-inline">
+                                    <input class="eqLogicAttr" data-l1key="configuration" data-l2key="<?= $key ?>" checked="" type="checkbox"><?= __($name, __FILE__) ?>
+                                </label>
     <?php endforeach; ?>
                             </div>
                         </div>
