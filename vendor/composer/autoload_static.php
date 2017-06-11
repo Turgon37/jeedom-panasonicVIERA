@@ -16,10 +16,17 @@ class ComposerStaticInit0b18e9b7f1bb13bb33cf07d9ffec0e96
         ),
     );
 
+    public static $classMap = array (
+        'Phpwol\\Factory' => __DIR__ . '/..' . '/tomnomnom/phpwol/Phpwol/Factory.php',
+        'Phpwol\\MagicPacket' => __DIR__ . '/..' . '/tomnomnom/phpwol/Phpwol/MagicPacket.php',
+        'Phpwol\\Socket' => __DIR__ . '/..' . '/tomnomnom/phpwol/Phpwol/Socket.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixesPsr0 = ComposerStaticInit0b18e9b7f1bb13bb33cf07d9ffec0e96::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit0b18e9b7f1bb13bb33cf07d9ffec0e96::$classMap;
 
         }, null, ClassLoader::class);
     }
