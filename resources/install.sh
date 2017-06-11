@@ -2,7 +2,7 @@ touch /tmp/dependancy_panasonicVIERA_in_progress
 echo "Launch install of PanasonicViera dependancy"
 echo 0 > /tmp/dependancy_panasonicVIERA_in_progress
 echo 'Configure 3rdParty'
-chmod +x ../../plugins/panasonicVIERA/3rdparty/panasonic_viera_adapter.py
+chmod +x `dirname $0`/../3rdparty/panasonic_viera_adapter.py
 
 echo 10 > /tmp/dependancy_panasonicVIERA_in_progress
 echo 'Download panasonic-viera library'
