@@ -377,6 +377,7 @@ class panasonicVIERA extends eqLogic {
             return null;
         }
         if (is_null($decoded)) {
+            log::add('panasonicVIERA', 'debug', "execute3rdParty : $command's output : $shell_output");
             throw new Exception(__("The command", __FILE__) . " $command " . __('has not returned a valid JSON output.', __FILE__));
         }
 
