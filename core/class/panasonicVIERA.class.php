@@ -679,10 +679,7 @@ class panasonicVIERA extends eqLogic {
             throw new Exception(__('L\'adresse IP ne peut etre vide. Vous pouvez la trouver dans les paramètres de votre TV ou de votre routeur (box).', __FILE__));
         }
 
-        if (!filter_var($addr, FILTER_VALIDATE_IP)) {
-            log::add('panasonicVIERA', 'debug', '=> preUpdate: ip address checking failure');
-            throw new Exception(__('You entered a wrong IP address', __FILE__). " '$addr'.");
-        }
+        $this->setIpAddress($addr);
     }
 
     public function postUpdate() {
