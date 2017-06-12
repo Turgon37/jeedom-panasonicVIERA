@@ -77,7 +77,7 @@ function discoverTVs() {
 
             if (data.result.total === 0) {
                 $('#div_scanAlert').showAlert({
-                    message: '{{Aucune TV détéctée.<br \/>Vérifier que la TV est bien allumée et vérifier les règles d'entrées du pare feu. Si nécessaire, activer l'option Iptables dans la configuration du plugin.}}',
+                    message: '{{Aucune TV détéctée.<br \/>Vérifier que la TV est bien allumée et vérifier les règles d\'entrées du pare feu. Si nécessaire, activer l\'option Iptables dans la configuration du plugin.}}',
                     level: 'info'
                 });
             } else {
