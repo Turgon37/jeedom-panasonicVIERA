@@ -78,7 +78,8 @@
         "is incorrect.": "est incorrecte.",
         "The creation of the temporary firewall rule has failed. Check your log.": "La création de la règle de parefeu temporaire a echouée. Verifier les logs.",
         "Unable to apply Iptables rule because the required parameter": "Impossible d'appliquer la règle Iptables car le paramètre",
-        "is empty.": "est vide alors qu'il est requis."
+        "is empty.": "est vide alors qu'il est requis.",
+        "The command has return a null value, please check dependencies and log": "La commande a retournée une valeur nulle, veuillez vérifier les dépendances et les log"
     },
     "plugins\/panasonicVIERA\/plugin_info\/configuration.php": {
         "Make a donation": "Faire un don",

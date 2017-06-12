@@ -3,3 +3,14 @@
 
 == Beschreibung
 Dieses Plugin ermöglicht es, den Panasonic Viera Fernseher zu steuern.
+
+'''
+== Configuration
+include::configuration.asciidoc[]
+
+'''
+== FAQ
+include::faq.asciidoc[]
+
+== Journal des changements
+include::changelog.asciidoc[]
