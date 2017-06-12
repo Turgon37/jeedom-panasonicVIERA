@@ -7,6 +7,5 @@
 	"require" : "2.4",
 	"version" : "1.0",
 	"category" : "multimedia",
-	"hasDependency": true,
-	"include" : {"type" : "php" , "file" : "panasonicVIERA.inc" }
+	"hasDependency": true
 }
