@@ -143,12 +143,12 @@ class panasonicVIERA extends eqLogic {
      */
     public static function getCommandGroups() {
         return [
-            'basic' => 'has_basic',
-            'numeric' => 'has_numeric',
-            'record' => 'has_record',
-            'multimedia' => 'has_multimedia',
-            'colors' => 'has_colors',
-            'others' => 'has_others'
+            'Basiques' => 'has_basic',
+            'Numeriques' => 'has_numeric',
+            'Enregistrement' => 'has_record',
+            'Multimedia' => 'has_multimedia',
+            'Couleurs' => 'has_colors',
+            'Autres' => 'has_others'
         ];
     }
 
@@ -171,34 +171,46 @@ class panasonicVIERA extends eqLogic {
             'table' => [
                 'default' => 'filter',
                 'type' => 'string',
-                'required' => true
+                'required' => true,
+                'description' => 'Nom de la table Iptables',
+                'note' => ''
             ],
             'chain' => [
                 'default' => 'INPUT',
                 'type' => 'string',
-                'required' => true
+                'required' => true,
+                'description' => 'Nom de la chaine Iptables',
+                'note' => 'Il s\'agit du nom de la chaîne dans laquelle la règle va être ajoutée puis supprimée.'
             ],
             'protocol' => [
                 'default' => 'udp',
                 'type' => 'string',
-                'required' => true
+                'required' => true,
+                'description' => 'Protocole réseau',
+                'note' => 'Le protocol s\'applique aux paquets utilisés pour la découverte des TVs'
             ],
             'dport' => [
                 'default' => '60000',
                 'type' => 'integer',
-                'required' => true
+                'required' => true,
+                'description' => 'Port de destination Iptables',
+                'note' => 'Ce port correspond au port d\'écoute de Jeedom sur lequel les réponses de TVs vont arriver.'
             ],
             'jump' => [
                 'default' => 'ACCEPT',
                 'type' => 'string',
-                'required' => true
+                'required' => true,
+                'description' => 'Nom de l\'action Iptables (jump)',
+                'note' => 'L\'action définit le comportement d\'un paquet pour lequel la règle s\'applique.'
             ],
             'comment' => [
                 'default' => 'JEEDOM_PANASONICVIERA',
                 'type' => 'string',
                 'required' => false,
                 'visible' => false,
-                'cmdline' => '--match comment --comment'
+                'cmdline' => '--match comment --comment',
+                'description' => 'Commentaire de la règle',
+                'note' => 'Il s\'agit du nom de la chaîne dans laquelle la règle va être ajoutée puis supprimée.'
             ]
         ];
     }
@@ -258,9 +270,9 @@ class panasonicVIERA extends eqLogic {
                 if (   !is_null($value) &&
                     ( !is_string($value) || !preg_match('/^[a-zA-Z_]+$/', $value))    ) {
                     log::add('panasonicVIERA', 'error', sprintf("%s %s %s",
-                        __('The value of the Iptables setting', __FILE__),
+                        __('La valeur du paramètre Iptables', __FILE__),
                         " '$key' => '$value' ",
-                        __('is incorrect.', __FILE__)
+                        __('est incorrecte.', __FILE__)
                     ));
                     return null;
                 }
@@ -270,9 +282,9 @@ class panasonicVIERA extends eqLogic {
                 if (   !is_null($value) &&
                     (!is_integer($value) || !preg_match('/^[1-9][0-9]*$/', $value))     ) {
                     log::add('panasonicVIERA', 'error', sprintf("%s %s %s",
-                        __('The value of the Iptables setting', __FILE__),
+                        __('La valeur du paramètre Iptables', __FILE__),
                         " '$key' => '$value' ",
-                        __('is incorrect.', __FILE__)
+                        __('est incorrecte.', __FILE__)
                     ));
                     return null;
                 }
@@ -299,7 +311,7 @@ class panasonicVIERA extends eqLogic {
             if (isset($metadata['required']) &&
                 $metadata['required'] &&
                 (empty($value) || is_null($value))  ) {
-                throw new Exception(__("Unable to apply Iptables rule because the required parameter", __FILE__) . " '$name' " . __('is empty.', __FILE__));
+                throw new Exception(__("Impossible d'appliquer la règle Iptables car le paramètre", __FILE__) . " '$name' " . __('est vide alors qu\'il est requis.', __FILE__));
             }
             if (isset($metadata['cmdline'])) {
                 $cmdl = $metadata['cmdline'];
@@ -350,7 +362,7 @@ class panasonicVIERA extends eqLogic {
                     log::add('panasonicVIERA', 'error', 'Iptables execution : '. $row);
                 }
             }
-            throw new Exception(__("The creation of the temporary firewall rule has failed. Check your log.", __FILE__));
+            throw new Exception(__("La création de la règle de parefeu temporaire a echouée. Verifier les logs.", __FILE__));
         }
     }
 
@@ -384,7 +396,7 @@ class panasonicVIERA extends eqLogic {
         }
         if (is_null($decoded)) {
             log::add('panasonicVIERA', 'debug', "execute3rdParty : $command's output : $shell_output");
-            throw new Exception(__("The command", __FILE__) . " $command " . __('has not returned a valid JSON output.', __FILE__));
+            throw new Exception(__("La commande", __FILE__) . " $command " . __('n\'a pas retournée de données JSON valides.', __FILE__));
         }
 
         # transcript logs messages from python script to jeedom
@@ -395,7 +407,7 @@ class panasonicVIERA extends eqLogic {
         }
         # handle return code and error message
         if (isset($decoded['status']) && intval($decoded['status']) != 0) {
-            $message = __("The command", __FILE__) . " $name " . __('has failed.', __FILE__);
+            $message = __("La commande", __FILE__) . " $name " . __('a echouée.', __FILE__);
             if (isset($decoded['error'])) {
                 $message = $message . "<br />" . __($decoded['error'], __FILE__);
             }
@@ -424,8 +436,8 @@ class panasonicVIERA extends eqLogic {
     public static function discoverNetwork() {
         // check lock key to prevent multiple run of the dscovery at the same time
         if (cache::byKey('panasonicVIERA__discover_lock')->getValue(false) == true) {
-            log::add('panasonicVIERA', 'info', __('Discovery is already in progress', __FILE__));
-            throw new Exception(__('Discovery is already in progress', __FILE__));
+            log::add('panasonicVIERA', 'debug', 'discovering already in progress');
+            throw new Exception(__('La découverte est déjà en cours. Si une erreur est survenue veuillez patientez quelques secondes.', __FILE__));
         }
         cache::set('panasonicVIERA__discover_lock', true, 30);
 
@@ -664,7 +676,7 @@ class panasonicVIERA extends eqLogic {
         $addr = $this->getConfiguration(self::KEY_ADDRESS);
         if ($addr == '') {
             log::add('panasonicVIERA', 'debug', '=> preUpdate: ip address empty');
-            throw new Exception(__('The IP address must not be empty. Check you network gateway to find it.', __FILE__));
+            throw new Exception(__('L\'adresse IP ne peut etre vide. Vous pouvez la trouver dans les paramètres de votre TV ou de votre routeur (box).', __FILE__));
         }
 
         if (!filter_var($addr, FILTER_VALIDATE_IP)) {
@@ -712,7 +724,7 @@ class panasonicVIERA extends eqLogic {
     public function setIpAddress($ip) {
         if (!filter_var($ip, FILTER_VALIDATE_IP)) {
             log::add('panasonicVIERA', 'debug', '=> setIpAddress: ip address checking failure');
-            throw new Exception(__('You entered a wrong IP address', __FILE__). " '$ip'.");
+            throw new Exception(__('Vous avez saisit une mauvaise adresse IP', __FILE__). " '$ip'.");
         }
         $this->setConfiguration(panasonicVIERA::KEY_ADDRESS, $ip);
         return $this;
@@ -772,7 +784,7 @@ class panasonicVIERACmd extends cmd {
                     default:
                         $result = panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py", [$action, $tvip, $command], $this->getName());
                         if (is_null($result)) {
-                            throw new Exception(__('The command has return a null value, please check dependencies and log', __FILE__));
+                            throw new Exception(__('La commande a retournée une valeur nulle, veuillez vérifier les dépendances et les log', __FILE__));
                         }
                         break;
                 }

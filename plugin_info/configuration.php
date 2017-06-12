@@ -41,38 +41,38 @@ $(document).ready(function () {
 </script>
 <form class="form-horizontal">
     <fieldset>
-        <legend><i class="fa fa-list-alt"></i>  {{General}}</legend>
+        <legend><i class="fa fa-list-alt"></i>  {{Général}}</legend>
         <div class="form-group">
-            <label class="col-lg-3 control-label">{{Timeout for TV's commands (let blank to use default)}}</label>
+            <label class="col-lg-3 control-label">{{Durée maximale d'execution des commandes (laisser vide par defaut)}}</label>
             <div class="col-lg-1">
                 <input class="configKey form-control" data-l1key="command_timeout" placeholder="<?= panasonicVIERA::getCommandTimeout() ?>"
                         type="number" min="0"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label">{{Broadcast IP address for WakeOnLan packets (let blank to use default)}}</label>
+            <label class="col-lg-3 control-label">{{Adresse IP de broadcast pour les paquets WakeOnLan (laisser vide par defaut)}}</label>
             <div class="col-lg-2">
                 <input class="configKey form-control" data-l1key="broadcast_ip" placeholder="<?= panasonicVIERA::getBroadcastIp() ?>" type="text"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label">{{Timeout for TV's discovery command (let blank to use default)}}</label>
+            <label class="col-lg-3 control-label">{{Durée maximale de la recherche des TVs (laisser vide par defaut)}}</label>
             <div class="col-lg-1">
                 <input class="configKey form-control" data-l1key="discovery_timeout" placeholder="<?= panasonicVIERA::getDiscoveryTimeout() ?>"
                         type="number" min="0"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="col-lg-3 control-label">{{Use Iptables rules during TV's discovery}}</label>
+            <label class="col-lg-3 control-label">{{Utiliser une règle Iptable spécifique durant la découverte des TVs}}</label>
             <div class="col-lg-1">
                 <input type="checkbox" id="bt_iptables" class="configKey" data-l1key="discovery_iptables"/>
             </div>
         </div>
 
         <div id="iptablesFields">
-            <legend><i class="fa fa-cog"></i>  {{Iptables settings}}</legend>
+            <legend><i class="fa fa-cog"></i>  {{Configurations Iptables}}</legend>
             <div class="alert alert-warning">
-                {{Iptables informations}}
+                {{Les paramètres ci-dessous définissent la règle qui sera appliquée lors de la découverte des TV sur le réseau.<br \/>Cette règle est conçut pour s'appliquer sur les paquets en entrée uniquement.<br \/>Veuillez à ne modifier les paramètres ci-dessous que si vous savez ce que vous faite.}}
             </div>
 <?php foreach (panasonicVIERA::getIptablesSettings() as $name => $setting) {
             if (isset($setting['visible']) && !$setting['visible']) {
@@ -80,10 +80,12 @@ $(document).ready(function () {
             }
 ?>
             <div class="form-group">
-                <label class="col-md-3 control-label" data-toggle="tooltip" data-placement="top" title="<?= __("Iptables settings $name informations", __FILE__) ?>"><?= __("Iptables $name", __FILE__) ?></label>
-
+                <?php if (isset($setting['note']) && !empty($setting['note'])) : ?>
+                <label class="col-md-3 control-label" data-toggle="tooltip" data-placement="top" title="<?= __($setting['note'], __FILE__) ?>"><?= __($setting['description'], __FILE__) ?></label>
+                <?php else : ?>
+                <label class="col-md-3 control-label"><?= __($setting['description'], __FILE__) ?></label>
+                <?php endif; ?>
                 <div class="col-md-5">
-
                     <input class="configKey form-control" type="text" data-l1key="discovery_iptables_settings_<?= $name ?>"
                         placeholder="<?= panasonicVIERA::getDiscoveryIptablesSettings($name) ?>">
                 </div>
@@ -96,11 +98,11 @@ $(document).ready(function () {
 <div class="panel-group">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a data-toggle="collapse" href="#collapse1">{{Make a donation}}</a>
+            <a data-toggle="collapse" href="#collapse1">{{Faire un don}}</a>
         </div>
         <div id="collapse1" class="panel-collapse collapse">
             <div class="panel-body">
-                {{This plugin is free available to allow everyone to use it easily. If you want, you can make a donation to the developer by using the following link}}
+                {{Ce plugin est gratuit afin d'être accessible à tout le monde facilement. Si vous le souhaitez vous pouvez faire une donation au développeur via le lien suivant}}
                 <br />
                 <br />
                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
@@ -108,10 +110,10 @@ $(document).ready(function () {
                     <input type="hidden" name="hosted_button_id" value="HC5NXE3C7Y7AW">
         <?php switch(translate::getLanguage()) :
             case 'fr_FR': ?>
-                    <input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="{{Make a donation using Paypal}}">
+                    <input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="{{Faire un don via Paypal}}">
         <?php   break; ?>
         <?php default: ?>
-                    <input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_92x26.png" border="0" name="submit" alt="{{Make a donation using Paypal}}">
+                    <input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_92x26.png" border="0" name="submit" alt="{{Faire un don via Paypal}}">
         <?php   break; ?>
         <?php endswitch; ?>
                     <img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">

@@ -77,12 +77,12 @@ function discoverTVs() {
 
             if (data.result.total === 0) {
                 $('#div_scanAlert').showAlert({
-                    message: '{{No TV discovered.<br />Please be sure that the TV is on and check your firewall input rules. If needed, enable the iptables option in plugin configuration.}}',
+                    message: '{{Aucune TV détéctée.<br \/>Vérifier que la TV est bien allumée et vérifier les règles d'entrées du pare feu. Si nécessaire, activer l'option Iptables dans la configuration du plugin.}}',
                     level: 'info'
                 });
             } else {
                 $('#div_scanAlert').showAlert({
-                    message: [data.result.total, '{{TV(s) discovered including}}', data.result.created, '{{TV(s) created and}}', data.result.updated, '{{TV(s) updated.}}', ].join(' '),
+                    message: [data.result.total, '{{TV(s) découverte(s) dont}}', data.result.created, '{{TV(s) crée(s) et}}', data.result.updated, '{{TV(s) mise(s) à jour.}}', ].join(' '),
                     level: 'success'
                 });
                 setTimeout(window.location.reload.bind(window.location), 2000);

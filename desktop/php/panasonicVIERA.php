@@ -11,8 +11,8 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
     <div class="col-lg-2 col-md-3 col-sm-4">
         <div class="bs-sidebar">
             <ul id="ul_eqLogic" class="nav nav-list bs-sidenav">
-                <a class="btn btn-default eqLogicAction" style="width : 100%;margin-top : 5px;margin-bottom: 5px;" data-action="add"><i class="fa fa-plus-circle"></i> {{Add a TV}}</a>
-                <li class="filter" style="margin-bottom: 5px;"><input class="filter form-control input-sm" placeholder="{{Search}}" style="width: 100%"/></li>
+                <a class="btn btn-default eqLogicAction" style="width : 100%;margin-top : 5px;margin-bottom: 5px;" data-action="add"><i class="fa fa-plus-circle"></i> {{Ajouter une TV}}</a>
+                <li class="filter" style="margin-bottom: 5px;"><input class="filter form-control input-sm" placeholder="{{Rechercher}}" style="width: 100%"/></li>
 <?php foreach ($eqLogics as $eqLogic) : ?>
                 <li class="cursor li_eqLogic" data-eqLogic_id="<?= $eqLogic->getId() ?>"><a><?= $eqLogic->getHumanName(true) ?></a></li>
 <?php endforeach; ?>
@@ -37,7 +37,7 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
        		</div>
      	</div>
 
-        <legend>{{My TVs}}
+        <legend>{{Mes Télévisions}}
         </legend>
 
         <div class="eqLogicThumbnailContainer">
@@ -45,7 +45,7 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                 <center>
                     <i class="fa fa-plus-circle" style="font-size : 7em;color:#28a3d3;"></i>
                 </center>
-                <span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#28a3d3"><center>{{Add}}</center></span>
+                <span style="font-size : 1.1em;position:relative; top : 23px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#28a3d3"><center>{{Ajouter}}</center></span>
             </div>
 <?php foreach ($eqLogics as $eqLogic) : $opacity = ($eqLogic->getIsEnable()) ? '' : jeedom::getConfiguration('eqLogic:style:noactive'); ?>
             <div class="eqLogicDisplayCard cursor" data-eqLogic_id="<?= $eqLogic->getId() ?>" style="background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
@@ -59,31 +59,31 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
     </div>
 
     <div class="col-lg-10 col-md-9 col-sm-8 eqLogic" style="border-left: solid 1px #EEE; padding-left: 25px;display: none;">
-    <a class="btn btn-success eqLogicAction pull-right" data-action="save"><i class="fa fa-check-circle"></i> {{Save}}</a>
-        <a class="btn btn-danger eqLogicAction pull-right" data-action="remove"><i class="fa fa-minus-circle"></i> {{Remove}}</a>
-        <a class="btn btn-default eqLogicAction pull-right" data-action="configure"><i class="fa fa-cogs"></i> {{Advanced configuration}}</a>
+    <a class="btn btn-success eqLogicAction pull-right" data-action="save"><i class="fa fa-check-circle"></i> {{Sauvegarder}}</a>
+        <a class="btn btn-danger eqLogicAction pull-right" data-action="remove"><i class="fa fa-minus-circle"></i> {{Supprimer}}</a>
+        <a class="btn btn-default eqLogicAction pull-right" data-action="configure"><i class="fa fa-cogs"></i> {{Configuration avancée}}</a>
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fa fa-arrow-circle-left"></i></a></li>
-            <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-tachometer"></i> {{Equipment}}</a></li>
-            <li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-list-alt"></i> {{Commands}}</a></li>
+            <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-tachometer"></i> {{Equipement}}</a></li>
+            <li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-list-alt"></i> {{Commandes}}</a></li>
         </ul>
         <div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
             <div role="tabpanel" class="tab-pane active" id="eqlogictab">
                 <form class="form-horizontal">
                     <fieldset>
-                        <legend><i class="fa fa-arrow-circle-left eqLogicAction cursor" data-action="returnToThumbnailDisplay"></i> {{General}}  <i class='fa fa-cogs eqLogicAction pull-right cursor expertModeVisible' data-action='configure'></i></legend>
+                        <legend><i class="fa fa-arrow-circle-left eqLogicAction cursor" data-action="returnToThumbnailDisplay"></i> {{Général}}  <i class='fa fa-cogs eqLogicAction pull-right cursor expertModeVisible' data-action='configure'></i></legend>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">{{TV's name}}</label>
+                            <label class="col-sm-3 control-label">{{Nom de la TV}}</label>
                             <div class="col-sm-3">
                                 <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
                                 <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{TV's name}}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label" >{{Parent's object}}</label>
+                            <label class="col-sm-3 control-label" >{{Objet parent}}</label>
                             <div class="col-sm-3">
                             	<select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
-                                	<option value="">{{None}}</option>
+                                	<option value="">{{Aucun}}</option>
     <?php foreach (object::all() as $object) : ?>
                         		<option value="<?= $object->getId() ?>"><?= $object->getName() ?></option>
     <?php endforeach; ?>
@@ -91,7 +91,7 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                         	</div>
                    		</div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">{{Category}}</label>
+                            <label class="col-sm-3 control-label">{{Categorie de la TV}}</label>
                             <div class="col-sm-8 col-lg-8">
     <?php foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) : ?>
                                 <label class="checkbox-inline">
@@ -101,10 +101,10 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                             </div>
                         </div>
                    	    <div class="form-group">
-                            <label class="col-sm-3 control-label" >{{Enable}}</label>
+                            <label class="col-sm-3 control-label" >{{Actif}}</label>
                             <div class="col-sm-9">
                                 <label class="checkbox-inline">
-                                    <input class="eqLogicAttr" data-l1key="isEnable" checked="" type="checkbox">{{Enable}}
+                                    <input class="eqLogicAttr" data-l1key="isEnable" checked="" type="checkbox">{{Actif}}
                                 </label>
                                 <label class="checkbox-inline">
                                     <input class="eqLogicAttr" data-l1key="isVisible" checked="" type="checkbox">{{Visible}}
@@ -112,19 +112,19 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                             </div>
                			</div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">{{IP Address}}</label>
+                            <label class="col-sm-3 control-label">{{Adresse IP}}</label>
                             <div class="col-lg-2 col-sm-5">
                                 <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_ADDRESS ?>" placeholder="{{IP Address}}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">{{MAC address (Optionally for Wake On Lan, fetched by discovery)}}</label>
+                            <label class="col-sm-3 control-label">{{Adresse MAC (uniquement pour le Wake On Lan, récupérée par scan)}}</label>
                             <div class="col-lg-2 col-sm-5">
                                 <input type="text" class="eqLogicAttr form-control" data-l1key="logicalId" placeholder="{{TV's MAC address}}"/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label" >{{Display}}</label>
+                            <label class="col-sm-3 control-label" >{{Affichage des groupes de commandes}}</label>
                             <div class="col-sm-9">
     <?php foreach (panasonicVIERA::getCommandGroups() as $name => $key) : ?>
                                 <label class="checkbox-inline">
@@ -134,16 +134,16 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">{{Commands color}}</label>
+                            <label class="col-sm-3 control-label">{{Couleur des commandes}}</label>
                             <div class="col-lg-2 col-sm-2">
                                 <select class="eqLogicAttr form-control" data-l1key='configuration' data-l2key='theme'>
-                                    <option value='white'>{{White buttons}}</option>
-                                    <option value='black'>{{Black buttons}}</option>
+                                    <option value='white'>{{Bouton blancs}}</option>
+                                    <option value='black'>{{Bouton noirs}}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">{{Volume step}}</label>
+                            <label class="col-sm-3 control-label">{{Pas de modification du volume}}</label>
                             <div class="col-lg-1 col-sm-1">
                                 <select class="eqLogicAttr form-control" data-l1key='configuration' data-l2key='volnum'>
                                     <option value=1>{{1}}</option>
@@ -155,7 +155,7 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">{{TV UUID (fetched by discovery)}}</label>
+                            <label class="col-sm-3 control-label">{{UUID de la TV}}</label>
                             <div class="col-lg-2 col-sm-5">
                                 <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_UUID ?>" disabled="disabled" placeholder="{{TV UUID}}"/>
                             </div>
@@ -166,14 +166,14 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
             <div role="tabpanel" class="tab-pane" id="commandtab">
                 <legend>{{Commands}}</legend>
                 <div class="alert alert-info">
-                    {{Info}}
+                    {{Info : <br\/> - Les commandes ci-dessous sont ajoutées en fonction des groupes activés de l'équipement}}
                 </div>
                 <table id="table_cmd" class="table table-bordered table-condensed">
                     <thead>
                         <tr>
-                            <th>{{Name}}</th>
+                            <th>{{Nom}}</th>
                             <th>{{Type}}</th>
-                            <th>{{Parameter(s)}}</th>
+                            <th>{{Paramètre(s)}}</th>
                             <th>{{Actions}}</th>
                         </tr>
                     </thead>
