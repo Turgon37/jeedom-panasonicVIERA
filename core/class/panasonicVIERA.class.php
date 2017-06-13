@@ -27,12 +27,29 @@ class panasonicVIERA extends eqLogic {
     const KEY_ADDRESS = 'address';
     // name of uuid configuration key
     const KEY_UUID = 'uuid';
+
+    const KEY_WAKEUP = 'wakeup';
+    const KEY_WAKEUPCMD = 'wakeupcmd';
+
+    const KEY_VOLUMESTEP = 'volume_step';
+
+    const KEY_THEME = 'theme';
+
+    const COMMANDS_GROUPS = [
+        'basic' => 'Basiques',
+        'numeric' => 'Numeriques',
+        'record' => 'Enregistrement',
+        'multimedia' => 'Multimedia',
+        'colors' => 'Couleurs',
+        'others' => 'Autres'
+    ];
+
     // The command template for WakeOnLan command
     const COMMAND_WAKEONLAN = [
         'name' => 'WakeOnLan',
         'configuration' => [
             'action' => 'wakeonlan',
-            'command' => null,
+            'command' => 'wakeonlan',
         ],
         'type' => 'action',
         'subType' => 'other',
@@ -64,67 +81,6 @@ class panasonicVIERA extends eqLogic {
     }
 
     /**
-     * Return the dependancy info about this plugin
-     *
-     * @return [array] an array with theses keys
-     *    log : the name of the log file
-     *    progress_file : the path to the file which indicates the progres status
-     *    state : the status of dependancies
-     */
-    public static function dependancy_info() {
-        $return = array();
-        $return['log'] = 'panasonicVIERA_dependancy';
-        $return['progress_file'] = '/tmp/dependancy_panasonicVIERA_in_progress';
-        $return['state'] = 'ok';
-        $lib_version = self::getLibraryVersion('local');
-        $online_lib_version = self::getLibraryVersion('online');
-        if (is_null($lib_version)) {
-            $return['state'] = 'nok';
-        } else if (!is_null($online_lib_version) && version_compare($online_lib_version, $lib_version, '>')) {
-            $return['state'] = 'nok';
-        }
-        log::add('panasonicVIERA', 'debug', "dependency check, local : $lib_version, remote : $online_lib_version");
-        return $return;
-    }
-
-    /**
-     * Run the installation of dependancies
-     *
-     */
-    public static function dependancy_install() {
-        log::remove('panasonicVIERA_dependancy');
-        $cmd = 'sudo /bin/bash ' . dirname(__FILE__) . '/../../resources/install.sh';
-        $cmd .= ' >> ' . log::getPathToLog('panasonicVIERA_dependancy') . ' 2>&1 &';
-        exec($cmd);
-    }
-
-    /**
-     * Return the version of the local panasonic viera library
-     *
-     * @param [string] the instance of version to check
-     * @return string|null
-     */
-    public static function getLibraryVersion($instance = 'local') {
-        // check lock key to prevent multiple run of the dscovery at the same time
-        $version = cache::byKey('panasonicVIERA__library_version_' . $instance)->getValue(null);
-        # try to fetch the asked version from cmdline
-        if ($version === null) {
-            log::add('panasonicVIERA', 'debug', 'fetch library version from 3rdparty');
-            try {
-              $lib_version = panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py", ['version', "--$instance"]);
-            } catch (Exception $e) {
-              log::add('panasonicVIERA', 'debug', 'catch Exception from 3rdparty');
-              $lib_version = null;
-            }
-            if (!is_null($lib_version)) {
-                cache::set('panasonicVIERA__library_version', $lib_version, 60*60*24);
-                $version = $lib_version;
-            }
-        }
-        return $version;
-    }
-
-    /**
      * Return the list of official commands
      *
      * @return array
@@ -143,14 +99,7 @@ class panasonicVIERA extends eqLogic {
      * @var array
      */
     public static function getCommandGroups() {
-        return [
-            'Basiques' => 'has_basic',
-            'Numeriques' => 'has_numeric',
-            'Enregistrement' => 'has_record',
-            'Multimedia' => 'has_multimedia',
-            'Couleurs' => 'has_colors',
-            'Autres' => 'has_others'
-        ];
+        return self::COMMANDS_GROUPS;
     }
 
     /**
@@ -214,6 +163,67 @@ class panasonicVIERA extends eqLogic {
                 'note' => 'Il s\'agit du nom de la chaîne dans laquelle la règle va être ajoutée puis supprimée.'
             ]
         ];
+    }
+
+    /**
+     * Return the dependancy info about this plugin
+     *
+     * @return [array] an array with theses keys
+     *    log : the name of the log file
+     *    progress_file : the path to the file which indicates the progres status
+     *    state : the status of dependancies
+     */
+    public static function dependancy_info() {
+        $return = array();
+        $return['log'] = 'panasonicVIERA_dependancy';
+        $return['progress_file'] = '/tmp/dependancy_panasonicVIERA_in_progress';
+        $return['state'] = 'ok';
+        $lib_version = self::getLibraryVersion('local');
+        $online_lib_version = self::getLibraryVersion('online');
+        if (is_null($lib_version)) {
+            $return['state'] = 'nok';
+        } else if (!is_null($online_lib_version) && version_compare($online_lib_version, $lib_version, '>')) {
+            $return['state'] = 'nok';
+        }
+        log::add('panasonicVIERA', 'debug', "dependency check, local : $lib_version, remote : $online_lib_version");
+        return $return;
+    }
+
+    /**
+     * Run the installation of dependancies
+     *
+     */
+    public static function dependancy_install() {
+        log::remove('panasonicVIERA_dependancy');
+        $cmd = 'sudo /bin/bash ' . dirname(__FILE__) . '/../../resources/install.sh';
+        $cmd .= ' >> ' . log::getPathToLog('panasonicVIERA_dependancy') . ' 2>&1 &';
+        exec($cmd);
+    }
+
+    /**
+     * Return the version of the local panasonic viera library
+     *
+     * @param [string] the instance of version to check
+     * @return string|null
+     */
+    public static function getLibraryVersion($instance = 'local') {
+        // check lock key to prevent multiple run of the dscovery at the same time
+        $version = cache::byKey('panasonicVIERA__library_version_' . $instance)->getValue(null);
+        # try to fetch the asked version from cmdline
+        if ($version === null) {
+            log::add('panasonicVIERA', 'debug', 'fetch library version from 3rdparty');
+            try {
+              $lib_version = panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py", ['version', "--$instance"]);
+            } catch (Exception $e) {
+              log::add('panasonicVIERA', 'debug', 'catch Exception from 3rdparty');
+              $lib_version = null;
+            }
+            if (!is_null($lib_version)) {
+                cache::set('panasonicVIERA__library_version', $lib_version, 60*60*24);
+                $version = $lib_version;
+            }
+        }
+        return $version;
     }
 
     /**
@@ -612,8 +622,10 @@ class panasonicVIERA extends eqLogic {
         log::add('panasonicVIERA', 'debug', '=> addCommands('.$group_name.')');
 
         foreach (self::getCommandsIndex() as $cmd) {
-            if ($cmd['group'] == $group_name)
+            # TODO remove filter on infos commands
+            if ($cmd['group'] == $group_name && $cmd['type'] != 'info') {
                 $this->addCommand($cmd);
+            }
         }
     }
 
@@ -647,26 +659,42 @@ class panasonicVIERA extends eqLogic {
 
         log::add('panasonicVIERA', 'debug', 'official index contains : ' . count(self::getCommandsIndex()). " commands");
 
-        foreach(self::getCommandGroups() as $name => $key) {
+        foreach(self::getCommandGroups() as $key => $name) {
             if ($this->getConfiguration($key) == 1) {
                 log::add('panasonicVIERA', 'debug', "add $name commands");
-                $this->addCommands($name);
+                $this->addCommands($key);
             } else {
                 log::add('panasonicVIERA', 'debug', "remove $name commands");
-                $this->removeCommands($name);
+                $this->removeCommands($key);
             }
         }
 
         $mac = $this->getLogicalId();
-        if (filter_var($mac, FILTER_VALIDATE_MAC)) {
-            log::add('panasonicVIERA', 'debug', '=> preSave: add wakeonlan command for valid mac address');
-            $cmd = self::COMMAND_WAKEONLAN;
-            $cmd['configuration']['command'] = $mac;
-            $this->addCommand($cmd);
-        } else {
-            log::add('panasonicVIERA', 'debug', '=> preSave: remove wakeonlan command because of invalid mac address');
-            $this->removeCommand($cmd);
+        if (!filter_var($mac, FILTER_VALIDATE_MAC)) {
+           log::add('panasonicVIERA', 'debug', '=> preSave: remove wakeonlan command because of invalid mac address');
+           $this->removeCommand(self::COMMAND_WAKEONLAN);
         }
+        # TODO remove default value here and add default value on the ui
+        switch ($this->getConfiguration(self::KEY_WAKEUP), 'wol') {
+            case 'wol':
+                if (filter_var($mac, FILTER_VALIDATE_MAC)) {
+                    log::add('panasonicVIERA', 'debug', '=> preSave: add wakeonlan command for valid mac address');
+                    $cmd = self::COMMAND_WAKEONLAN;
+                    $cmd['configuration']['command'] = $mac;
+                    $this->addCommand($cmd);
+                }
+                break;
+            case 'cmd':
+                $this->removeCommand(self::COMMAND_WAKEONLAN);
+                break;
+            case 'none':
+                $this->removeCommand(self::COMMAND_WAKEONLAN);
+                break;
+            default:
+                #log::add('panasonicVIERA', 'error', "Bad value for ". self::KEY_WAKEUP . " configuration.");
+                break;
+        }
+
     }
 
     public function postSave() {

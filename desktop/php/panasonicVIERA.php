@@ -126,17 +126,19 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                         <div class="form-group">
                             <label class="col-sm-3 control-label" >{{Affichage des groupes de commandes}}</label>
                             <div class="col-sm-9">
-    <?php foreach (panasonicVIERA::getCommandGroups() as $name => $key) : ?>
+    <?php foreach (panasonicVIERA::COMMANDS_GROUPS as $key => $name) : ?>
                                 <label class="checkbox-inline">
                                     <input class="eqLogicAttr" data-l1key="configuration" data-l2key="<?= $key ?>" checked="" type="checkbox"><?= __($name, __FILE__) ?>
                                 </label>
     <?php endforeach; ?>
                             </div>
                         </div>
+
+<?php if (false) : ?>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">{{Couleur des commandes}}</label>
                             <div class="col-lg-2 col-sm-2">
-                                <select class="eqLogicAttr form-control" data-l1key='configuration' data-l2key='theme'>
+                                <select class="eqLogicAttr form-control" data-l1key='configuration' data-l2key='<?= panasonicVIERA::KEY_THEME ?>'>
                                     <option value='white'>{{Bouton blancs}}</option>
                                     <option value='black'>{{Bouton noirs}}</option>
                                 </select>
@@ -145,7 +147,7 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                         <div class="form-group">
                             <label class="col-sm-3 control-label">{{Pas de modification du volume}}</label>
                             <div class="col-lg-1 col-sm-1">
-                                <select class="eqLogicAttr form-control" data-l1key='configuration' data-l2key='volnum'>
+                                <select class="eqLogicAttr form-control" data-l1key='configuration' data-l2key='<?= panasonicVIERA::KEY_VOLUMESTEP ?>'>
                                     <option value=1>{{1}}</option>
                                     <option value=2>{{2}}</option>
                                     <option value=3>{{3}}</option>
@@ -154,6 +156,23 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">{{Mode de réveil de la TV}}</label>
+                            <div class="col-sm-3">
+                                <select class="eqLogicAttr form-control" data-l1key='configuration' data-l2key='<?= panasonicVIERA::KEY_WAKEUP ?>'>
+                                    <option selected="selected" value='none'>{{Pas de commande de réveil}}</option>
+                                    <option value='wol'>{{Utiliser le WakeOnLan (vérifier le support de la TV)}}</option>
+                                    <option value='cmd'>{{Utiliser une commande Jeedom}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Commande Alerte</label>
+                            <div class="col-sm-3">
+                                <input id="bt_inputWakeupCmd" class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_WAKEUPCMD ?>" type="text"><span class="input-group-btn"><a class="btn btn-default cursor" title="Rechercher une commande" id="bt_selectWakeupCmd"><i class="fa fa-list-alt"></i></a></span>
+                            </div>
+                        </div>
+<?php endif; ?>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">{{UUID de la TV}}</label>
                             <div class="col-lg-2 col-sm-5">

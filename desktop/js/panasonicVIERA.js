@@ -19,6 +19,12 @@ $('.discoverTVs').on('click', function () {
     discoverTVs();
 });
 
+$('#bt_selectWakeupCmd').on('click', function () {
+     jeedom.cmd.getSelectModal({cmd: {type: 'action'}}, function (result) {
+         $('#bt_inputWakeupCmd').atCaret('insert', result.human);
+     });
+ });
+
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 /*
  * Fonction pour l'ajout de commande, appellé automatiquement par plugin.template
