@@ -675,7 +675,7 @@ class panasonicVIERA extends eqLogic {
            $this->removeCommand(self::COMMAND_WAKEONLAN);
         }
         # TODO remove default value here and add default value on the ui
-        switch ($this->getConfiguration(self::KEY_WAKEUP), 'wol') {
+        switch ($this->getConfiguration(self::KEY_WAKEUP, 'wol')) {
             case 'wol':
                 if (filter_var($mac, FILTER_VALIDATE_MAC)) {
                     log::add('panasonicVIERA', 'debug', '=> preSave: add wakeonlan command for valid mac address');
