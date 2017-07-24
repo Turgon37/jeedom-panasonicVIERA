@@ -16,7 +16,9 @@
  */
 
 require_once dirname(__FILE__) . '/../../../core/php/core.inc.php';
+require_once dirname(__FILE__) . '/../core/php/panasonicVIERAIptables.inc.php';
 include_file('core', 'authentification', 'php');
+
 if (!isConnect('admin')) {
     include_file('desktop', '404', 'php');
     die();
@@ -74,7 +76,7 @@ $(document).ready(function () {
             <div class="alert alert-warning">
                 {{Les paramètres ci-dessous définissent la règle qui sera appliquée lors de la découverte des TV sur le réseau.<br \/>Cette règle est conçut pour s'appliquer sur les paquets en entrée uniquement.<br \/>Veuillez à ne modifier les paramètres ci-dessous que si vous savez ce que vous faite.}}
             </div>
-<?php foreach (panasonicVIERA::getIptablesSettings() as $name => $setting) {
+<?php foreach (panasonicVIERAIptables::getIptablesSettings() as $name => $setting) {
             if (isset($setting['visible']) && !$setting['visible']) {
                 continue;
             }
