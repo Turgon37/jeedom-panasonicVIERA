@@ -47,20 +47,20 @@ $(document).ready(function () {
         <div class="form-group">
             <label class="col-lg-3 control-label">{{Durée maximale d'execution des commandes (laisser vide par defaut)}}</label>
             <div class="col-lg-1">
-                <input class="configKey form-control" data-l1key="command_timeout" placeholder="<?= panasonicVIERA::getCommandTimeout() ?>"
+                <input class="configKey form-control" data-l1key="command_timeout" placeholder="<?= panasonicVIERA::getConfigCommandTimeout() ?>"
                         type="number" min="0"/>
             </div>
         </div>
         <div class="form-group">
             <label class="col-lg-3 control-label">{{Adresse IP de broadcast pour les paquets WakeOnLan (laisser vide par defaut)}}</label>
             <div class="col-lg-2">
-                <input class="configKey form-control" data-l1key="broadcast_ip" placeholder="<?= panasonicVIERA::getBroadcastIp() ?>" type="text"/>
+                <input class="configKey form-control" data-l1key="broadcast_ip" placeholder="<?= panasonicVIERA::getConfigBroadcastIp() ?>" type="text"/>
             </div>
         </div>
         <div class="form-group">
             <label class="col-lg-3 control-label">{{Durée maximale de la recherche des TVs (laisser vide par defaut)}}</label>
             <div class="col-lg-1">
-                <input class="configKey form-control" data-l1key="discovery_timeout" placeholder="<?= panasonicVIERA::getDiscoveryTimeout() ?>"
+                <input class="configKey form-control" data-l1key="discovery_timeout" placeholder="<?= panasonicVIERA::getConfigDiscoveryTimeout() ?>"
                         type="number" min="0"/>
             </div>
         </div>
@@ -89,7 +89,7 @@ $(document).ready(function () {
                 <?php endif; ?>
                 <div class="col-md-5">
                     <input class="configKey form-control" type="text" data-l1key="discovery_iptables_settings_<?= $name ?>"
-                        placeholder="<?= panasonicVIERA::getDiscoveryIptablesSettings($name) ?>">
+                        placeholder="<?= panasonicVIERAIptables::getConfigDiscoveryIptablesSettings($name) ?>">
                 </div>
             </div>
 <?php } ?>

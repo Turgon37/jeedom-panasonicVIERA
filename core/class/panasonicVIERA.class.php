@@ -167,7 +167,7 @@ class panasonicVIERA extends eqLogic {
      * Return the timeout value for standard TV commands
      * @return [int] the timeout in seconds
      */
-    public static function getCommandTimeout() {
+    public static function getConfigCommandTimeout() {
         return config::byKey('command_timeout', 'panasonicVIERA', 2);
     }
 
@@ -175,7 +175,7 @@ class panasonicVIERA extends eqLogic {
      * Return the broadcast ip address to use in magic packets
      * @return [string] the ip address
      */
-    public static function getBroadcastIp() {
+    public static function getConfigBroadcastIp() {
         $ip = config::byKey('broadcast_ip', 'panasonicVIERA', '255.255.255.255');
         if (!filter_var($ip, FILTER_VALIDATE_IP)) {
             return null;
@@ -187,7 +187,7 @@ class panasonicVIERA extends eqLogic {
      * Return the timeout value for discovery commands
      * @return [int] the discovery timeout in seconds
      */
-    public static function getDiscoveryTimeout() {
+    public static function getConfigDiscoveryTimeout() {
         return config::byKey('discovery_timeout', 'panasonicVIERA', 3);
     }
 
@@ -280,15 +280,15 @@ class panasonicVIERA extends eqLogic {
             'created' => 0,
             'total' => 0
         ];
-        if (self::getDiscoveryIptables()) {
+        if (self::getConfigDiscoveryIptables()) {
             log::add('panasonicVIERA', 'debug', 'open firewall for discovery');
-            self::executeIptables('insert');
+            panasonicVIERAIptables::executeIptables('insert');
         }
         log::add('panasonicVIERA', 'debug', 'run discovery command');
         $discovered = self::execute3rdParty("panasonic_viera_adapter.py", ['find'], 'discover');
-        if (self::getDiscoveryIptables()) {
+        if (self::getConfigDiscoveryIptables()) {
             log::add('panasonicVIERA', 'debug', 'close firewall after discovery');
-            self::executeIptables('delete');
+            panasonicVIERAIptables::executeIptables('delete');
         }
         if (count($discovered)) {
             log::add('panasonicVIERA', 'debug', 'found ' . count($discovered) . ' TV(s) on the network');
