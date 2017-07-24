@@ -150,10 +150,10 @@ class panasonicVIERA extends eqLogic {
         if ($version === null) {
             log::add('panasonicVIERA', 'debug', 'fetch library version from 3rdparty');
             try {
-              $lib_version = panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py", ['version', "--$instance"]);
+                $lib_version = panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py", ['version', "--$instance"]);
             } catch (Exception $e) {
-              log::add('panasonicVIERA', 'debug', 'catch Exception from 3rdparty');
-              $lib_version = null;
+                log::add('panasonicVIERA', 'debug', 'catch Exception from 3rdparty');
+                $lib_version = null;
             }
             if (!is_null($lib_version)) {
                 cache::set('panasonicVIERA__library_version', $lib_version, 60*60*24);
