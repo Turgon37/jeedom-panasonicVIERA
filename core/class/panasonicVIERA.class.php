@@ -425,7 +425,7 @@ class panasonicVIERA extends eqLogic {
             $panasonicVIERACmd->setConfiguration('group', $cmd['group']);
             $panasonicVIERACmd->setType($cmd['type']);
             $panasonicVIERACmd->setSubType($cmd['subType']);
-            if ($cmd['icon'] != '')
+            if (isset($cmd['icon']) && $cmd['icon'] != '')
                 $panasonicVIERACmd->setDisplay('icon', '<i class=" '.$cmd['icon'].'"></i>');
             log::add('panasonicVIERA', 'debug', '=> addCommand('. $cmd['name'].') add command');
             $panasonicVIERACmd->save();
