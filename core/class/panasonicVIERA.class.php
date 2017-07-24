@@ -212,7 +212,15 @@ class panasonicVIERA extends eqLogic {
      */
     public static function execute3rdParty($command, $args = [], $name = null, $throw_errors = true) {
         $base_path = realpath(__DIR__ . '/../../3rdparty');
-        $cmdline = sprintf("%s/%s %s", $base_path, $command, implode(' ', $args));
+        $extension = pathinfo($command, PATHINFO_EXTENSION);
+        $runtime = 'bash';
+        switch ($extension) {
+            case 'py':
+                $runtime = 'python';
+                break;
+        }
+
+        $cmdline = sprintf("%s %s/%s %s", $runtime, $base_path, $command, implode(' ', $args));
         // by default the log 'name' will be the command name
         if ($name === null) {
             $name = $command;
