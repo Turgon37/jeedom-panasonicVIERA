@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 # -*- coding: utf-8 -*-
 
 # This file is part of Jeedom.
@@ -30,6 +29,7 @@ except ImportError:
     print(json.dumps(None))
     sys.exit(0)
 
+
 class ArrayHandler(logging.Handler):
     """Simple array handler that put all log messages to a list
     """
@@ -42,34 +42,7 @@ class ArrayHandler(logging.Handler):
     def emit(self, record):
         self.dest.append(dict(level=record.levelname, message=record.getMessage()))
 
-
-parser = argparse.ArgumentParser(description="Adapter for panasonic-viera for jeedom")
-subparsers = parser.add_subparsers()
-
-parser_version = subparsers.add_parser('version', help='Show the version and Exit')
-parser_version.set_defaults(action='version', instance='local')
-parser_version.add_argument("--local", action='store_const', dest='instance', const='local', help="Specify the local or online version")
-parser_version.add_argument("--online", action='store_const', dest='instance', const='online', help="Specify the local or online version")
-
-parser_find = subparsers.add_parser('find', help='Find available TVs on the LAN')
-parser_find.set_defaults(action='find')
-
-parser_sendkey = subparsers.add_parser('sendkey', help='Simple sendkey action')
-parser_sendkey.set_defaults(action='sendkey')
-parser_sendkey.add_argument("host", help="The hostname of the TV")
-parser_sendkey.add_argument("command", help="The command's code")
-
-parser_render = subparsers.add_parser('render', help='Execute a render command')
-parser_render.set_defaults(action='render')
-parser_render.add_argument("host", help="The hostname of the TV")
-parser_render.add_argument("command", help="The name of the information to render")
-
-parser_set = subparsers.add_parser('set', help='Set a value')
-parser_set.set_defaults(action='set')
-parser_set.add_argument("host", help="The hostname of the TV")
-parser_set.add_argument("command", help="The name of the information to set")
-parser_set.add_argument("value", help="The new value to set")
-
+# Init
 logs = []
 hdlr = ArrayHandler(logs)
 panasonic_viera.getLogger().setLevel(logging.DEBUG)
@@ -77,11 +50,61 @@ panasonic_viera.getLogger().addHandler(hdlr)
 
 result = dict({'status': 0})
 
+# CREATE PARSER
+parser = argparse.ArgumentParser(description="Adapter for panasonic-viera for jeedom")
+subparsers = parser.add_subparsers()
+
+# VERSION
+parser_version = subparsers.add_parser('version', help='Show the version and Exit')
+parser_version.set_defaults(action='version', instance='local')
+parser_version.add_argument("--local", action='store_const', dest='instance', const='local', help="Specify the local or online version")
+parser_version.add_argument("--online", action='store_const', dest='instance', const='online', help="Specify the local or online version")
+
+# FIND
+parser_find = subparsers.add_parser('find', help='Find available TVs on the LAN')
+parser_find.set_defaults(action='find')
+
+# SENDKEY
+parser_sendkey = subparsers.add_parser('sendkey', help='Simple sendkey action')
+parser_sendkey.set_defaults(action='sendkey')
+parser_sendkey.add_argument("host", help="The hostname of the TV")
+parser_sendkey.add_argument("command", help="The command's code")
+
+# RENDER (GET)
+parser_render = subparsers.add_parser('render', help='Execute a render command')
+parser_render.set_defaults(action='render')
+parser_render.add_argument("host", help="The hostname of the TV")
+parser_render.add_argument("command", help="The name of the information to render")
+
+# SET
+parser_set = subparsers.add_parser('set', help='Set a value')
+parser_set.set_defaults(action='set')
+parser_set.add_argument("host", help="The hostname of the TV")
+parser_set.add_argument("command", help="The name of the information to set")
+parser_set.add_argument("value", help="The new value to set")
+
+# INFORMATIONS
+parser_informations = subparsers.add_parser('informations', help='Retrieve device\'s informations')
+parser_informations.set_defaults(action='informations')
+parser_informations.add_argument("host", help="The hostname of the TV")
+
 args = parser.parse_args()
 if not hasattr(args, 'action'):
     parser.print_help()
     sys.exit(1)
 
+Version = None
+try:
+    from packaging.version import Version
+except ImportError:
+    try:
+        from distutils.version import StrictVersion as Version
+    except ImportError:
+        pass
+if not Version:
+    logs.append(dict(level='WARNING', message='La bibliothèque packaging.version n\'est pas disponible. Certaines fonctionalités risque de ne pas être disponibles'))
+
+# MAIN
 rc = panasonic_viera.RemoteControl(args.host if hasattr(args, 'host') else None)
 try:
     if args.action == 'sendkey':
@@ -104,11 +127,15 @@ try:
             result['output'] = panasonic_viera.__version__
         else:
             result['output'] = panasonic_viera.getOnlineVersion()
+    elif args.action == 'informations' and Version and Version('1.1.0') <= Version(panasonic_viera.__version__):
+        result['output'] = rc.informations()
     else:
-        raise panasonic_viera.RemoteControlException("The action " + args.action + " is not implemented.")
+        raise panasonic_viera.RemoteControlException("L'action " + args.action + " n'est pas disponible.")
 except panasonic_viera.RemoteControlException as e:
     result['status'] = 1
     result['error'] = str(e)
+    if getattr(e, "getCode", None) and callable(e.getCode):
+        result['error_code'] = e.getCode()
 
 logging.shutdown()
 result['log'] = logs
