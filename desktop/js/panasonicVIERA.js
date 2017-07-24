@@ -25,7 +25,13 @@ $('#bt_selectWakeupCmd').on('click', function () {
      });
  });
 
+ $('#bt_informationsModal').on('click', function () {
+      $('#md_modal').dialog({title: "{{Informations à propos de la Télévision}}"});
+      $('#md_modal').load('index.php?v=d&plugin=panasonicVIERA&modal=informations&id=' + $('.eqLogicAttr[data-l1key=id]').value()).dialog('open');
+ });
+
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
+
 /*
  * Fonction pour l'ajout de commande, appellé automatiquement par plugin.template
  */
