@@ -28,8 +28,15 @@ try {
 
     if (init('action') == 'discoverTVs') {
     	ajax::success(panasonicVIERA::discoverNetwork());
-	}
+    }
 
+    if (init('action') == 'getDeviceInformations') {
+        $eqLogic = panasonicVIERA::byId(init('id'));
+        if (!is_object($eqLogic)) {
+            throw new Exception(__('PanasonicVIERA inconnu verifier l\'id', __FILE__));
+        }
+        ajax::success($eqLogic->getDeviceInformations());
+    }
 
     throw new Exception(__('Aucune méthode correspondante à : ', __FILE__) . init('action'));
     /*     * *********Catch exeption*************** */
