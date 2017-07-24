@@ -96,31 +96,3 @@ $(document).ready(function () {
         </div>
     </fieldset>
 </form>
-<br />
-<div class="panel-group">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <a data-toggle="collapse" href="#collapse1">{{Faire un don}}</a>
-        </div>
-        <div id="collapse1" class="panel-collapse collapse">
-            <div class="panel-body">
-                {{Ce plugin est gratuit afin d'être accessible à tout le monde facilement. Si vous le souhaitez vous pouvez faire une donation au développeur via le lien suivant}}
-                <br />
-                <br />
-                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-                    <input type="hidden" name="cmd" value="_s-xclick">
-                    <input type="hidden" name="hosted_button_id" value="HC5NXE3C7Y7AW">
-        <?php switch(translate::getLanguage()) :
-            case 'fr_FR': ?>
-                    <input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="{{Faire un don via Paypal}}">
-        <?php   break; ?>
-        <?php default: ?>
-                    <input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_92x26.png" border="0" name="submit" alt="{{Faire un don via Paypal}}">
-        <?php   break; ?>
-        <?php endswitch; ?>
-                    <img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
