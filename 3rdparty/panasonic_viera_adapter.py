@@ -86,6 +86,7 @@ rc = panasonic_viera.RemoteControl(args.host if hasattr(args, 'host') else None)
 try:
     if args.action == 'sendkey':
         rc.sendKey(args.command)
+        result['output'] = 'ok'
     elif args.action == 'render':
         if args.command == 'getVolume':
             result['output'] = rc.getVolume()
