@@ -267,12 +267,13 @@ class panasonicVIERA extends eqLogic {
 
         log::add('panasonicVIERA', 'debug', 'execute3rdParty : '. $cmdline);
         $shell_output = trim(shell_exec(escapeshellcmd($cmdline)));
-
-        $decoded = json_decode($shell_output, JSON_OBJECT_AS_ARRAY|JSON_NUMERIC_CHECK);
         if ($shell_output == 'null') {
             log::add('panasonicVIERA', 'debug', "execute3rdParty : command $command has returned null");
             return null;
         }
+
+        // decode json raw output
+        $decoded = json_decode($shell_output, JSON_OBJECT_AS_ARRAY|JSON_NUMERIC_CHECK);
         if (is_null($decoded)) {
             log::add('panasonicVIERA', 'debug', "execute3rdParty : $command's output : $shell_output");
             throw new Exception(__("La commande", __FILE__) . " $command " . __('n\'a pas retournée de données JSON valides.', __FILE__));
