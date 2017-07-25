@@ -8,5 +8,7 @@
 
 * Ajout du WakeOnLan
 * Ajout des commandes et des groupes de commandes
+* Ajout de la fonction de découverte des TVs
 * Integration de la lib tierce panasonic_viera pour envoyer les commandes vers la TV
 * Ajout de la gestion des dépendances
+* Ajout d'une vue 'Informations' pour afficher les informations brutes de la TV
