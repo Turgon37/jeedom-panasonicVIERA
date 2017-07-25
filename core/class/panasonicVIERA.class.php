@@ -138,6 +138,35 @@ class panasonicVIERA extends eqLogic {
     }
 
     /**
+     * Return the specific health informations
+     *
+     * @return [array] an array with the following keys
+     *
+     */
+    public static function health() {
+        $healths = [];
+
+        /* LIBRARY HEALTH */
+        $health_lib = [
+            'state' => true,
+            'test' => __('Version de la bibliothèque Python', __FILE__)
+        ];
+        $lib_local = self::getLibraryVersion('local');
+        $lib_online = self::getLibraryVersion('online');
+        if (version_compare($lib_online, $lib_local, '>')) {
+            $health_lib['state'] = false;
+            $health_lib['advice'] = __('Vous devriez relancer l\'installation des dépendances', __FILE__);
+            $health_lib['result'] = 'NOK';
+        } else {
+            $health_lib['result'] = 'OK';
+        }
+        $health_lib['result'] .= sprintf(' (Local = %s, Online = %s)', $lib_local, $lib_online);
+
+        $healths[] = $health_lib;
+        return $healths;
+    }
+
+    /**
      * Return the version of the local panasonic viera library
      *
      * @param [string] the instance of version to check
