@@ -21,19 +21,13 @@ if (!isConnect('admin')) {
 ?>
 
 
-<a class="btn btn-default pull-right" id="bt_refreshValues"><i class="fa fa-refresh"></i> {{Rafraichir}}</a>
-<br />
-<br />
 <div id='div_valuesAlert' style="display: none;"></div>
-<table class="table table-condensed" id="table_values">
-    <thead>
-        <tr>
+<a class="btn btn-default pull-right" id="bt_refreshValues"><i class="fa fa-refresh"></i> {{Rafraichir}}</a>
+<ul class="nav nav-tabs" role="tablist" id="ul_tabs">
 
-        </tr>
-    </thead>
-    <tbody>
+</ul>
+<div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;" id="div_tabscontent">
 
-    </tbody>
-</table>
+</div>
 <?php include_file('core', 'panasonicVIERA', 'class.js', 'panasonicVIERA');?>
 <?php include_file('desktop', 'deviceInformations', 'js', 'panasonicVIERA');?>

@@ -604,6 +604,24 @@ class panasonicVIERA extends eqLogic {
         return $this;
     }
 
+    /**
+     * Return some devices informations
+     *
+     */
+    public function getDeviceInformations() {
+        $infos = self::execute3rdParty("panasonic_viera_adapter.py",
+                [ 'informations', $this->getIpAddress() ],
+                __FUNCTION__,
+                true,
+                self::PANASONIC_VIERA_LIB_ERRORS);
+        if (is_null($infos)) {
+            throw new Exception(__('La commande a retournée une valeur nulle, veuillez vérifier les dépendances et les log', __FILE__));
+        } elseif (!is_array($infos)) {
+            throw new Exception(__('La commande a retournée une mauvaise valeur, veuillez vérifier les dépendances et les log', __FILE__));
+        }
+        return $infos;
+    }
+
 }
 
 class panasonicVIERACmd extends cmd {
