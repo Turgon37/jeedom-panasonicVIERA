@@ -105,7 +105,7 @@ class panasonicVIERA extends eqLogic {
     /**
      * Return the dependancy info about this plugin
      *
-     * @return [array] an array with theses keys
+     * @return [array] an array with the following keys
      *    log : the name of the log file
      *    progress_file : the path to the file which indicates the progres status
      *    state : the status of dependancies
