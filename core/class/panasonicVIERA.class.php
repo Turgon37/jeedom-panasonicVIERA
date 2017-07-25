@@ -57,6 +57,12 @@ class panasonicVIERA extends eqLogic {
         'group' => 'basic'
     ];
 
+    // The mapping of erros messages with errors codes
+    const PANASONIC_VIERA_LIB_ERRORS = [
+        408 => 'La TV est indisponible',
+        405 => 'Cette commande semble ne pas être supportée par la TV'
+    ];
+
     /*     * *************************Attributs****************************** */
     /**
      * @var this is the official commands index
@@ -675,7 +681,11 @@ class panasonicVIERACmd extends cmd {
                         }
                         break;
                     default:
-                        $result = panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py", [$action, $tvip, $command], $this->getName());
+                        $result = panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py",
+                                [$action, $tvip, $command],
+                                $this->getName(),
+                                true,
+                                self::PANASONIC_VIERA_LIB_ERRORS);
                         if (is_null($result)) {
                             throw new Exception(__('La commande a retournée une valeur nulle, veuillez vérifier les dépendances et les log', __FILE__));
                         }
