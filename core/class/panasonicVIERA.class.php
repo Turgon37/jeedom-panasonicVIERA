@@ -148,8 +148,10 @@ class panasonicVIERA extends eqLogic {
 
         /* LIBRARY HEALTH */
         $health_lib = [
+            'advice' => '',
+            'result' => '',
             'state' => true,
-            'test' => __('Version de la bibliothèque Python', __FILE__)
+            'test' => __('Version de la bibliothèque Python', __FILE__),
         ];
         $lib_local = self::getLibraryVersion('local');
         $lib_online = self::getLibraryVersion('online');
