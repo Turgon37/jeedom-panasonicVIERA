@@ -353,7 +353,7 @@ class panasonicVIERA extends eqLogic {
                 if (isset($tv['mac'])) {
                     $mac = $tv['mac'];
                 }
-                $uuid = self::extractUUIDFromDiscoverResponse($tv['discovery']);
+                $uuid = isset($tv['computed']['uuid']) ? $tv['computed']['uuid'] : null;
                 $eq = null;
 
                 // try to find an existing cmd by the mac address
@@ -391,10 +391,11 @@ class panasonicVIERA extends eqLogic {
 
                 // if no equipment exist with address and UUID, create one
                 if (!is_object($eq)) {
-                    log::add('panasonicVIERA', 'debug', "create new TV equipment with address '" . $address);
+                    $name = isset($tv['computed']['name']) ? $tv['computed']['name'] : $address;;
+                    log::add('panasonicVIERA', 'debug', sprintf('create new TV equipment with address \'%s\' and name : \'%s\'', $address, $name));
                     $eq = new panasonicVIERA();
                     $eq->setEqType_name('panasonicVIERA');
-                    $eq->setName($address);
+                    $eq->setName($name);
                     $result['created'] += 1;
                 } else {
                     log::add('panasonicVIERA', 'debug', "update existing TV equipment");
@@ -417,33 +418,6 @@ class panasonicVIERA extends eqLogic {
         cache::getCache()->delete('panasonicVIERA__discover_lock');
         return $result;
     }
-
-    /**
-     * Extract the TV UUID from the given discovery answer
-     *
-     * @param array the discovery array which contains some items like HTTP headers
-     * @return string|null the uuid's string or null if parse fail
-     */
-    protected static function extractUUIDFromDiscoverResponse($response) {
-        log::add('panasonicVIERA', 'debug', 'extractUUID: try to extract uuid from ' . print_r($response,true));
-        if (!is_array($response)) {
-            return null;
-        }
-
-        // use USN header if defined
-        if (isset($response['USN'])) {
-            $usn = strtolower($response['USN']);
-            log::add('panasonicVIERA', 'debug', sprintf("extractUUID: use USN: '%s'", $usn));
-            $matches = [];
-            $r = preg_match('/[a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12}/', $usn, $matches);
-            if ($r === 1 && count($matches)) {
-                log::add('panasonicVIERA', 'debug', sprintf("extractUUID: found UUID : '%s'", $matches[0]));
-                return $matches[0];
-            }
-        }
-        return null;
-    }
-
 
     /*     * *********************Méthodes d'instance************************* */
 
