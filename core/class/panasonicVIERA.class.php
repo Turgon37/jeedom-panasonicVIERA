@@ -241,7 +241,7 @@ class panasonicVIERA extends eqLogic {
      * @return mixed : the output of the command (stdout of the command)
      * @throw Exception in case of failure
      */
-    public static function execute3rdParty($command, $args = [], $name = null, $throw_errors = true) {
+    public static function execute3rdParty($command, $args = [], $name = null, $throw_errors = true, $error_codes = []) {
         $base_path = realpath(__DIR__ . '/../../3rdparty');
         $extension = pathinfo($command, PATHINFO_EXTENSION);
         $runtime = 'bash';
@@ -281,8 +281,13 @@ class panasonicVIERA extends eqLogic {
         # handle return code and error message
         if (isset($decoded['status']) && intval($decoded['status']) != 0) {
             $message = __("La commande", __FILE__) . " $name " . __('a echouée.', __FILE__);
-            if (isset($decoded['error'])) {
-                $message = $message . "<br />" . __($decoded['error'], __FILE__);
+            if ( isset($decoded['error_code']) ) {
+                log::add('panasonicVIERA', 'debug', "execute3rdParty : command $command has returned error code : " . $decoded['error_code']);
+            }
+            if ( isset($decoded['error_code']) && isset($error_codes[$decoded['error_code']]) ) {
+                $message .= "<br />" . __($error_codes[$decoded['error_code']], __FILE__);
+            } elseif (isset($decoded['error'])) {
+                $message .= "<br />" . __($decoded['error'], __FILE__);
             }
             if ($throw_errors) {
                 throw new Exception($message);
