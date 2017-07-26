@@ -620,6 +620,7 @@ class panasonicVIERA extends eqLogic {
      *
      * @param string the new IP address
      * @return this
+     * @throw Exception if ip address is not valid
      */
     public function setIpAddress($ip) {
         if (!filter_var($ip, FILTER_VALIDATE_IP)) {
