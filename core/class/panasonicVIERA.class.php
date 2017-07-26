@@ -496,7 +496,7 @@ class panasonicVIERA extends eqLogic {
 
         foreach (self::getCommandsIndex() as $cmd) {
             # TODO remove filter on infos commands
-            if ($cmd['group'] == $group_name && $cmd['type'] != 'info') {
+            if ($cmd['group'] == $group_name && $cmd['type'] == 'action' && $cmd['configuration']['action'] == 'sendkey') {
                 $this->addCommand($cmd);
             }
         }
