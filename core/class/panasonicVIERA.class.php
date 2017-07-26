@@ -27,6 +27,13 @@ class panasonicVIERA extends eqLogic {
     const KEY_ADDRESS = 'address';
     // name of uuid configuration key
     const KEY_UUID = 'uuid';
+    // name of model configuration key
+    const KEY_MODEL = 'model';
+    /**
+     * this configuration key if a boolean that indicates if the mac
+     * address has been fetched by discovery or filled manually
+     */
+    const KEY_MAC_DISCOVERED = 'macaddress_discovered';
 
     const KEY_WAKEUP = 'wakeup';
     const KEY_WAKEUPCMD = 'wakeupcmd';
@@ -34,6 +41,7 @@ class panasonicVIERA extends eqLogic {
     const KEY_VOLUMESTEP = 'volume_step';
 
     const KEY_THEME = 'theme';
+
 
     const COMMANDS_GROUPS = [
         'basic' => 'Basiques',
@@ -45,11 +53,11 @@ class panasonicVIERA extends eqLogic {
     ];
 
     // The command template for WakeOnLan command
-    const COMMAND_WAKEONLAN = [
-        'name' => 'WakeOnLan',
+    const TEMPLATE_CMD_WAKEUP = [
+        'name' => 'Wake UP',
         'configuration' => [
-            'action' => 'wakeonlan',
-            'command' => 'wakeonlan',
+            'action' => 'wakeup',
+            'command' => 'none',
         ],
         'type' => 'action',
         'subType' => 'other',
@@ -403,13 +411,21 @@ class panasonicVIERA extends eqLogic {
                 }
                 $result['total'] = $result['updated'] + $result['created'];
 
-                // set eq settings
+                // update set eq settings
                 $eq->setIpAddress($address);
                 if (!is_null($mac) and !empty($mac)) {
-                    $eq->setLogicalId($mac);
+                    $eq->setMacAddress($mac);
+                    $eq->setConfiguration(self::KEY_MAC_DISCOVERED, true);
+                } else {
+                    $eq->setConfiguration(self::KEY_MAC_DISCOVERED, false);
                 }
-                if (!is_null($uuid) and !empty($uuid)) {
+                // set uuid if available
+                if ( !is_null($uuid) and !empty($uuid) ) {
                     $eq->setConfiguration(self::KEY_UUID, $uuid);
+                }
+                // set model if available
+                if ( isset($tv['computed']['model']) ) {
+                    $eq->setConfiguration(self::KEY_MODEL, $tv['computed']['model']);
                 }
 
                 $eq->save();
@@ -426,27 +442,36 @@ class panasonicVIERA extends eqLogic {
      *
      * @param cmd $cmd La commande a ajouter
      */
-    protected function addCommand($cmd) {
-        if (cmd::byEqLogicIdCmdName($this->getId(), $cmd['name'])) {
-            log::add('panasonicVIERA', 'debug', '=> addCommand('. $cmd['name'].') command already exist');
+    protected function addCommand($command, $update = false) {
+        if (!is_array($command)) {
             return;
         }
 
-        if ($cmd) {
-            $panasonicVIERACmd = new panasonicVIERACmd();
-            $panasonicVIERACmd->setName($cmd['name']);
-            $panasonicVIERACmd->setEqLogic_id($this->id);
-            $panasonicVIERACmd->setLogicalId($cmd['configuration']['command']);
-            $panasonicVIERACmd->setConfiguration('action', $cmd['configuration']['action']);
-            $panasonicVIERACmd->setConfiguration('command', $cmd['configuration']['command']);
-            $panasonicVIERACmd->setConfiguration('group', $cmd['group']);
-            $panasonicVIERACmd->setType($cmd['type']);
-            $panasonicVIERACmd->setSubType($cmd['subType']);
-            if (isset($cmd['icon']) && $cmd['icon'] != '')
-                $panasonicVIERACmd->setDisplay('icon', '<i class=" '.$cmd['icon'].'"></i>');
-            log::add('panasonicVIERA', 'debug', '=> addCommand('. $cmd['name'].') add command');
-            $panasonicVIERACmd->save();
+        $panasonicVIERACmd = cmd::byEqLogicIdCmdName($this->getId(), $command['name']);
+        if ( is_object($panasonicVIERACmd) && !$update ) {
+            log::add('panasonicVIERA', 'debug', '=> addCommand('. $command['name'].') command already exist');
+            return;
         }
+        if (!is_object($panasonicVIERACmd)) {
+            log::add('panasonicVIERA', 'debug', '=> addCommand('. $command['name'].') add command');
+            $panasonicVIERACmd = new panasonicVIERACmd();
+            $panasonicVIERACmd->setEqLogic_id($this->getId());
+        } else {
+            log::add('panasonicVIERA', 'debug', '=> addCommand('. $command['name'].') update command');
+        }
+
+        $panasonicVIERACmd->setName($command['name']);
+        $panasonicVIERACmd->setLogicalId($command['configuration']['command']);
+        foreach ($command['configuration'] as $key => $value) {
+            $panasonicVIERACmd->setConfiguration($key, $value);
+        }
+        $panasonicVIERACmd->setConfiguration('group', $command['group']);
+        $panasonicVIERACmd->setType($command['type']);
+        $panasonicVIERACmd->setSubType($command['subType']);
+        if (isset($command['icon']) && $command['icon'] != '') {
+            $panasonicVIERACmd->setDisplay('icon', '<i class=" '.$command['icon'].'"></i>');
+        }
+        $panasonicVIERACmd->save();
     }
 
     /**
@@ -499,6 +524,21 @@ class panasonicVIERA extends eqLogic {
 
     }
 
+    public function preUpdate() {
+        $addr = $this->getConfiguration(self::KEY_ADDRESS);
+        if ($addr == '') {
+            log::add('panasonicVIERA', 'debug', '=> preUpdate: ip address empty');
+            throw new Exception(__('L\'adresse IP ne peut etre vide. Vous pouvez la trouver dans les paramètres de votre TV ou de votre routeur (box).', __FILE__));
+        }
+        $this->setIpAddress($addr);
+
+        $this->setMacAddress($this->getLogicalId());
+    }
+
+    public function postUpdate() {
+
+    }
+
     public function preSave() {
         if (!$this->getId()) {
             log::add('panasonicVIERA', 'debug', '=> preSave empty id');
@@ -517,49 +557,33 @@ class panasonicVIERA extends eqLogic {
             }
         }
 
-        $mac = $this->getLogicalId();
-        if (!filter_var($mac, FILTER_VALIDATE_MAC)) {
-           log::add('panasonicVIERA', 'debug', '=> preSave: remove wakeonlan command because of invalid mac address');
-           $this->removeCommand(self::COMMAND_WAKEONLAN);
-        }
-        # TODO remove default value here and add default value on the ui
-        switch ($this->getConfiguration(self::KEY_WAKEUP, 'wol')) {
+        switch ($this->getConfiguration(self::KEY_WAKEUP, 'none')) {
             case 'wol':
-                if (filter_var($mac, FILTER_VALIDATE_MAC)) {
+                if ($this->getLogicalId() != '') {
                     log::add('panasonicVIERA', 'debug', '=> preSave: add wakeonlan command for valid mac address');
-                    $cmd = self::COMMAND_WAKEONLAN;
-                    $cmd['configuration']['command'] = $mac;
-                    $this->addCommand($cmd);
+                    $cmd = self::TEMPLATE_CMD_WAKEUP;
+                    $cmd['configuration']['wakeup_type'] = $this->getConfiguration(self::KEY_WAKEUP, 'none');
+                    $cmd['configuration']['command'] = '';
+                    $this->addCommand($cmd, true);
                 }
                 break;
             case 'cmd':
-                $this->removeCommand(self::COMMAND_WAKEONLAN);
+                $cmd = self::TEMPLATE_CMD_WAKEUP;
+                $cmd['configuration']['wakeup_type'] = $this->getConfiguration(self::KEY_WAKEUP, 'none');
+                $cmd['configuration']['command'] = $this->getConfiguration(self::KEY_WAKEUPCMD);
+                $this->addCommand($cmd, true);
                 break;
             case 'none':
-                $this->removeCommand(self::COMMAND_WAKEONLAN);
+                $this->removeCommand(self::TEMPLATE_CMD_WAKEUP);
                 break;
             default:
-                #log::add('panasonicVIERA', 'error', "Bad value for ". self::KEY_WAKEUP . " configuration.");
+                log::add('panasonicVIERA', 'error', "Bad value for ". self::KEY_WAKEUP . " configuration.");
                 break;
         }
 
     }
 
     public function postSave() {
-
-    }
-
-    public function preUpdate() {
-        $addr = $this->getConfiguration(self::KEY_ADDRESS);
-        if ($addr == '') {
-            log::add('panasonicVIERA', 'debug', '=> preUpdate: ip address empty');
-            throw new Exception(__('L\'adresse IP ne peut etre vide. Vous pouvez la trouver dans les paramètres de votre TV ou de votre routeur (box).', __FILE__));
-        }
-
-        $this->setIpAddress($addr);
-    }
-
-    public function postUpdate() {
 
     }
 
@@ -605,6 +629,29 @@ class panasonicVIERA extends eqLogic {
     }
 
     /**
+     * Set the new mac address for this command
+     *
+     * @param string the new mac address
+     * @return this
+     * @throw Exception if mac address is not valid
+     */
+    public function setMacAddress($mac) {
+        // if mac is not empty validate it
+        if ( $mac != '' ) {
+            if (!filter_var($mac, FILTER_VALIDATE_MAC)) {
+                log::add('panasonicVIERA', 'debug', '=> setMacAddress: mac address checking failure');
+                throw new Exception(__('Vous avez saisit une mauvaise adresse MAC', __FILE__). " '$mac'.");
+            }
+            $this->setLogicalId($mac);
+        } else {
+            //log::add('panasonicVIERA', 'debug', '=> setMacAddress: remove wakeup command because of empty mac address');
+            //$this->removeCommand(self::TEMPLATE_CMD_WAKEUP);
+        }
+
+        return $this;
+    }
+
+    /**
      * Return some devices informations
      *
      */
@@ -646,31 +693,23 @@ class panasonicVIERACmd extends cmd {
                 if (empty($command) || is_null($command)) {
                     throw new Exception('Tried to execute a command with an empty command');
                 }
-                log::add('panasonicVIERA', 'debug', sprintf('Action command : %s', $action));
+                log::add('panasonicVIERA', 'debug', sprintf('execute: Action command : %s', $action));
                 switch ($action) {
-                    case 'wakeonlan':
-                        $factory = new \Phpwol\Factory();
-                        $packet = $factory->magicPacket();
-                        log::add('panasonicVIERA', 'debug', sprintf('Send WOL packet to %s via %s', $command, panasonicVIERA::getBroadcastIp()));
-                        $result = $packet->send($command, panasonicVIERA::getBroadcastIp());
-                        if (!$result) {
-                            switch ($packet->getLastError()) {
-                                case 1:
-                                    $error = __('invalid IP address', __FILE__);
-                                    break;
-                                case 2:
-                                    $error = __('invalid MAC address', __FILE__);
-                                    break;
-                                case 4:
-                                    $error = __('invalid SUBNET', __FILE__);
-                                    break;
-                                default:
-                                    $error = $packet->getLastError();
-                                    break;
-                            }
-                            throw new Exception(__('Failed to send WOL packet because : ', __FILE__) . $error);
-                        } else {
-                            log::add('panasonicVIERA', 'debug', sprintf('Succesfully sent WOL packet to %s', $command));
+                    case 'wakeup':
+                        $wakeuptype = $this->getConfiguration('wakeup_type');
+                        log::add('panasonicVIERA', 'debug', sprintf('execute: WakeUp command type : %s', $wakeuptype));
+                        switch ($wakeuptype) {
+                            case 'wol':
+                            case 'cmd':
+                                log::add('panasonicVIERA', 'debug', sprintf('execute: WakeUp command type : %s', $wakeuptype));
+                                $wakeup_cmd = cmd::byId(str_replace('#', '', $command));
+                                if (is_object($wakeup_cmd)) {
+                                    log::add('panasonicVIERA', 'info', __('Execute la commande ', __FILE__) . $wakeup_cmd->getHumanNamegetHumanName());
+                                    $wakeup_cmd->execCmd();
+                                } else {
+                                    log::add('panasonicVIERA', 'error', __('sss', __FILE__));
+                                }
+                                break;
                         }
                         break;
                     default:

@@ -15,20 +15,54 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * GLOBAL VIEW
+ */
+
+// register event for discover button
 $('.discoverTVs').on('click', function () {
     discoverTVs();
 });
 
-$('#bt_selectWakeupCmd').on('click', function () {
+
+/*
+ * EQUIPMENT VIEW
+ */
+
+$('#bt_informationsModal').on('click', function () {
+     $('#md_modal').dialog({title: "{{Informations (brutes) à propos de la Télévision}}"});
+     $('#md_modal').load('index.php?v=d&plugin=panasonicVIERA&modal=informations&id=' + $('.eqLogicAttr[data-l1key=id]').value()).dialog('open');
+});
+
+$('#bt_wakeupCmd').on('click', function () {
      jeedom.cmd.getSelectModal({cmd: {type: 'action'}}, function (result) {
-         $('#bt_inputWakeupCmd').atCaret('insert', result.human);
+         $('#in_wakeupCmd').atCaret('insert', result.human);
      });
  });
 
- $('#bt_informationsModal').on('click', function () {
-      $('#md_modal').dialog({title: "{{Informations à propos de la Télévision}}"});
-      $('#md_modal').load('index.php?v=d&plugin=panasonicVIERA&modal=informations&id=' + $('.eqLogicAttr[data-l1key=id]').value()).dialog('open');
- });
+$('#in_macdiscovered').change(function() {
+    var inputMacAddress = $('.eqLogicAttr[data-l1key=logicalId]');
+    if ($('#in_macdiscovered').value() === "1") {
+        inputMacAddress.prop("disabled", true);
+        $('#a_macaddressHelper').show();
+    } else {
+        inputMacAddress.prop("disabled", false);
+        $('#a_macaddressHelper').hide();
+    }
+});
+
+// update the form according to wake up selection
+$('#sl_wakeup').change(function() {
+    switch($('#sl_wakeup').value()) {
+    case 'cmd':
+        $('#div_wakeupCmd').show();
+        break;
+    case 'none':
+    default:
+        $('#div_wakeupCmd').hide();
+    }
+});
+
 
 $("#table_cmd").sortable({axis: "y", cursor: "move", items: ".cmd", placeholder: "ui-state-highlight", tolerance: "intersect", forcePlaceholderSize: true});
 

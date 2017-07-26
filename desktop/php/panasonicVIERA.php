@@ -62,10 +62,11 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
     <a class="btn btn-success eqLogicAction pull-right" data-action="save"><i class="fa fa-check-circle"></i> {{Sauvegarder}}</a>
         <a class="btn btn-danger eqLogicAction pull-right" data-action="remove"><i class="fa fa-minus-circle"></i> {{Supprimer}}</a>
         <a class="btn btn-default eqLogicAction pull-right" data-action="configure"><i class="fa fa-cogs"></i> {{Configuration avancée}}</a>
-        <a class="btn btn-default expertModeVisible pull-right" id="bt_informationsModal"><i class="fa fa-cogs"></i> {{Informations}}</a>
+        <a class="btn btn-default expertModeVisible pull-right" id="bt_informationsModal"><i class="fa fa-cogs"></i> {{Informations brutes}}</a>
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fa fa-arrow-circle-left"></i></a></li>
             <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-tachometer"></i> {{Equipement}}</a></li>
+            <li role="presentation" class="expertModeVisible"><a href="#featuretab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-id-card-o"></i> {{Caractéristiques}}</a></li>
             <li role="presentation"><a href="#commandtab" aria-controls="profile" role="tab" data-toggle="tab"><i class="fa fa-list-alt"></i> {{Commandes}}</a></li>
         </ul>
         <div class="tab-content" style="height:calc(100% - 50px);overflow:auto;overflow-x: hidden;">
@@ -78,6 +79,10 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                             <div class="col-sm-3">
                                 <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
                                 <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{TV's name}}"/>
+                            </div>
+                            <label class="col-sm-3 control-label expertModeVisible">{{Modèle}}</label>
+                            <div class="col-lg-2 col-sm-5 expertModeVisible">
+                                <span class="eqLogicAttr label label-primary" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_MODEL ?>" style="font-size : 1em;"></span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -119,9 +124,13 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">{{Adresse MAC (uniquement pour le Wake On Lan, récupérée par scan)}}</label>
+                            <label class="col-sm-3 control-label">{{Adresse MAC (uniquement pour le WakeUp)}}</label>
                             <div class="col-lg-2 col-sm-5">
-                                <input type="text" class="eqLogicAttr form-control" data-l1key="logicalId" placeholder="{{TV's MAC address}}"/>
+                                <input type="text" class="eqLogicAttr form-control" id="in_macdiscovered" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_MAC_DISCOVERED ?>" style="display : none;" />
+                                <input type="text" class="eqLogicAttr form-control" title="{{L'adresse MAC a été récupérée via la découverte}}" data-l1key="logicalId" placeholder="{{TV's MAC address}}" />
+                            </div>
+                            <div class="col-lg-1 col-sm-1">
+                                <a href="#" class="btn btn-primary" id="a_macaddressHelper" style="display: none;" title="{{L'adresse MAC a été récupérée via la découverte}}"><i class="fa fa fa-question-circle"></i></a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -134,8 +143,6 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
     <?php endforeach; ?>
                             </div>
                         </div>
-
-<?php if (false) : ?>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">{{Couleur des commandes}}</label>
                             <div class="col-lg-2 col-sm-2">
@@ -159,34 +166,46 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">{{Mode de réveil de la TV}}</label>
-                            <div class="col-sm-3">
-                                <select class="eqLogicAttr form-control" data-l1key='configuration' data-l2key='<?= panasonicVIERA::KEY_WAKEUP ?>'>
+                            <div class="col-sm-2">
+                                <select class="eqLogicAttr form-control" id="sl_wakeup" data-l1key='configuration' data-l2key='<?= panasonicVIERA::KEY_WAKEUP ?>'>
                                     <option selected="selected" value='none'>{{Pas de commande de réveil}}</option>
-                                    <option value='wol'>{{Utiliser le WakeOnLan (vérifier le support de la TV)}}</option>
-                                    <option value='cmd'>{{Utiliser une commande Jeedom}}</option>
+<?php if (class_exists('networks') ) : ?>
+                                    <option value='wol'>{{Utiliser le WakeOnLan (via networks)}}</option>
+<?php endif; ?>
+                                    <option value='cmd'>{{Utiliser une commande d'action}}</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Commande Alerte</label>
-                            <div class="col-sm-3">
-                                <input id="bt_inputWakeupCmd" class="eqLogicAttr configuration form-control" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_WAKEUPCMD ?>" type="text"><span class="input-group-btn"><a class="btn btn-default cursor" title="Rechercher une commande" id="bt_selectWakeupCmd"><i class="fa fa-list-alt"></i></a></span>
+                            <div id="div_wakeupCmd" class="col-sm-3">
+                                <div class="input-group">
+                                    <input id="in_wakeupCmd" class="form-control eqLogicAttr" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_WAKEUPCMD ?>">
+                                    <span class="input-group-btn"><a id="bt_wakeupCmd" class="btn btn-default btn-success"><i class="fa fa-list-alt"></i></a></span>
+                                </div>
+
                             </div>
                         </div>
-<?php endif; ?>
+                    </fieldset>
+                </form>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="featuretab">
+                <legend><i class="fa fa-arrow-circle-left eqLogicAction cursor" data-action="returnToThumbnailDisplay"></i> {{Caractéristiques}}</legend>
+                <div class="alert alert-info">
+                    {{Info : <br /> Les informations suivantes sont des caractéristiques de la télévision qui ont pu être relevées lors de la découverte}}
+                </div>
+                <form class="form-horizontal">
+                    <fieldset>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">{{UUID de la TV}}</label>
                             <div class="col-lg-2 col-sm-5">
-                                <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_UUID ?>" disabled="disabled" placeholder="{{TV UUID}}"/>
+                                <span class="eqLogicAttr label label-primary" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_UUID ?>" style="font-size : 1em;"></span>
                             </div>
                         </div>
                     </fieldset>
                 </form>
             </div>
             <div role="tabpanel" class="tab-pane" id="commandtab">
-                <legend>{{Commands}}</legend>
+                <legend><i class="fa fa-arrow-circle-left eqLogicAction cursor" data-action="returnToThumbnailDisplay"></i> {{Commandes}}</legend>
                 <div class="alert alert-info">
-                    {{Info : <br\/> - Les commandes ci-dessous sont ajoutées en fonction des groupes activés de l'équipement}}
+                    {{Info : <br /> Les commandes ci-dessous sont ajoutées en fonction des groupes activés de l'équipement}}
                 </div>
                 <table id="table_cmd" class="table table-bordered table-condensed">
                     <thead>
