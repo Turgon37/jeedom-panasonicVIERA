@@ -517,7 +517,9 @@ class panasonicVIERA extends eqLogic {
     }
 
     public function preInsert() {
-
+        $this->setConfiguration(self::KEY_WAKEUP, 'none');
+        $this->setConfiguration(self::KEY_VOLUMESTEP, 2);
+        $this->setConfiguration(self::KEY_THEME, 'white');
     }
 
     public function postInsert() {
