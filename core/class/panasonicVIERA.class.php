@@ -36,18 +36,18 @@ class panasonicVIERA extends eqLogic {
      * address has been fetched by discovery or filled manually
      */
     const KEY_MAC_DISCOVERED = 'macaddress_discovered';
-
-
+    // configure wakeup behaviour
     const KEY_WAKEUP = 'wakeup';
+    // configure wakeup command if previous set to 'cmd'
     const KEY_WAKEUPCMD = 'wakeupcmd';
-
+    // configure the increase steps of volumes actions
     const KEY_VOLUMESTEP = 'volume_step';
-
+    // configure the color of buttons
     const KEY_THEME = 'theme';
-
+    // this settings allow errors of commands to be triggered
     const KEY_TRIGGER_ERRORS = 'trigger_errors';
 
-
+    // list of commands groups with full name
     const COMMANDS_GROUPS = [
         'basic' => 'Basiques',
         'numeric' => 'Numeriques',
@@ -527,6 +527,71 @@ class panasonicVIERA extends eqLogic {
         }
     }
 
+    /*
+     * Create a equipment of external plugin type and return a command with wakeonlan ability
+     *
+     * @return integer : the id of the wakeonlan command
+     * @throw Exception in case where the wakeonlan command cannot be retireved
+     */
+    private function createWakeOnLAnEqLogic() {
+        if (! class_exists('networks') ) {
+            throw new Exception(__('Impossible de créer l\'equipement du plugin networks', __FILE__));
+        }
+        $mac = $this->getLogicalId();
+        $addr = $this->getIpAddress();
+        $eq = null;
+        if (is_null($mac) || empty($mac) || is_null($addr) || empty($addr)) {
+            throw new Exception(__('L\'adresse IP ou l\'adresse MAC est vide, l\'equipement WakeOnLan ne peut pas être crée', __FILE__));
+        }
+        log::add('panasonicVIERA', 'debug', sprintf('createWakeOnLAnEqLogic: create wol eqLogic for %s', $this->getConfiguration(self::KEY_ADDRESS)));
+
+        // use first mac address
+        log::add('panasonicVIERA', 'debug', sprintf("search existing networks equipment by mac '%s'", $mac));
+        $search = networks::byTypeAndSearhConfiguration('networks', sprintf('"mac":"%s"', $mac));
+        if (count($search)) {
+            $eq = $search[0];
+        }
+        if (is_object($eq)) {
+            log::add('panasonicVIERA', 'debug', sprintf("found existing networks equipment %d by mac '%s'", $eq->getId(), $mac));
+        }
+
+        // try to find an existing cmd by the uuid
+        if (!is_object($eq)) {
+            log::add('panasonicVIERA', 'debug', sprintf("search existing networks equipment by ip address '%s'", $addr));
+            $search = networks::byTypeAndSearhConfiguration('networks', sprintf('"ip":"%s"', $addr));
+            if (count($search)) {
+                $eq = $search[0];
+            }
+            if (is_object($eq)) {
+                log::add('panasonicVIERA', 'debug', sprintf("found existing equipment %d by ip address '%s'", $eq->getId(), $addr));
+            }
+        }
+
+        // if no equipment exist with address and UUID, create one
+        if (!is_object($eq)) {
+            log::add('panasonicVIERA', 'debug', sprintf('create new networks equipment with address \'%s\' and name : \'%s\'', $addr, $this->getName()));
+            $eq = new networks();
+            $eq->setEqType_name('networks');
+            $eq->setName($this->getName());
+        } else {
+            log::add('panasonicVIERA', 'debug', "update existing networks equipment");
+        }
+        //$eq->setObject_id($this->getObject_id());
+        $eq->setIsEnable(1);
+        $eq->setConfiguration('ip', $addr);
+        $eq->setConfiguration('mac', $mac);
+        $eq->setConfiguration('broadcastIP', '255.255.255.0');
+        $eq->save();
+
+        $wol_cmd = $eq->getCmd(null, 'wol');
+        if (!is_object($wol_cmd)) {
+            throw new Exception(__('Impossible de configurer la commande wol de l\'équipement WakeOnLan', __FILE__));
+        }
+        return $wol_cmd->getId();
+    }
+
+    /*    Data manipulation function    */
+
     public function preInsert() {
         $this->setConfiguration(self::KEY_TRIGGER_ERRORS, false);
         $this->setConfiguration(self::KEY_WAKEUP, 'none');
@@ -573,11 +638,19 @@ class panasonicVIERA extends eqLogic {
 
         switch ($this->getConfiguration(self::KEY_WAKEUP, 'none')) {
             case 'wol':
+                if (! class_exists('networks') ) {
+                    $this->setConfiguration(self::KEY_WAKEUP, 'none');
+                    log::add('panasonicVIERA', 'info', __('Le plugin networks n\'est pas disponible, la configuration du reveil de la TV a été annuléé', __FILE__));
+                    break;
+                }
                 if ($this->getLogicalId() != '') {
                     log::add('panasonicVIERA', 'debug', '=> preSave: add wakeonlan command for valid mac address');
                     $cmd = self::TEMPLATE_CMD_WAKEUP;
                     $cmd['configuration']['wakeup_type'] = $this->getConfiguration(self::KEY_WAKEUP, 'none');
-                    $cmd['configuration']['command'] = '';
+                    $cmd['configuration']['command'] = $this->createWakeOnLAnEqLogic();
+                    if (is_null($cmd['configuration']['command'])) {
+                        throw new Exception(__('La création de l\'equipement pour le WakeOnLan a échoué', __FILE__));
+                    }
                     $this->addCommand($cmd, true);
                 }
                 break;
@@ -715,11 +788,16 @@ class panasonicVIERACmd extends cmd {
                         log::add('panasonicVIERA', 'debug', sprintf('execute: WakeUp command type : %s', $wakeuptype));
                         switch ($wakeuptype) {
                             case 'wol':
+                                if (! class_exists('networks')) {
+                                    $panasonicTV->setConfiguration(self::KEY_WAKEUP, 'none');
+                                    $panasonicTV->save();
+                                    log::add('panasonicVIERA', 'error', __('Le plugin networks n\'est pas disponible, la configuration du reveil de la TV a été annuléé', __FILE__));
+                                }
                             case 'cmd':
-                                log::add('panasonicVIERA', 'debug', sprintf('execute: WakeUp command type : %s', $wakeuptype));
                                 $wakeup_cmd = cmd::byId(str_replace('#', '', $command));
                                 if (is_object($wakeup_cmd)) {
-                                    log::add('panasonicVIERA', 'info', __('Execute la commande ', __FILE__) . $wakeup_cmd->getName());
+                                    log::add('panasonicVIERA', 'info', sprintf('%s %s(%s)',
+                                            __('Execute la commande ', __FILE__), $wakeup_cmd->getName(), $wakeup_cmd->getId()));
                                     $wakeup_cmd->execCmd();
                                 } else {
                                     log::add('panasonicVIERA', 'error', __('Impossible d\'executer la commande ' . $command, __FILE__));
