@@ -29,27 +29,63 @@ $('.discoverTVs').on('click', function () {
  * EQUIPMENT VIEW
  */
 
+function printEqLogic(_eqLogic) {
+    actionOptions = []
+    $('#div_features').empty();
+    if (isset(_eqLogic.configuration)) {
+        if (isset(_eqLogic.configuration.features)) {
+            for (var feat in _eqLogic.configuration.features) {
+                addFeature(feat, _eqLogic.configuration.features[feat]);
+            }
+        }
+        
+        if (isset(_eqLogic.configuration.macaddress_discovered)) {
+            // lock the mac address field on certains conditions
+            var inputMacAddress = $('.eqLogicAttr[data-l1key=logicalId]');
+            if (_eqLogic.configuration.macaddress_discovered) {
+                inputMacAddress.prop("disabled", true);
+                $('#div_macaddress').addClass('expertModeVisible');
+                $('#a_macaddressHelper').show();
+            } else {
+                inputMacAddress.prop("disabled", false);
+                $('#div_macaddress').removeClass('expertModeVisible');
+                $('#a_macaddressHelper').hide();
+            }
+        };
+
+    }
+}
+
+function addFeature(name, value) {
+    name = name.charAt(0).toUpperCase() + name.replace('_', ' ').slice(1);
+    var tr = '<tr>';
+    tr += '<td>';
+    tr += name;
+    tr += '</td>';
+    tr += '<td>';
+    tr += value;
+    tr += '</td>';
+    tr += '</tr>';
+    $('#table_features tbody').append(tr);
+
+//    <label class="col-sm-3 control-label">{{ ${name} }}</label>
+//    <div class="col-lg-2 col-sm-5">
+//        <span class="label label-primary" style="font-size : 1em;">${value}</span>
+//    </div>
+//</div>
+}
+
 $('#bt_informationsModal').on('click', function () {
      $('#md_modal').dialog({title: "{{Informations (brutes) à propos de la Télévision}}"});
      $('#md_modal').load('index.php?v=d&plugin=panasonicVIERA&modal=informations&id=' + $('.eqLogicAttr[data-l1key=id]').value()).dialog('open');
 });
 
+// load the command toolkit into the command field
 $('#bt_wakeupCmd').on('click', function () {
      jeedom.cmd.getSelectModal({cmd: {type: 'action'}}, function (result) {
          $('#in_wakeupCmd').atCaret('insert', result.human);
      });
  });
-
-$('#in_macdiscovered').change(function() {
-    var inputMacAddress = $('.eqLogicAttr[data-l1key=logicalId]');
-    if ($('#in_macdiscovered').value() === "1") {
-        inputMacAddress.prop("disabled", true);
-        $('#a_macaddressHelper').show();
-    } else {
-        inputMacAddress.prop("disabled", false);
-        $('#a_macaddressHelper').hide();
-    }
-});
 
 // update the form according to wake up selection
 $('#sl_wakeup').change(function() {
@@ -76,14 +112,23 @@ function addCmdToTable(_cmd) {
     if (!isset(_cmd.configuration)) {
         _cmd.configuration = {};
     }
+    var disable_edit = false;
+    if (isset(_cmd.configuration.autocreated) && _cmd.configuration.autocreated) {
+        disable_edit = true;
+    }
     var tr = '<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">';
     tr += '<td>';
     tr += '<span class="cmdAttr" data-l1key="id" style="display:none;"></span>';
     tr += '<input class="cmdAttr form-control input-sm" data-l1key="name" style="width : 140px;" placeholder="{{Nom}}">';
     tr += '</td>';
     tr += '<td>';
-    tr += '<span class="type" type="' + init(_cmd.type) + '">' + jeedom.cmd.availableType() + '</span>';
-    tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
+    if (disable_edit) {
+        tr += '<input class="form-control input-sm" disabled style="width : 120px;" value="'+ _cmd.type + '">';
+        tr += '<input class="form-control input-sm" disabled style="width : 120px;" value="'+ _cmd.subType + '">';
+    } else {
+        tr += '<span class="type" type="' + init(_cmd.type) + '">' + jeedom.cmd.availableType() + '</span>';
+        tr += '<span class="subType" subType="' + init(_cmd.subType) + '"></span>';
+    }
     tr += '</td>';
     tr += '<td>';
     tr += '<span><label class="checkbox-inline"><input class="cmdAttr checkbox-inline" data-l1key="isVisible" checked="" type="checkbox">{{Afficher}}</label></span>';
@@ -98,10 +143,12 @@ function addCmdToTable(_cmd) {
     tr += '</tr>';
     $('#table_cmd tbody').append(tr);
     $('#table_cmd tbody tr:last').setValues(_cmd, '.cmdAttr');
-    if (isset(_cmd.type)) {
-        $('#table_cmd tbody tr:last .cmdAttr[data-l1key=type]').value(init(_cmd.type));
+    if (!disable_edit) {
+        if (isset(_cmd.type)) {
+            $('#table_cmd tbody tr:last .cmdAttr[data-l1key=type]').value(init(_cmd.type));
+        }
+        jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
     }
-    jeedom.cmd.changeType($('#table_cmd tbody tr:last'), init(_cmd.subType));
 }
 
 function discoverTVs() {
@@ -128,7 +175,7 @@ function discoverTVs() {
                 });
             } else {
                 $('#div_scanAlert').showAlert({
-                    message: [data.result.total, '{{TV(s) découverte(s) dont}}', data.result.created, '{{TV(s) crée(s) et}}', data.result.updated, '{{TV(s) mise(s) à jour.}}', ].join(' '),
+                    message: [data.result.total, '{{TV(s) découverte(s) dont}}', data.result.created, '{{TV(s) crée(s) et}}', data.result.updated, '{{TV(s) mise(s) à jour.<br \/>La page va se recharger dans 2 secondes.}}', ].join(' '),
                     level: 'success'
                 });
                 setTimeout(window.location.reload.bind(window.location), 2000);

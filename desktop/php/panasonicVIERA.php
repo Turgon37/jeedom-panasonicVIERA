@@ -123,7 +123,7 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                                 <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_ADDRESS ?>" placeholder="{{IP Address}}"/>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div id="div_macaddress" class="form-group">
                             <label class="col-sm-3 control-label">{{Adresse MAC (uniquement pour le WakeUp)}}</label>
                             <div class="col-lg-2 col-sm-5">
                                 <input type="text" class="eqLogicAttr form-control" id="in_macdiscovered" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_MAC_DISCOVERED ?>" style="display : none;" />
