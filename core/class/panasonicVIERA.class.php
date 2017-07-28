@@ -716,10 +716,10 @@ class panasonicVIERACmd extends cmd {
                                 log::add('panasonicVIERA', 'debug', sprintf('execute: WakeUp command type : %s', $wakeuptype));
                                 $wakeup_cmd = cmd::byId(str_replace('#', '', $command));
                                 if (is_object($wakeup_cmd)) {
-                                    log::add('panasonicVIERA', 'info', __('Execute la commande ', __FILE__) . $wakeup_cmd->getHumanNamegetHumanName());
+                                    log::add('panasonicVIERA', 'info', __('Execute la commande ', __FILE__) . $wakeup_cmd->getName());
                                     $wakeup_cmd->execCmd();
                                 } else {
-                                    log::add('panasonicVIERA', 'error', __('sss', __FILE__));
+                                    log::add('panasonicVIERA', 'error', __('Impossible d\'executer la commande ' . $command, __FILE__));
                                 }
                                 break;
                         }
