@@ -58,14 +58,17 @@ class panasonicVIERA extends eqLogic {
     // The command template for WakeOnLan command
     const TEMPLATE_CMD_WAKEUP = [
         'name' => 'Wake UP',
-        'configuration' => [
-            'action' => 'wakeup',
-            'command' => 'none',
-        ],
+        'logicalId' => 'wakeup',
         'type' => 'action',
         'subType' => 'other',
-        'description' => 'Wakeup the TV',
-        'group' => 'basic'
+        'configuration' => [
+            'description' => 'Wakeup the TV',
+            'group' => 'basic',
+            'wakeup_type' => 'none',
+            'action' => 'wakeup',
+            'command' => 'none',
+            'autocreated' => true
+        ],
     ];
 
     // The mapping of erros messages with errors codes
@@ -468,11 +471,10 @@ class panasonicVIERA extends eqLogic {
         }
 
         $panasonicVIERACmd->setName($command['name']);
-        $panasonicVIERACmd->setLogicalId($command['configuration']['command']);
+        $panasonicVIERACmd->setLogicalId(isset($command['logicalId']) ? $command['logicalId'] : $command['configuration']['command']);
         foreach ($command['configuration'] as $key => $value) {
             $panasonicVIERACmd->setConfiguration($key, $value);
         }
-        $panasonicVIERACmd->setConfiguration('group', $command['group']);
         $panasonicVIERACmd->setType($command['type']);
         $panasonicVIERACmd->setSubType($command['subType']);
         if (isset($command['icon']) && $command['icon'] != '') {
@@ -503,7 +505,7 @@ class panasonicVIERA extends eqLogic {
 
         foreach (self::getCommandsIndex() as $cmd) {
             # TODO remove filter on infos commands
-            if ($cmd['group'] == $group_name && $cmd['type'] == 'action' && $cmd['configuration']['action'] == 'sendkey') {
+            if ($cmd['configuration']['group'] == $group_name && $cmd['type'] == 'action' && $cmd['configuration']['action'] == 'sendkey') {
                 $this->addCommand($cmd);
             }
         }
@@ -517,7 +519,7 @@ class panasonicVIERA extends eqLogic {
     protected function removeCommands($group_name) {
         log::add('panasonicVIERA', 'debug', '=> removeCommands('.$group_name.')');
         foreach (self::getCommandsIndex() as $cmd) {
-            if ($cmd['group'] == $group_name) {
+            if ($cmd['configuration']['group'] == $group_name) {
                 $this->removeCommand($cmd);
             }
         }
