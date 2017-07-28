@@ -132,6 +132,7 @@ try:
     else:
         raise panasonic_viera.RemoteControlException("L'action " + args.action + " n'est pas disponible.")
 except panasonic_viera.RemoteControlException as e:
+    result['output'] = 'nok'
     result['status'] = 1
     result['error'] = str(e)
     if getattr(e, "getCode", None) and callable(e.getCode):
