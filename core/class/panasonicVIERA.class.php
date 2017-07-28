@@ -29,11 +29,14 @@ class panasonicVIERA extends eqLogic {
     const KEY_UUID = 'uuid';
     // name of model configuration key
     const KEY_MODEL = 'model';
+    // name of the features configuration key
+    const KEY_FEATURES = 'features';
     /**
      * this configuration key if a boolean that indicates if the mac
      * address has been fetched by discovery or filled manually
      */
     const KEY_MAC_DISCOVERED = 'macaddress_discovered';
+
 
     const KEY_WAKEUP = 'wakeup';
     const KEY_WAKEUPCMD = 'wakeupcmd';
@@ -424,8 +427,12 @@ class panasonicVIERA extends eqLogic {
                     $eq->setConfiguration(self::KEY_UUID, $uuid);
                 }
                 // set model if available
-                if ( isset($tv['computed']['model']) ) {
-                    $eq->setConfiguration(self::KEY_MODEL, $tv['computed']['model']);
+                if ( isset($tv['computed']['model_number']) ) {
+                    $eq->setConfiguration(self::KEY_MODEL, $tv['computed']['model_number']);
+                }
+
+                if ( isset($tv['computed']) && is_array($tv['computed']) ) {
+                    $eq->setConfiguration(self::KEY_FEATURES, $tv['computed']);
                 }
 
                 $eq->save();

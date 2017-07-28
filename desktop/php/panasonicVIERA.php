@@ -183,24 +183,31 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
 
                             </div>
                         </div>
+                        <div class="form-group expertModeVisible">
+                            <label class="col-sm-3 control-label" >{{Remonter les erreurs d'execution des commandes}}</label>
+                            <div class="col-sm-9">
+                                <label class="checkbox-inline"><input class="eqLogicAttr" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_TRIGGER_ERRORS ?>" type="checkbox">
+                                </label>
+                            </div>
+               			</div>
                     </fieldset>
                 </form>
             </div>
             <div role="tabpanel" class="tab-pane" id="featuretab">
                 <legend><i class="fa fa-arrow-circle-left eqLogicAction cursor" data-action="returnToThumbnailDisplay"></i> {{Caractéristiques}}</legend>
                 <div class="alert alert-info">
-                    {{Info : <br /> Les informations suivantes sont des caractéristiques de la télévision qui ont pu être relevées lors de la découverte}}
+                    {{Info : <br /> Les informations suivantes sont des caractéristiques de la télévision qui ont pu être relevées lors de la découverte<br />Pour la plupart, elles sont en anglais car l'interface de communication avec la Télévision fonctionne dans cette langue}}
                 </div>
-                <form class="form-horizontal">
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">{{UUID de la TV}}</label>
-                            <div class="col-lg-2 col-sm-5">
-                                <span class="eqLogicAttr label label-primary" data-l1key="configuration" data-l2key="<?= panasonicVIERA::KEY_UUID ?>" style="font-size : 1em;"></span>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
+                <table id="table_features" class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>{{Nom de la caractéristique}}</th>
+                            <th>{{Valeur}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
             <div role="tabpanel" class="tab-pane" id="commandtab">
                 <legend><i class="fa fa-arrow-circle-left eqLogicAction cursor" data-action="returnToThumbnailDisplay"></i> {{Commandes}}</legend>
