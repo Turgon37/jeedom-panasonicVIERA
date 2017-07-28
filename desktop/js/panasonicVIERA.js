@@ -38,7 +38,18 @@ function printEqLogic(_eqLogic) {
                 addFeature(feat, _eqLogic.configuration.features[feat]);
             }
         }
-        
+
+        if (isset(_eqLogic.configuration.features.name)) {
+            $('#div_inputGroupName').addClass('input-group');
+            $('#span_setName').show();
+            $('#bt_setName').on('click', function () {
+                $('.eqLogicAttr[data-l1key=name]').value(_eqLogic.configuration.features.name);
+            });
+        } else {
+            $('#div_inputGroupName').removeClass('input-group');
+            $('#span_setName').hide();
+        }
+
         if (isset(_eqLogic.configuration.macaddress_discovered)) {
             // lock the mac address field on certains conditions
             var inputMacAddress = $('.eqLogicAttr[data-l1key=logicalId]');

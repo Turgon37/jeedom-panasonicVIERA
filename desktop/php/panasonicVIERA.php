@@ -76,9 +76,12 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                         <legend><i class="fa fa-arrow-circle-left eqLogicAction cursor" data-action="returnToThumbnailDisplay"></i> {{Général}}  <i class='fa fa-cogs eqLogicAction pull-right cursor expertModeVisible' data-action='configure'></i></legend>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">{{Nom de la TV}}</label>
+                            <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
                             <div class="col-sm-3">
-                                <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
-                                <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{TV's name}}"/>
+                                <div id="div_inputGroupName" class="">
+                                    <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{TV's name}}"/>
+                                    <span id="span_setName" class="input-group-btn" title="Remplir le nom automatiquement via la valeur récupérée de la TV" style="display : none;"><a id="bt_setName" class="btn btn-default btn-success"><i class="fa fa-magic"></i></a></span>
+                                </div>
                             </div>
                             <label class="col-sm-3 control-label expertModeVisible">{{Modèle}}</label>
                             <div class="col-lg-2 col-sm-5 expertModeVisible">
