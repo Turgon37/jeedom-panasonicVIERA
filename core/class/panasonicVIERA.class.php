@@ -45,6 +45,8 @@ class panasonicVIERA extends eqLogic {
 
     const KEY_THEME = 'theme';
 
+    const KEY_TRIGGER_ERRORS = 'trigger_errors';
+
 
     const COMMANDS_GROUPS = [
         'basic' => 'Basiques',
@@ -526,6 +528,7 @@ class panasonicVIERA extends eqLogic {
     }
 
     public function preInsert() {
+        $this->setConfiguration(self::KEY_TRIGGER_ERRORS, false);
         $this->setConfiguration(self::KEY_WAKEUP, 'none');
         $this->setConfiguration(self::KEY_VOLUMESTEP, 2);
         $this->setConfiguration(self::KEY_THEME, 'white');
@@ -728,8 +731,8 @@ class panasonicVIERACmd extends cmd {
                         $result = panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py",
                                 [$action, $tvip, $command],
                                 $this->getName(),
-                                true,
-                                self::PANASONIC_VIERA_LIB_ERRORS);
+                                ($panasonicTV->getConfiguration(panasonicVIERA::KEY_TRIGGER_ERRORS, false) == true ? true : false),
+                                panasonicVIERA::PANASONIC_VIERA_LIB_ERRORS);
                         if (is_null($result)) {
                             throw new Exception(__('La commande a retournée une valeur nulle, veuillez vérifier les dépendances et les log', __FILE__));
                         }
