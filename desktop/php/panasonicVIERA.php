@@ -220,8 +220,10 @@ $eqLogics = eqLogic::byType('panasonicVIERA');
                 <table id="table_cmd" class="table table-bordered table-condensed">
                     <thead>
                         <tr>
-                            <th>{{Nom}}</th>
-                            <th>{{Type}}</th>
+                            <th style="width: 300px;">{{Nom}}</th>
+                            <th>{{Description}}</th>
+                            <th class="expertModeVisible">{{Type}}</th>
+                            <th class="expertModeVisible">{{Id logique}}</th>
                             <th>{{Paramètre(s)}}</th>
                             <th>{{Actions}}</th>
                         </tr>
