@@ -31,7 +31,7 @@ $('.discoverTVs').on('click', function () {
 
 function printEqLogic(_eqLogic) {
     actionOptions = []
-    $('#div_features').empty();
+    $('#table_features tbody').empty();
     if (isset(_eqLogic.configuration)) {
         if (isset(_eqLogic.configuration.features)) {
             for (var feat in _eqLogic.configuration.features) {
