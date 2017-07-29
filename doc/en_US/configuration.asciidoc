@@ -1,1 +1,12 @@
-=== Configuration du plugin
+==== Configuration du plugin
+
+La page de configuration du plugin contient les paramètres appliqués à tout les équipements et toutes les commandes.
+
+* *Durée maximale d'execution des commandes* : Ce paramètre définit la durée maximale d'éxécutions des commandes en secondes. Cette durée s'applique surtout lorsque la TV n'est pas disponible.
+* *Adresse IP de broadcast pour les paquets WakeOnLan* : Ce paramètre sert à la création des équipements pour le WakeOnLan.
+* *Durée maximale de la recherche des TVs* : Ce paramètre définit le nombre de secondes pendants lesquelles le plugins va attendre la réponse des TV lors d'une opération de découverte.
+* *Utiliser une règle Iptable spécifique durant la découverte des TVs* : Ce paramètre active l'execution d'une règle Iptables spécifique lors des opérations de découvertes des TVs. Étant donné que la découverte utilise du Multicast sur de l'UDP, il peut être nécessaire d'appliquer une règle spécifique pour passer le parefeu du serveur sur lequel est installé Jeedom.
+
+.La page de configuration principale du plugin
+[caption="Figure 1: "]
+image::../images/plugin_configuration.png[La page de configuration principale du plugin,300,100]

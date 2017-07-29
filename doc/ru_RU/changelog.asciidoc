@@ -1,12 +1,17 @@
-== Changelog
+==== Changelog
 
-== 2017-07-31
+===== 2017-07-31
 
 * Publication de la premiere version stable
 
-== (beta)
+===== (beta)
 
-* Ajout du WakeOnLan
+* Ajout de la commande WakeUp pour gérer le reveil de la TV
+* Ajout d'un lien vers le plugin networks pour le wakeonlan
 * Ajout des commandes et des groupes de commandes
+* Ajout de la fonction de découverte des TVs
 * Integration de la lib tierce panasonic_viera pour envoyer les commandes vers la TV
 * Ajout de la gestion des dépendances
+* Ajout d'une vue 'Informations' pour afficher les informations brutes de la TV
+* Ajout d'une santé spécifique pour vérifier la version de la bibliothèque python
+* Intégration de vues pour afficher les caractéristiques de la TV remontées par la découverte

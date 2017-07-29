@@ -418,18 +418,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_panasonicviera">1. PanasonicVIERA</a>
 <ul class="sectlevel2">
 <li><a href="#_description">1.1. Description</a></li>
+<li><a href="#_configuration">1.2. Configuration</a>
+<ul class="sectlevel3">
+<li><a href="#_configuration_du_plugin">1.2.1. Configuration du plugin</a></li>
 </ul>
 </li>
-<li><a href="#_configuration">2. Configuration</a>
-<ul class="sectlevel2">
-<li><a href="#_configuration_du_plugin">2.1. Configuration du plugin</a></li>
+<li><a href="#_faq">1.3. FAQ</a></li>
+<li><a href="#_journal_des_changements">1.4. Journal des changements</a>
+<ul class="sectlevel3">
+<li><a href="#_changelog">1.4.1. Changelog</a></li>
 </ul>
 </li>
-<li><a href="#_faq">3. FAQ</a></li>
-<li><a href="#_journal_des_changements">4. Journal des changements</a></li>
-<li><a href="#_changelog">5. Changelog</a></li>
-<li><a href="#_2017_07_31">6. 2017-07-31</a></li>
-<li><a href="#__beta">7. (beta)</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -440,44 +441,55 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_description">1.1. Description</h3>
 <div class="paragraph">
-<p>Ce plugin permet de contrôler des Téléviseurs Panasonic Viera.</p>
+<p>Ce plugin permet de contrôler les Téléviseurs Panasonic Viera.</p>
 </div>
 <hr>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_configuration">2. Configuration</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_configuration_du_plugin">2.1. Configuration du plugin</h3>
+<h3 id="_configuration">1.2. Configuration</h3>
+<div class="sect3">
+<h4 id="_configuration_du_plugin">1.2.1. Configuration du plugin</h4>
+<div class="paragraph">
+<p>La page de configuration du plugin contient les paramètres appliqués à tout les équipements et toutes les commandes.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Durée maximale d&#8217;execution des commandes</strong> : Ce paramètre définit la durée maximale d&#8217;éxécutions des commandes en secondes. Cette durée s&#8217;applique surtout lorsque la TV n&#8217;est pas disponible.</p>
+</li>
+<li>
+<p><strong>Adresse IP de broadcast pour les paquets WakeOnLan</strong> : Ce paramètre sert à la création des équipements pour le WakeOnLan.</p>
+</li>
+<li>
+<p><strong>Durée maximale de la recherche des TVs</strong> : Ce paramètre définit le nombre de secondes pendants lesquelles le plugins va attendre la réponse des TV lors d&#8217;une opération de découverte.</p>
+</li>
+<li>
+<p><strong>Utiliser une règle Iptable spécifique durant la découverte des TVs</strong> : Ce paramètre active l&#8217;execution d&#8217;une règle Iptables spécifique lors des opérations de découvertes des TVs. Étant donné que la découverte utilise du Multicast sur de l&#8217;UDP, il peut être nécessaire d&#8217;appliquer une règle spécifique pour passer le parefeu du serveur sur lequel est installé Jeedom.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/plugin_configuration.png" alt="La page de configuration principale du plugin" width="300" height="100">
+</div>
+<div class="title">Figure 1: La page de configuration principale du plugin</div>
+</div>
 <hr>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_faq">3. FAQ</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_faq">1.3. FAQ</h3>
 <div class="paragraph">
 <p>Unresolved directive in index.asciidoc - include::faq.asciidoc[]</p>
 </div>
+<hr>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_journal_des_changements">4. Journal des changements</h2>
-<div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
-<h2 id="_changelog">5. Changelog</h2>
-<div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
-<h2 id="_2017_07_31">6. 2017-07-31</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_journal_des_changements">1.4. Journal des changements</h3>
+<div class="sect3">
+<h4 id="_changelog">1.4.1. Changelog</h4>
+<div class="sect4">
+<h5 id="_2017_07_31">2017-07-31</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -486,17 +498,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="__beta">7. (beta)</h2>
-<div class="sectionbody">
+<div class="sect4">
+<h5 id="__beta">(beta)</h5>
 <div class="ulist">
 <ul>
 <li>
-<p>Ajout du WakeOnLan</p>
+<p>Ajout de la commande WakeUp pour gérer le reveil de la TV</p>
+</li>
+<li>
+<p>Ajout d&#8217;un lien vers le plugin networks pour le wakeonlan</p>
 </li>
 <li>
 <p>Ajout des commandes et des groupes de commandes</p>
+</li>
+<li>
+<p>Ajout de la fonction de découverte des TVs</p>
 </li>
 <li>
 <p>Integration de la lib tierce panasonic_viera pour envoyer les commandes vers la TV</p>
@@ -504,7 +520,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li>
 <p>Ajout de la gestion des dépendances</p>
 </li>
+<li>
+<p>Ajout d&#8217;une vue 'Informations' pour afficher les informations brutes de la TV</p>
+</li>
+<li>
+<p>Ajout d&#8217;une santé spécifique pour vérifier la version de la bibliothèque python</p>
+</li>
+<li>
+<p>Intégration de vues pour afficher les caractéristiques de la TV remontées par la découverte</p>
+</li>
 </ul>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
