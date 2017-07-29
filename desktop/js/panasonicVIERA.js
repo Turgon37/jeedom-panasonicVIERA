@@ -39,7 +39,7 @@ function printEqLogic(_eqLogic) {
             }
         }
 
-        if (isset(_eqLogic.configuration.features.name)) {
+        if (isset(_eqLogic.configuration.features) && isset(_eqLogic.configuration.features.name)) {
             $('#div_inputGroupName').addClass('input-group');
             $('#span_setName').show();
             $('#bt_setName').on('click', function () {
