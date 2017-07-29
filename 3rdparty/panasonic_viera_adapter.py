@@ -52,6 +52,7 @@ result = dict({'status': 0})
 
 # CREATE PARSER
 parser = argparse.ArgumentParser(description="Adapter for panasonic-viera for jeedom")
+parser.add_argument("--timeout", help="The timeout for network operations with the TV")
 subparsers = parser.add_subparsers()
 
 # VERSION
@@ -106,6 +107,9 @@ if not Version:
 
 # MAIN
 rc = panasonic_viera.RemoteControl(args.host if hasattr(args, 'host') else None)
+if hasattr(args, 'timeout') and args.timeout is not None and hasattr(rc, 'setTimeout'):
+    rc.setTimeout(args.timeout)
+
 try:
     if args.action == 'sendkey':
         rc.sendKey(args.command)
