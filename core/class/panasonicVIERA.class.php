@@ -580,7 +580,7 @@ class panasonicVIERA extends eqLogic {
         $eq->setIsEnable(1);
         $eq->setConfiguration('ip', $addr);
         $eq->setConfiguration('mac', $mac);
-        $eq->setConfiguration('broadcastIP', '255.255.255.0');
+        $eq->setConfiguration('broadcastIP', $this->getConfigBroadcastIp());
         $eq->save();
 
         $wol_cmd = $eq->getCmd(null, 'wol');
@@ -771,7 +771,7 @@ class panasonicVIERACmd extends cmd {
         $panasonicTV = $this->getEqLogic();
         $tvip = $panasonicTV->getIpAddress();
 
-        switch($this->type) {
+        switch($this->getType()) {
             case 'action':
                 $action = $this->getConfiguration('action');
                 $command = $this->getConfiguration('command');
@@ -828,7 +828,7 @@ class panasonicVIERACmd extends cmd {
                         ($panasonicTV->getConfiguration(panasonicVIERA::KEY_TRIGGER_ERRORS, false) == true ? true : false),
                         panasonicVIERA::PANASONIC_VIERA_LIB_ERRORS);
             default:
-                throw new Exception(sprintf('Tried to execute an unknown command type : %s', $this->type));
+                throw new Exception(sprintf('Tried to execute an unknown command type : %s', $this->getType()));
         }
     }
 
