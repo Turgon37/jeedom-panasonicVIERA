@@ -352,7 +352,7 @@ class panasonicVIERA extends eqLogic {
             panasonicVIERAIptables::executeIptables('insert');
         }
         log::add('panasonicVIERA', 'debug', 'run discovery command');
-        $discovered = self::execute3rdParty("panasonic_viera_adapter.py", ['find'], 'discover');
+        $discovered = self::execute3rdParty("panasonic_viera_adapter.py", ['--timeout', self::getConfigDiscoveryTimeout(), 'find'], 'discover');
         if (self::getConfigDiscoveryIptables()) {
             log::add('panasonicVIERA', 'debug', 'close firewall after discovery');
             panasonicVIERAIptables::executeIptables('delete');
@@ -807,7 +807,7 @@ class panasonicVIERACmd extends cmd {
                         break;
                     default:
                         $result = panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py",
-                                [$action, $tvip, $command],
+                                ['--timeout', panasonicVIERA::getConfigCommandTimeout(), $action, $tvip, $command],
                                 $this->getName(),
                                 ($panasonicTV->getConfiguration(panasonicVIERA::KEY_TRIGGER_ERRORS, false) == true ? true : false),
                                 panasonicVIERA::PANASONIC_VIERA_LIB_ERRORS);
@@ -822,7 +822,11 @@ class panasonicVIERACmd extends cmd {
                 log::add('panasonicVIERA', 'debug', 'Info command');
                 $action = $this->getConfiguration('action');
                 $command = $this->getConfiguration('command');
-                return panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py", [$action, $tvip, $command], $this->getName());
+                return panasonicVIERA::execute3rdParty("panasonic_viera_adapter.py",
+                        ['--timeout', panasonicVIERA::getConfigCommandTimeout(), $action, $tvip, $command],
+                        $this->getName(),
+                        ($panasonicTV->getConfiguration(panasonicVIERA::KEY_TRIGGER_ERRORS, false) == true ? true : false),
+                        panasonicVIERA::PANASONIC_VIERA_LIB_ERRORS);
             default:
                 throw new Exception(sprintf('Tried to execute an unknown command type : %s', $this->type));
         }
