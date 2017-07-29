@@ -1,16 +1,16 @@
-:icons:
 == PanasonicVIERA
 
 === Description
-Ce plugin permet de contrôler des Téléviseurs Panasonic Viera.
+Ce plugin permet de contrôler les Téléviseurs Panasonic Viera.
 
 '''
-== Configuration
+=== Configuration
 include::configuration.asciidoc[]
 
 '''
-== FAQ
+=== FAQ
 include::faq.asciidoc[]
 
-== Journal des changements
+'''
+=== Journal des changements
 include::changelog.asciidoc[]
