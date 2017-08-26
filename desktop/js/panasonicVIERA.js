@@ -144,7 +144,7 @@ function addCmdToTable(_cmd) {
     tr += '</div>';
     tr += '</td>';
     tr += '<td>';
-    tr += '<span class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="description" style="width : 140px;">';
+    tr += '<input disabled="" class="cmdAttr form-control input-sm" data-l1key="configuration" data-l2key="description" style="width : 140px;">';
     tr += '</td>';
     tr += '<td class="expertModeVisible">';
     if (disable_edit) {
