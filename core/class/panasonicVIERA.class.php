@@ -682,12 +682,51 @@ class panasonicVIERA extends eqLogic {
 
     }
 
-    /*
-     * Non obligatoire mais permet de modifier l'affichage du widget si vous en avez besoin
-      public function toHtml($_version = 'dashboard') {
+    public function toHtml($_version = 'dashboard') {
+        $replace = $this->preToHtml($_version, [], true);
+        if (!is_array($replace)) {
+            return $replace;
+        }
+        $version = jeedom::versionAlias($_version);
+        log::add('panasonicVIERA', 'debug', sprintf('=> toHtml: ask widget for %s version', $version));
 
-      }
-     */
+        # prepare the replacement for all #cmd# keys
+        $cmds_replace = [];
+        foreach ($this->getCmd() as $cmd) {
+            $cmd_html = ' ';
+            if ($cmd->getIsVisible()) {
+                if ($cmd->getType() == 'info') {
+                    // info commands
+                    $cmd_html = $cmd->toHtml();
+                } else {
+                    // action commands
+                    $cmd_replace = array(
+                        '#id#' => $cmd->getId(),
+                        '#name#' => $cmd->getName(),
+	                    '#name_display#' => ($cmd->getDisplay('icon') != '') ? $cmd->getDisplay('icon') : $cmd->getName(),
+                        '#theme#' => $this->getConfiguration(self::KEY_THEME),
+                        '#version#' => $version,
+                        '#uid#' => 'cmd' . $cmd->getId() . eqLogic::UIDDELIMITER . mt_rand() . eqLogic::UIDDELIMITER,
+                    );
+
+                    #$cmd_html = template_replace($cmd_replace, getTemplate('core', $version, 'cmd.action.other.default'));
+                    $cmd_html = template_replace($cmd_replace, getTemplate('core', $version, 'cmd', 'panasonicVIERA'));
+                }
+            }
+
+            $cmds_replace[sprintf( '#%s#', strtolower($cmd->getName()) )] = $cmd_html;
+        }
+
+        # dump list of ## keys
+        #log::add('panasonicVIERA','debug', implode(' ', array_keys($cmds_replace)));
+
+        $remote_template = getTemplate('core', $version, 'remote1', 'panasonicVIERA');
+        $remote_html = template_replace($cmds_replace, $remote_template);
+
+        $replace['#remote#'] = $remote_html;
+
+        return template_replace($replace, getTemplate('core', $version, 'eqLogic', 'panasonicVIERA'));
+    }
 
     /*     * **********************Getteur Setteur*************************** */
 
