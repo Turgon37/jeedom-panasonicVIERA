@@ -452,10 +452,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>La page de configuration du plugin contient les paramètres appliqués à tout les équipements et toutes les commandes.</p>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/plugin_configuration.png" alt="La page de configuration principale du plugin" width="700" height="400">
+</div>
+<div class="title">Figure 1: La page de configuration principale du plugin</div>
+</div>
+<div class="paragraph">
+<p>Voici le détail de chaque paramètre</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Durée maximale d&#8217;execution des commandes</strong> : Ce paramètre définit la durée maximale d&#8217;éxécutions des commandes en secondes. Cette durée s&#8217;applique surtout lorsque la TV n&#8217;est pas disponible.</p>
+<p><strong>Durée maximale d&#8217;execution des commandes</strong> : Ce paramètre définit la durée maximale d&#8217;éxécution des commandes en secondes. Cette durée s&#8217;applique surtout lorsque la TV n&#8217;est pas disponible. Cela évite à votre Jeedom de rester bloqué en attente de la réponse de la TV.</p>
 </li>
 <li>
 <p><strong>Adresse IP de broadcast pour les paquets WakeOnLan</strong> : Ce paramètre sert à la création des équipements pour le WakeOnLan.</p>
@@ -464,21 +473,42 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><strong>Durée maximale de la recherche des TVs</strong> : Ce paramètre définit le nombre de secondes pendants lesquelles le plugins va attendre la réponse des TV lors d&#8217;une opération de découverte.</p>
 </li>
 <li>
-<p><strong>Utiliser une règle Iptable spécifique durant la découverte des TVs</strong> : Ce paramètre active l&#8217;execution d&#8217;une règle Iptables spécifique lors des opérations de découvertes des TVs. Étant donné que la découverte utilise du Multicast sur de l&#8217;UDP, il peut être nécessaire d&#8217;appliquer une règle spécifique pour passer le parefeu du serveur sur lequel est installé Jeedom.</p>
+<p><strong>Utiliser une règle Iptable spécifique durant la découverte des TVs</strong> : Ce paramètre active l&#8217;execution d&#8217;une règle Iptables spécifique lors des opérations de découvertes des TVs. Étant donné que la découverte utilise du Multicast sur de l&#8217;UDP, il peut être nécessaire d&#8217;appliquer une règle spécifique pour passer le parefeu du serveur sur lequel est installé Jeedom.
+Typiquement si vous interdisez les INPUT via une policy DROP ou REJECT, alors cette option sera necessaire pour ouvrir une entrée temporairement sur le parefeu.</p>
 </li>
 </ul>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="../images/plugin_configuration.png" alt="La page de configuration principale du plugin" width="300" height="100">
-</div>
-<div class="title">Figure 1: La page de configuration principale du plugin</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/plugin_configuration_iptables.png" alt="La page de configuration Iptables du plugin" width="300" height="100">
+<img src="../images/plugin_configuration_iptables.png" alt="La page de configuration Iptables du plugin" width="700" height="400">
 </div>
 <div class="title">Figure 1: La page de configuration Iptables du plugin</div>
+</div>
+<div class="paragraph">
+<p>Lors du lancement d&#8217;une opération de découverte, le plugin va ajouter une règle Iptables via l&#8217;option "iptables --insert".
+Cette règle sera supprimée via "iptable --delete" à la fin de la découverte, peut importe le résultat de celle-ci.</p>
+</div>
+<div class="paragraph">
+<p>Voici le détail de chaque paramètre</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Nom de la table Iptables</strong> : le nom de la table à utiliser, normalement c&#8217;est toujours filter.</p>
+</li>
+<li>
+<p><strong>Nom de la chaine Iptables</strong> : Le nom de la chaine dans laquelle inclure la règle. De base c&#8217;est INPUT, mais vous pouvez la modifier si vous avez créé des chaines supplémentaire sur votre parefeu.</p>
+</li>
+<li>
+<p><strong>Protocole réseau</strong> : Pour le moment c&#8217;est UDP, cette option ne dépend pas de votre configuration mais du fonctionnement de la bibliothèque tierce de communication avec la TV.</p>
+</li>
+<li>
+<p><strong>Port de destination Iptables</strong> : Le port est définie par la configuration de base des TV Panasonic</p>
+</li>
+<li>
+<p><strong>Nom de l&#8217;action Iptables (jump)</strong> : Il s&#8217;agit de l&#8217;action à appliquer sur les paquets de la règle. Sur les installations de base, ACCEPT est la seule option possible. Si vous avez définit des chaines supplémentaires de filtrage, vous pouvez les définir ici.</p>
+</li>
+</ul>
 </div>
 <hr>
 </div>
@@ -495,7 +525,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect3">
 <h4 id="_changelog">1.4.1. Changelog</h4>
 <div class="sect4">
-<h5 id="_2017_07_31">2017-07-31</h5>
+<h5 id="_2017_08_31">2017-08-31</h5>
 <div class="ulist">
 <ul>
 <li>
@@ -509,10 +539,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
+<p>Ajout de la documentation</p>
+</li>
+<li>
 <p>Ajout de la commande WakeUp pour gérer le reveil de la TV</p>
 </li>
 <li>
-<p>Ajout d&#8217;un lien vers le plugin networks pour le wakeonlan</p>
+<p>Ajout d&#8217;un lien vers le plugin networks pour le wakeonlan (création des équipements network automatiquement)</p>
 </li>
 <li>
 <p>Ajout des commandes et des groupes de commandes</p>
