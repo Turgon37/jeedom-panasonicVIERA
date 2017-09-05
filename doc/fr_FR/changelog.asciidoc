@@ -1,12 +1,13 @@
 ==== Changelog
 
-===== 2017-08-31
+===== 2017-09-30
 
 * Publication de la premiere version stable
 
 ===== (beta)
 
 * Ajout de la documentation
+* Ajout d'un widget de base
 * Ajout de la commande WakeUp pour gérer le reveil de la TV
 * Ajout d'un lien vers le plugin networks pour le wakeonlan (création des équipements network automatiquement)
 * Ajout des commandes et des groupes de commandes

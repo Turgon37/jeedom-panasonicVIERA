@@ -694,6 +694,7 @@ class panasonicVIERA extends eqLogic {
         $cmds_replace = [];
         foreach ($this->getCmd() as $cmd) {
             $cmd_html = ' ';
+            $group = $cmd->getConfiguration('group');
             if ($cmd->getIsVisible()) {
                 if ($cmd->getType() == 'info') {
                     // info commands
@@ -713,17 +714,34 @@ class panasonicVIERA extends eqLogic {
                     $cmd_html = template_replace($cmd_replace, getTemplate('core', $version, 'cmd', 'panasonicVIERA'));
                 }
             }
-
+            if ( ! isset($groups_templates[$group]) ) {
+                $groups_templates[$group] = '';
+            }
             $cmds_replace[sprintf( '#%s#', strtolower($cmd->getName()) )] = $cmd_html;
         }
 
         # dump list of ## keys
         #log::add('panasonicVIERA','debug', implode(' ', array_keys($cmds_replace)));
 
-        $remote_template = getTemplate('core', $version, 'remote1', 'panasonicVIERA');
-        $remote_html = template_replace($cmds_replace, $remote_template);
+        // Generate template for groups used in commands
+        foreach ($groups_templates as $group => $html) {
+            $group_template = getTemplate('core', $version, $group, 'panasonicVIERA');
+            $replace[sprintf('#group_%s#', $group)] = template_replace($cmds_replace, $group_template);
+        }
 
-        $replace['#remote#'] = $remote_html;
+        // Generate template for groups not used in commands
+        foreach ($this->getCommandGroups() as $group => $name) {
+            if ( ! isset($groups_templates[$group]) ) {
+                $replace[sprintf('#group_%s#', $group)] = '';
+            }
+        }
+
+        $parameters = $this->getDisplay('parameters');
+        if (is_array($parameters)) {
+            foreach ($parameters as $key => $value) {
+                $replace['#' . $key . '#'] = $value;
+            }
+        }
 
         return template_replace($replace, getTemplate('core', $version, 'eqLogic', 'panasonicVIERA'));
     }
