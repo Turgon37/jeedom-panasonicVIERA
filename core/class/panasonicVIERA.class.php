@@ -700,14 +700,21 @@ class panasonicVIERA extends eqLogic {
                     // info commands
                     $cmd_html = $cmd->toHtml();
                 } else {
+                    $vcolor = ($version == 'mobile') ? 'mcmdColor' : 'cmdColor';
+                    if ($this->getPrimaryCategory() == '') {
+                        $cmdColor = jeedom::getConfiguration('eqLogic:category:default:' . $vcolor);
+                    } else {
+                        $cmdColor = jeedom::getConfiguration('eqLogic:category:' . $this->getPrimaryCategory() . ':' . $vcolor);
+                    }
                     // action commands
                     $cmd_replace = array(
-                        '#id#' => $cmd->getId(),
-                        '#name#' => $cmd->getName(),
+                        '#id#'           => $cmd->getId(),
+                        '#name#'         => $cmd->getName(),
 	                    '#name_display#' => ($cmd->getDisplay('icon') != '') ? $cmd->getDisplay('icon') : $cmd->getName(),
-                        '#theme#' => $this->getConfiguration(self::KEY_THEME),
-                        '#version#' => $version,
-                        '#uid#' => 'cmd' . $cmd->getId() . eqLogic::UIDDELIMITER . mt_rand() . eqLogic::UIDDELIMITER,
+                        '#theme#'        => $this->getConfiguration(self::KEY_THEME),
+                        '#version#'      => $version,
+                        '#uid#'          => 'cmd' . $cmd->getId() . eqLogic::UIDDELIMITER . mt_rand() . eqLogic::UIDDELIMITER,
+                        '#cmdColor#'     => $cmdColor
                     );
 
                     #$cmd_html = template_replace($cmd_replace, getTemplate('core', $version, 'cmd.action.other.default'));

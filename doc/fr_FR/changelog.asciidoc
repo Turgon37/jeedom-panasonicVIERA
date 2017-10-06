@@ -1,5 +1,10 @@
 ==== Changelog
 
+===== 2017-10-06
+
+* Correction d'un bug de generation du CSS dans le template des commandes
+* Aeration du design de la telecommance + Alignement de certains boutons suite à la MAJ UI de Jeedom
+
 ===== 2017-09-30
 
 * Publication de la premiere version stable
