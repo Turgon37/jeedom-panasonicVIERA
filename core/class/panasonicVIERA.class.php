@@ -359,15 +359,17 @@ class panasonicVIERA extends eqLogic {
         }
         if (count($discovered)) {
             log::add('panasonicVIERA', 'debug', 'found ' . count($discovered) . ' TV(s) on the network');
-            foreach ($discovered as $tv) {
+            foreach ($discovered as $key => $tv) {
+                log::add('panasonicVIERA', 'debug', 'treat element ' . ($key + 1));
                 if (!isset($tv['address']) || is_null($tv['address']) || empty($tv['address'])) {
                     throw new Exception(__('Missing address key in discovery answer from 3rd party', __FILE__));
                 }
 
                 $address = $tv['address'];
                 $mac = null;
-                if (isset($tv['mac'])) {
+                if (isset($tv['mac']) && !empty($tv['mac']) ) {
                     $mac = $tv['mac'];
+                    log::add('panasonicVIERA', 'debug', ' set mac address ' . $mac);
                 }
                 $uuid = isset($tv['computed']['uuid']) ? $tv['computed']['uuid'] : null;
                 $eq = null;
