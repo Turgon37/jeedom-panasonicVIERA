@@ -4,8 +4,8 @@
 	"description" : "Description",
 	"licence" : "AGPL",
 	"author" : "Pierre GINDRAUD",
-	"require" : "2.4",
-	"version" : "1.0.0",
+	"require" : "3.0",
 	"category" : "multimedia",
+	"hasOwnDeamon" : false,
 	"hasDependency": true
 }
