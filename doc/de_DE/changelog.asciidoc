@@ -7,7 +7,7 @@
 
 ===== 2017-09-30
 
-* Publication de la premiere version stable
+* Veröffentlichung der ersten stabilen Version
 
 ===== (beta)
 

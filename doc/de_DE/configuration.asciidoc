@@ -1,4 +1,4 @@
-==== Configuration du plugin
+==== Plugin Konfiguration
 
 La page de configuration du plugin contient les paramètres appliqués à tout les équipements et toutes les commandes.
 
