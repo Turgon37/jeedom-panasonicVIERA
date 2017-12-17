@@ -1,8 +1,8 @@
 ==== Plugin Konfiguration
 
-La page de configuration du plugin contient les paramètres appliqués à tout les équipements et toutes les commandes.
+Die Plugin-Konfiguration-Seite enthält die Einstellungen, die für alle Geräte und Steuerelemente angewendet werden.
 
-.La page de configuration principale du plugin
+.Die Hauptkonfigurationsseite des Plugins
 [caption="Figure 1: "]
 image::../images/plugin_configuration.png[La page de configuration principale du plugin,700,400]
 

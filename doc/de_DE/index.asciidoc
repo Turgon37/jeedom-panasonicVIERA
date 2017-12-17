@@ -4,7 +4,7 @@
 Ce plugin permet de contrôler les Téléviseurs Panasonic Viera.
 
 '''
-=== Configuration
+=== Konfiguration
 include::configuration.asciidoc[]
 
 '''
