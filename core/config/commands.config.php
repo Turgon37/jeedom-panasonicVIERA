@@ -235,6 +235,50 @@ return [
         'icon' => 'techno-tv6',
     ],
     [
+        'name' => 'HDMI1',
+        'configuration' => [
+            'action' => 'sendkey',
+            'command' => 'NRC_HDMI1-ONOFF',
+            'description' => 'AV/HDMI1',
+            'group' => 'basic',
+        ],
+        'type' => 'action',
+        'subType' => 'other',
+    ],
+    [
+        'name' => 'HDMI2',
+        'configuration' => [
+            'action' => 'sendkey',
+            'command' => 'NRC_HDMI2-ONOFF',
+            'description' => 'AV/HDMI2',
+            'group' => 'basic',
+        ],
+        'type' => 'action',
+        'subType' => 'other',
+    ],
+    [
+        'name' => 'HDMI3',
+        'configuration' => [
+            'action' => 'sendkey',
+            'command' => 'NRC_HDMI3-ONOFF',
+            'description' => 'AV/HDMI3',
+            'group' => 'basic',
+        ],
+        'type' => 'action',
+        'subType' => 'other',
+    ],
+    [
+        'name' => 'HDMI4',
+        'configuration' => [
+            'action' => 'sendkey',
+            'command' => 'NRC_HDMI4-ONOFF',
+            'description' => 'AV/HDMI4',
+            'group' => 'basic',
+        ],
+        'type' => 'action',
+        'subType' => 'other',
+    ],
+    [
         'name' => 'Internet',
         'configuration' => [
             'action' => 'sendkey',
